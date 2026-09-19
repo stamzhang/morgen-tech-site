@@ -1,0 +1,1400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title data-i18n="page_title">RailSentinel-24 · Auxiliary Power Supply Monitor for EV Fast Chargers</title>
+<meta name="description" content="RailSentinel-24 by Morgen Tech — hardware-level auxiliary power supply monitor for DC EV fast charger cabinets. See why your charger keeps going down, before the next callout.">
+<link rel="canonical" href="https://morgen-tech.com/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0D2340;--navy2:#14304f;--navy3:#1c3d60;
+  --blue:#1A6FD4;--blue2:#2d84ef;--blue3:#5fa8f8;
+  --teal:#107878;--teal2:#13a0a0;
+  --green:#187840;
+  --rust:#B03808;
+  --ink:#0d1520;--ink2:#2e4057;--ink3:#4a5e72;--ink4:#6b7f94;--ink5:#96a8b8;
+  --bg:#f4f6f9;--white:#fff;--rule:#e2e8f0;
+  --serif:'Playfair Display',Georgia,serif;
+  --sans:'DM Sans',system-ui,sans-serif;
+  --mono:'DM Mono',monospace;
+  --r:6px;--r2:12px;
+  --trans:0.22s cubic-bezier(.4,0,.2,1);
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);background:var(--white);color:var(--ink);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+.container{max-width:1160px;margin:0 auto;padding:0 40px}
+@media(max-width:768px){.container{padding:0 20px}}
+.eyebrow{font-size:10px;letter-spacing:4px;text-transform:uppercase;font-weight:700}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:40px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
+.chip-blue{background:rgba(26,111,212,.12);color:var(--blue);border:1px solid rgba(26,111,212,.25)}
+.chip-teal{background:rgba(16,120,120,.12);color:var(--teal);border:1px solid rgba(16,120,120,.25)}
+.chip-rust{background:rgba(176,56,8,.12);color:var(--rust);border:1px solid rgba(176,56,8,.25)}
+
+/* ── NAV ─────────────────────────────────────────── */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(13,35,64,.92);backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,.07)}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;height:60px;gap:16px}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;flex-shrink:0}
+.nav-logo-mark{width:28px;height:28px}
+.nav-brand{font-family:var(--mono);font-size:13px;font-weight:500;color:#fff;letter-spacing:1px}
+.nav-links{display:flex;align-items:center;gap:28px}
+.nav-links a{font-size:13px;font-weight:500;color:rgba(255,255,255,.6);text-decoration:none;transition:color var(--trans)}
+.nav-links a:hover{color:#fff}
+.nav-cta{background:var(--blue);color:#fff!important;padding:8px 18px;border-radius:var(--r);font-size:13px;font-weight:600;text-decoration:none;transition:background var(--trans)}
+.nav-cta:hover{background:var(--blue2)!important}
+.nav-right{display:flex;align-items:center;gap:16px}
+/* lang switcher */
+.lang-sw{display:flex;align-items:center;gap:2px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:var(--r);padding:3px}
+.lang-btn{background:none;border:none;color:rgba(255,255,255,.35);font-size:11px;font-weight:700;font-family:var(--mono);padding:4px 7px;border-radius:4px;cursor:pointer;transition:all var(--trans);letter-spacing:.5px}
+.lang-btn:hover{color:rgba(255,255,255,.7)}
+.lang-btn.active{background:rgba(255,255,255,.12);color:#fff}
+@media(max-width:768px){.nav-links a:not(.nav-cta){display:none}}
+@media(max-width:480px){.nav-brand{display:none}}
+
+/* ── HERO ────────────────────────────────────────── */
+#hero{position:relative;min-height:100vh;background:var(--navy);display:flex;flex-direction:column;justify-content:center;overflow:hidden;padding-top:60px}
+.hero-bg{position:absolute;inset:0;pointer-events:none}
+.hero-bg::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle,rgba(26,111,212,.18) 1px,transparent 1px);background-size:36px 36px;opacity:.5}
+.hero-bg::after{content:'';position:absolute;bottom:0;left:0;right:0;height:200px;background:linear-gradient(to bottom,transparent,var(--navy))}
+.hero-waveform{position:absolute;bottom:0;left:0;right:0;height:240px;pointer-events:none}
+.hero-content{position:relative;z-index:2;padding:80px 0 60px}
+.hero-eyebrow{color:var(--blue3);margin-bottom:24px}
+.hero-h{font-family:var(--serif);font-size:clamp(36px,5vw,66px);line-height:1.06;color:#fff;max-width:820px;margin-bottom:24px}
+.hero-h em{font-style:italic;color:#f0c040}
+.hero-sub{font-size:17px;line-height:1.7;color:rgba(255,255,255,.58);max-width:560px;margin-bottom:48px}
+.hero-actions{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:14px 28px;border-radius:var(--r);font-size:14px;font-weight:600;text-decoration:none;transition:all var(--trans);cursor:pointer;border:none}
+.btn-primary{background:var(--blue);color:#fff}
+.btn-primary:hover{background:var(--blue2);transform:translateY(-1px)}
+.btn-ghost{background:rgba(255,255,255,.08);color:rgba(255,255,255,.8);border:1px solid rgba(255,255,255,.15)}
+.btn-ghost:hover{background:rgba(255,255,255,.14);color:#fff}
+.hero-stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.07);border-radius:var(--r2);overflow:hidden;margin-top:72px}
+.hero-stat{padding:24px 28px;background:rgba(13,35,64,.6)}
+.hero-stat-num{font-family:var(--mono);font-size:28px;font-weight:500;color:var(--blue3);margin-bottom:4px}
+.hero-stat-label{font-size:12px;color:rgba(255,255,255,.4);line-height:1.5}
+@media(max-width:768px){.hero-stat-row{grid-template-columns:1fr}.hero-stat-num{font-size:22px}}
+
+/* ── PROBLEM ─────────────────────────────────────── */
+#problem{background:var(--bg);padding:100px 0}
+.problem-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:start}
+@media(max-width:900px){.problem-grid{grid-template-columns:1fr}}
+.problem-left .section-h{font-family:var(--serif);font-size:clamp(26px,3.2vw,40px);line-height:1.15;color:var(--navy);margin:16px 0 20px}
+.problem-left p{font-size:15px;line-height:1.75;color:var(--ink3);margin-bottom:14px}
+.stat-block{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:36px}
+.stat-card{background:var(--white);border:1px solid var(--rule);border-radius:var(--r2);padding:22px 18px}
+.stat-card-num{font-family:var(--mono);font-size:30px;font-weight:500;color:var(--rust);margin-bottom:6px}
+.stat-card-label{font-size:12px;color:var(--ink4);line-height:1.5}
+.stat-card-source{font-size:10px;color:var(--ink5);margin-top:6px}
+.problem-quotes{display:flex;flex-direction:column;gap:18px}
+.voc-card{background:var(--white);border:1px solid var(--rule);border-left:3px solid var(--blue);border-radius:0 var(--r2) var(--r2) 0;padding:20px 22px}
+.voc-card p{font-size:14px;line-height:1.7;color:var(--ink2);font-style:italic}
+.voc-card p::before{content:'\201C';font-family:var(--serif);font-size:18px;color:var(--blue);opacity:.55;margin-right:2px}
+.voc-card p::after{content:'\201D';font-family:var(--serif);font-size:18px;color:var(--blue);opacity:.55;margin-left:2px}
+.voc-tag{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--ink5);margin-top:8px;font-weight:600}
+
+/* ── PROOF ───────────────────────────────────────── */
+#proof{background:var(--navy);padding:100px 0}
+.section-h-light{font-family:var(--serif);font-size:clamp(28px,3.5vw,44px);line-height:1.15;color:#fff;margin:16px 0 48px}
+.proof-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:rgba(255,255,255,.06);border-radius:var(--r2);overflow:hidden}
+@media(max-width:900px){.proof-grid{grid-template-columns:1fr}}
+.proof-card{background:#101e32;padding:40px 36px;position:relative;overflow:hidden;display:flex;flex-direction:column}
+@supports(grid-template-rows:subgrid){
+  .proof-grid{grid-template-rows:repeat(5,auto)}
+  .proof-card{display:grid;grid-row:span 5;grid-template-rows:subgrid;align-items:start}
+}
+.proof-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px}
+.proof-card.p1::before{background:var(--blue)}
+.proof-card.p2::before{background:var(--teal)}
+.proof-card.p3::before{background:var(--green)}
+.proof-num{font-family:var(--mono);font-size:11px;color:rgba(255,255,255,.2);margin-bottom:20px;letter-spacing:2px}
+.proof-icon{width:48px;height:48px;border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:24px}
+.proof-icon.i1{background:rgba(26,111,212,.15)}
+.proof-icon.i2{background:rgba(16,120,120,.15)}
+.proof-icon.i3{background:rgba(24,120,64,.15)}
+.proof-card h3{font-size:20px;font-weight:700;color:#fff;margin-bottom:12px;line-height:1.3}
+.proof-card p{font-size:14px;line-height:1.75;color:rgba(255,255,255,.5)}
+.proof-detail{margin-top:28px;padding-top:24px;border-top:1px solid rgba(255,255,255,.07)}
+.proof-detail-item{display:flex;align-items:flex-start;gap:10px;margin-bottom:10px}
+.proof-dot{width:5px;height:5px;border-radius:50%;margin-top:7px;flex-shrink:0}
+.proof-dot.d1{background:var(--blue)}
+.proof-dot.d2{background:var(--teal)}
+.proof-dot.d3{background:var(--green)}
+.proof-detail-item span{font-size:12px;color:rgba(255,255,255,.32);line-height:1.55;font-family:var(--mono)}
+
+/* ── HOW IT WORKS ────────────────────────────────── */
+#how{background:var(--white);padding:100px 0}
+.hiw-header{text-align:center;margin-bottom:64px}
+.section-h-dark{font-family:var(--serif);font-size:clamp(28px,3.5vw,44px);line-height:1.15;color:var(--navy);margin:16px 0}
+.hiw-flow{display:grid;grid-template-columns:repeat(4,1fr);gap:0;position:relative}
+.hiw-flow::before{content:'';position:absolute;top:52px;left:calc(12.5%);right:calc(12.5%);height:1px;background:linear-gradient(to right,var(--blue),var(--teal),var(--green));z-index:0}
+@media(max-width:900px){.hiw-flow{grid-template-columns:1fr 1fr;gap:32px}.hiw-flow::before{display:none}}
+@media(max-width:500px){.hiw-flow{grid-template-columns:1fr}}
+.hiw-step{display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 16px;position:relative;z-index:1}
+.hiw-node{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:20px}
+.hiw-node.n1{background:rgba(26,111,212,.1);border:2px solid var(--blue)}
+.hiw-node.n2{background:rgba(16,120,120,.1);border:2px solid var(--teal)}
+.hiw-node.n3{background:rgba(24,120,64,.1);border:2px solid var(--green)}
+.hiw-node.n4{background:rgba(176,56,8,.07);border:2px solid var(--rust)}
+.hiw-step h4{font-size:13px;font-weight:700;color:var(--navy);margin-bottom:8px}
+.hiw-step p{font-size:12px;color:var(--ink4);line-height:1.6}
+
+/* ── SEGMENTS ────────────────────────────────────── */
+#segments{background:var(--bg);padding:100px 0}
+.seg-tabs{display:flex;gap:0;border:1px solid var(--rule);border-radius:var(--r2);overflow:hidden;margin-bottom:48px;width:fit-content}
+.seg-tab{padding:12px 28px;font-size:13px;font-weight:600;cursor:pointer;border:none;background:var(--white);color:var(--ink4);transition:all var(--trans);border-right:1px solid var(--rule)}
+.seg-tab:last-child{border-right:none}
+.seg-tab.active{background:var(--navy);color:#fff}
+.seg-panel{display:none;grid-template-columns:1fr 1fr;gap:48px;align-items:start}
+.seg-panel.active{display:grid}
+@media(max-width:768px){.seg-panel.active{grid-template-columns:1fr}.seg-tabs{width:100%;overflow-x:auto}}
+.seg-hook{font-family:var(--serif);font-size:clamp(20px,2.3vw,30px);line-height:1.25;color:var(--navy);margin-bottom:14px}
+.seg-body{font-size:15px;line-height:1.75;color:var(--ink3);margin-bottom:28px}
+.seg-features{display:flex;flex-direction:column;gap:12px}
+.seg-feature{display:flex;align-items:flex-start;gap:12px}
+.seg-check{width:18px;height:18px;border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
+.seg-check.c-blue{background:rgba(26,111,212,.1)}
+.seg-check.c-teal{background:rgba(16,120,120,.1)}
+.seg-check.c-rust{background:rgba(176,56,8,.1)}
+.seg-feature span{font-size:13px;color:var(--ink2);line-height:1.6}
+.seg-right{background:var(--white);border:1px solid var(--rule);border-radius:var(--r2);padding:30px;overflow:hidden;position:relative}
+.seg-right::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.seg-right.s1::before{background:var(--blue)}
+.seg-right.s2::before{background:var(--teal)}
+.seg-right.s3::before{background:var(--rust)}
+.scenario-label{font-size:10px;letter-spacing:3px;text-transform:uppercase;font-weight:700;margin-bottom:14px}
+.sl1{color:var(--blue)}.sl2{color:var(--teal)}.sl3{color:var(--rust)}
+.scenario-title{font-size:14px;font-weight:700;color:var(--navy);margin-bottom:18px;line-height:1.5}
+.outcome-row{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--rule);border-radius:var(--r);overflow:hidden}
+.outcome-cell{padding:16px;background:var(--white)}
+.outcome-cell-label{font-size:9px;letter-spacing:2px;text-transform:uppercase;font-weight:700;margin-bottom:8px}
+.outcome-cell-label.bad{color:var(--rust)}.outcome-cell-label.good{color:var(--green)}
+.outcome-cell p{font-size:12px;line-height:1.6;color:var(--ink3)}
+.outcome-cell-num{font-family:var(--mono);font-size:15px;font-weight:500;margin-top:8px}
+.outcome-cell-num.bad{color:var(--rust)}.outcome-cell-num.good{color:var(--green)}
+
+/* ── PRODUCTS ────────────────────────────────────── */
+#products{background:var(--navy);padding:100px 0}
+.products-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:rgba(255,255,255,.05);border-radius:var(--r2);overflow:hidden;margin-top:48px;grid-template-rows:auto;align-items:stretch}
+@media(max-width:768px){.products-grid{grid-template-columns:1fr}}
+.product-card{background:#101e32;padding:36px 32px;display:grid;grid-template-rows: auto auto auto 1fr auto auto}
+@supports (grid-template-rows: subgrid) {
+  .products-grid {grid-template-rows: repeat(6, auto);}
+  .product-card {grid-row: span 6;grid-template-rows: subgrid;}
+}
+.product-badge{display:inline-block;font-family:var(--mono);font-size:10px;font-weight:500;letter-spacing:2px;padding:4px 10px;border-radius:4px;margin-bottom:20px;width:fit-content}
+.pb1{background:rgba(26,111,212,.15);color:var(--blue3)}
+.pb2{background:rgba(16,120,120,.15);color:var(--teal2)}
+.pb3{background:rgba(176,56,8,.15);color:#e07040}
+.product-card h3{font-size:22px;font-weight:700;color:#fff;margin-bottom:4px}
+.product-card .sku{font-family:var(--mono);font-size:10px;color:rgba(255,255,255,.28);margin-bottom:18px;letter-spacing:1px}
+.product-card>p{font-size:13px;line-height:1.7;color:rgba(255,255,255,.42);margin-bottom:0;flex:1;padding-bottom:24px}
+.product-specs{display:flex;flex-direction:column;gap:6px;margin-top:0}
+.spec-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.05);min-height:36px}
+.spec-row:last-child{border-bottom:none}
+.spec-key{font-size:11px;color:rgba(255,255,255,.28);font-family:var(--mono);flex-shrink:0;padding-right:8px}
+.spec-val{font-size:11px;color:rgba(255,255,255,.58);font-weight:500;text-align:right;max-width:58%;word-break:break-word}
+.product-cta{margin-top:28px;display:block;text-align:center;padding:11px 20px;border:1px solid rgba(255,255,255,.12);border-radius:var(--r);font-size:13px;font-weight:600;color:rgba(255,255,255,.45);text-decoration:none;transition:all var(--trans)}
+.product-cta:hover{border-color:var(--blue);color:var(--blue3)}
+
+/* ── NUMBERS ─────────────────────────────────────── */
+#numbers{background:var(--bg);padding:80px 0}
+.numbers-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;margin-top:48px}
+@media(max-width:900px){.numbers-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:500px){.numbers-grid{grid-template-columns:1fr}}
+.number-card{text-align:center;padding:32px 16px}
+.number-card .n{font-family:var(--serif);font-size:50px;font-weight:900;line-height:1;margin-bottom:8px}
+.n.blue{color:var(--blue)}.n.rust{color:var(--rust)}.n.teal{color:var(--teal)}.n.green{color:var(--green)}
+.number-card .nlabel{font-size:13px;color:var(--ink3);line-height:1.5;max-width:160px;margin:0 auto}
+.number-card .nsource{font-size:10px;color:var(--ink5);margin-top:6px}
+
+/* ── CTA ─────────────────────────────────────────── */
+#cta{background:var(--navy);padding:100px 0;position:relative;overflow:hidden}
+#cta::before{content:'';position:absolute;top:-80px;left:50%;transform:translateX(-50%);width:600px;height:600px;background:radial-gradient(ellipse,rgba(26,111,212,.11) 0%,transparent 70%);pointer-events:none}
+.cta-h{font-family:var(--serif);font-size:clamp(28px,4vw,50px);line-height:1.1;color:#fff;text-align:center;max-width:680px;margin:0 auto 14px}
+.cta-sub{font-size:16px;color:rgba(255,255,255,.42);text-align:center;max-width:480px;margin:0 auto 56px;line-height:1.65}
+.cta-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:860px;margin:0 auto}
+@media(max-width:768px){.cta-grid{grid-template-columns:1fr}}
+.cta-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09);border-radius:var(--r2);padding:32px 28px;text-align:center;transition:all var(--trans);display:flex;flex-direction:column}
+.cta-card:hover{background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.15);transform:translateY(-2px)}
+.cta-card-label{font-size:10px;letter-spacing:3px;text-transform:uppercase;font-weight:700;margin-bottom:12px}
+.cta-card-label.l1{color:var(--blue3)}.cta-card-label.l2{color:var(--teal2)}.cta-card-label.l3{color:rgba(255,255,255,.28)}
+.cta-card h4{font-size:16px;font-weight:700;color:#fff;margin-bottom:10px}
+.cta-card p{font-size:13px;line-height:1.6;color:rgba(255,255,255,.38);margin-bottom:0;flex:1}
+.cta-btn{display:block;padding:12px 20px;border-radius:var(--r);font-size:13px;font-weight:600;text-decoration:none;text-align:center;transition:background var(--trans);margin-top:24px}
+.cta-btn.b1{background:var(--blue);color:#fff}.cta-btn.b1:hover{background:var(--blue2)}
+.cta-btn.b2{background:rgba(16,120,120,.22);color:var(--teal2);border:1px solid rgba(16,120,120,.28)}.cta-btn.b2:hover{background:rgba(16,120,120,.33)}
+.cta-btn.b3{background:rgba(255,255,255,.07);color:rgba(255,255,255,.45);border:1px solid rgba(255,255,255,.1)}.cta-btn.b3:hover{background:rgba(255,255,255,.11);color:rgba(255,255,255,.65)}
+
+/* ── FOOTER ──────────────────────────────────────── */
+footer{background:#080f1a;padding:44px 0 28px;border-top:1px solid rgba(255,255,255,.04)}
+.footer-inner{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:20px}
+.footer-brand{font-family:var(--mono);font-size:11px;color:rgba(255,255,255,.2);letter-spacing:1px}
+.footer-links{display:flex;gap:24px;flex-wrap:wrap}
+.footer-links a{font-size:12px;color:rgba(255,255,255,.2);text-decoration:none;transition:color var(--trans)}
+.footer-links a:hover{color:rgba(255,255,255,.5)}
+.footer-legal{font-size:11px;color:rgba(255,255,255,.1);margin-top:20px;text-align:center;line-height:1.6}
+
+/* ── ANIMATIONS ──────────────────────────────────── */
+@keyframes draw{from{stroke-dashoffset:2000}to{stroke-dashoffset:0}}
+@keyframes pulse{0%,100%{opacity:.4}50%{opacity:.95}}
+.fade-in{opacity:0;transform:translateY(20px);transition:opacity .6s ease,transform .6s ease}
+.fade-in.visible{opacity:1;transform:translateY(0)}
+.section-intro{margin-bottom:60px}
+</style>
+</head>
+<body>
+
+<!-- ══ NAV ══════════════════════════════════════════════ -->
+<nav>
+  <div class="container">
+    <div class="nav-inner">
+      <a class="nav-logo" href="#">
+        <div class="nav-logo-mark">
+          <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="28" height="28" rx="6" fill="#1A6FD4" opacity=".15"/>
+            <polyline points="2,18 7,18 9,10 12,22 15,14 17,18 22,18 24,12 26,18" stroke="#5fa8f8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          </svg>
+        </div>
+        <span class="nav-brand">RAILSENTINEL·24</span>
+      </a>
+      <div class="nav-links">
+        <a href="#problem" data-i18n="nav_why">Why</a>
+        <a href="#proof" data-i18n="nav_how">How</a>
+        <a href="#segments" data-i18n="nav_for_you">For you</a>
+        <a href="#products" data-i18n="nav_products">Products</a>
+        <a href="#cta" class="nav-cta" data-i18n="nav_cta">Request pilot</a>
+      </div>
+      <div class="nav-right">
+        <div class="lang-sw">
+          <button class="lang-btn active" data-lang="en" onclick="setLang('en')">EN</button>
+          <button class="lang-btn" data-lang="de" onclick="setLang('de')">DE</button>
+          <button class="lang-btn" data-lang="fr" onclick="setLang('fr')">FR</button>
+          <button class="lang-btn" data-lang="es" onclick="setLang('es')">ES</button>
+          <button class="lang-btn" data-lang="it" onclick="setLang('it')">IT</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- ══ HERO ══════════════════════════════════════════════ -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <svg class="hero-waveform" viewBox="0 0 1200 240" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <filter id="glow"><feGaussianBlur stdDeviation="3" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+      <linearGradient id="wg" x1="0" x2="1" y1="0" y2="0">
+        <stop offset="0" stop-color="#1A6FD4" stop-opacity="0"/>
+        <stop offset="0.25" stop-color="#1A6FD4" stop-opacity="1"/>
+        <stop offset="0.8" stop-color="#107878" stop-opacity="1"/>
+        <stop offset="1" stop-color="#107878" stop-opacity="0"/>
+      </linearGradient>
+    </defs>
+    <line x1="0" y1="60" x2="1200" y2="60" stroke="rgba(26,111,212,.07)" stroke-width="1"/>
+    <line x1="0" y1="120" x2="1200" y2="120" stroke="rgba(26,111,212,.09)" stroke-width="1" stroke-dasharray="4 8"/>
+    <line x1="0" y1="180" x2="1200" y2="180" stroke="rgba(26,111,212,.07)" stroke-width="1"/>
+    <text x="8" y="118" font-family="DM Mono,monospace" font-size="9" fill="rgba(26,111,212,.22)">24V</text>
+    <text x="8" y="60" font-family="DM Mono,monospace" font-size="9" fill="rgba(26,111,212,.13)">32V</text>
+    <text x="8" y="180" font-family="DM Mono,monospace" font-size="9" fill="rgba(26,111,212,.13)">16V</text>
+    <path d="M0,122 L40,121 L55,123 L70,120 L85,122 L100,121 L115,123 L130,120 L145,122 L160,121 L175,123 L190,120 L205,122 L220,121 L235,123 L250,121 L265,122 L280,134 L285,148 L290,162 L295,172 L300,178 L305,174 L310,165 L315,150 L320,136 L325,124 L340,121 L355,123 L370,120 L385,122 L400,121 L415,123 L430,120 L445,122 L460,121 L475,123 L490,120 L505,121 L520,123 L535,120 L550,131 L558,142 L563,152 L568,146 L573,138 L578,126 L590,121 L605,123 L620,120 L635,122 L650,121 L665,123 L680,120 L695,122 L710,121 L725,123 L740,121 L755,122 L770,134 L776,145 L780,155 L783,162 L786,168 L789,164 L793,156 L797,146 L802,135 L808,125 L820,121 L835,123 L850,120 L865,122 L880,121 L895,123 L910,120 L925,121 L940,123 L955,120 L970,122 L985,121 L1000,123 L1015,120 L1030,122 L1050,121 L1075,123 L1100,121 L1130,122 L1160,121 L1200,122"
+      fill="none" stroke="url(#wg)" stroke-width="1.8" stroke-dasharray="2000" stroke-dashoffset="2000" filter="url(#glow)"
+      style="animation:draw 3.5s cubic-bezier(.4,0,.2,1) 0.5s forwards"/>
+    <circle cx="300" cy="178" r="3.5" fill="#B03808" opacity="0" style="animation:pulse 1.8s ease 4.2s infinite">
+      <animate attributeName="opacity" values="0;0;1" keyTimes="0;0.85;1" dur="4.2s" fill="freeze"/>
+    </circle>
+    <line x1="300" y1="60" x2="300" y2="178" stroke="rgba(176,56,8,.28)" stroke-width="1" stroke-dasharray="3 4" opacity="0">
+      <animate attributeName="opacity" values="0;0;0.6" keyTimes="0;0.85;1" dur="4.2s" fill="freeze"/>
+    </line>
+    <text x="305" y="76" font-family="DM Mono,monospace" font-size="8" fill="rgba(176,56,8,.55)" opacity="0">
+      DROPOUT<animate attributeName="opacity" values="0;0;0.8" keyTimes="0;0.85;1" dur="4.2s" fill="freeze"/>
+    </text>
+    <text x="307" y="88" font-family="DM Mono,monospace" font-size="7" fill="rgba(176,56,8,.4)" opacity="0">
+      02:14:37.441<animate attributeName="opacity" values="0;0;0.7" keyTimes="0;0.85;1" dur="4.2s" fill="freeze"/>
+    </text>
+  </svg>
+  <div class="container">
+    <div class="hero-content">
+      <p class="eyebrow hero-eyebrow" data-i18n="hero_eye">Auxiliary Power Supply Monitor · EV Fast Charging Infrastructure</p>
+      <h1 class="hero-h" data-i18n="hero_h">Know why your charger<br>keeps going down.<br><em>Before the next callout.</em></h1>
+      <p class="hero-sub" data-i18n="hero_sub">RS-24 monitors the auxiliary power supply inside every DC fast charger cabinet — the control-power layer that OCPP cannot see — and tells you what caused the fault before you pick up the phone.</p>
+      <div class="hero-actions">
+        <a href="#cta" class="btn btn-primary" data-i18n="nav_cta">Request pilot</a>
+        <a href="#proof" class="btn btn-ghost" data-i18n="btn_see_how">See how it works</a>
+      </div>
+      <div class="hero-stat-row">
+        <div class="hero-stat">
+          <div class="hero-stat-num">1-in-3</div>
+          <div class="hero-stat-label" data-i18n="stat1_label">DC fast-charging attempts fail — on chargers that report 100% uptime<br><span style="opacity:.5;font-size:10px">ChargerHelp! 2025</span></div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-num">€200–800</div>
+          <div class="hero-stat-label" data-i18n="stat2_label">cost per unplanned downtime event for a CPO fleet operator — before root cause is found</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-num">0</div>
+          <div class="hero-stat-label" data-i18n="stat3_label">of the above comes from inside the charger cabinet — until now</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ PROBLEM ════════════════════════════════════════════ -->
+<section id="problem">
+  <div class="container">
+    <div class="problem-grid">
+      <div class="problem-left fade-in">
+        <p class="eyebrow" style="color:var(--rust)" data-i18n="prob_eye">The Problem</p>
+        <h2 class="section-h" data-i18n="prob_h">The charger went offline. OCPP says "faulted." That's all anyone knows.</h2>
+        <p data-i18n="prob_p1">Charge Point Operators call the service company. The tech drives out, power-cycles the charger, and drives back. It runs for a day, then fails again. No root cause. No trend. No data.</p>
+        <p data-i18n="prob_p2">The reason is structural: OCPP monitoring reports protocol state — what the charger software knows. It cannot report control-power events that crash the controller <em>before it can write a log entry.</em></p>
+        <p data-i18n="prob_p3">The auxiliary power supply is the control backbone of a DC fast charger. Every relay driver, contactor coil, and controller board depends on it. When it becomes unstable — under load, over time, as components age — the charger behaves unpredictably. And nobody can see it.</p>
+        <div class="stat-block">
+          <div class="stat-card">
+            <div class="stat-card-num">55%</div>
+            <div class="stat-card-label" data-i18n="pstat1_label">of failed charging sessions attributed to station-connectivity loss — invisible at protocol level</div>
+            <div class="stat-card-source">Qmerit / EV Connect</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-num">#1</div>
+            <div class="stat-card-label" data-i18n="pstat2_label">Power supply faults — the single largest category of maintenance callouts</div>
+            <div class="stat-card-source">Techniche EV, 2024</div>
+          </div>
+        </div>
+      </div>
+      <div class="problem-quotes fade-in" style="transition-delay:.15s">
+        <div class="voc-card" style="border-left-color:var(--ink4)">
+          <p data-i18n="voc1">I drove out there, opened the cabinet, nothing obviously wrong. Power-cycled it. It ran. I drove back. Down again the next morning.</p>
+          <div class="voc-tag" style="color:var(--teal)" data-i18n="voc1_tag">EVSE Service Technician</div>
+        </div>
+        <div class="voc-card" style="border-left-color:var(--blue)">
+          <p data-i18n="voc2">The OCPP dashboard just says "faulted." That's all I get. I have no idea what actually happened. I'm just paying for restarts.</p>
+          <div class="voc-tag" style="color:var(--blue)" data-i18n="voc2_tag">CPO Fleet Manager · 40 chargers</div>
+        </div>
+        <div class="voc-card" style="border-left-color:var(--rust)">
+          <p data-i18n="voc3">Board returns keep coming back. No fault found on the bench. We return them. They come back again. We have no field data.</p>
+          <div class="voc-tag" style="color:var(--rust)" data-i18n="voc3_tag">EVSE OEM · Field Quality Engineering</div>
+        </div>
+        <div class="voc-card" style="border-left-color:var(--ink5)">
+          <p data-i18n="voc4">It's intermittent. That's the worst kind. I can't reproduce it in the depot. It only fails when I'm gone.</p>
+          <div class="voc-tag" style="color:var(--ink4)" data-i18n="voc4_tag">Service Tech · 80 sites under management</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ PROOF ══════════════════════════════════════════════ -->
+<section id="proof">
+  <div class="container">
+    <div class="section-intro fade-in">
+      <p class="eyebrow" style="color:var(--blue3)" data-i18n="proof_eye">What RS-24 does</p>
+      <h2 class="section-h-light" data-i18n="proof_h">Three capabilities. One device.</h2>
+    </div>
+    <div class="proof-grid fade-in">
+      <div class="proof-card p1">
+        <div class="proof-num">01 / 03</div>
+        <div class="proof-icon i1">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#5fa8f8" stroke-width="1.8" stroke-linecap="round"><polyline points="2,16 6,16 8,8 11,20 14,12 16,16 20,16 22,10 24,16"/></svg>
+        </div>
+        <h3 data-i18n="pp1_h">See what knocked it out — not just that it went down.</h3>
+        <p data-i18n="pp1_body">Hardware-level control-power monitoring, independent of charger firmware. Captures instability events the OCPP stack never logs — because the event crashes the controller before it can write.</p>
+        <div class="proof-detail">
+          <div class="proof-detail-item"><div class="proof-dot d1"></div><span data-i18n="pp1_d1">Hardware comparator trigger · sub-2µs detection latency</span></div>
+          <div class="proof-detail-item"><div class="proof-dot d1"></div><span data-i18n="pp1_d2">Passive peak-hold circuit · amplitude captured in 0.53µs</span></div>
+          <div class="proof-detail-item"><div class="proof-dot d1"></div><span data-i18n="pp1_d3">DMA waveform capture · 5,000 samples @ 100kHz, 50ms window</span></div>
+          <div class="proof-detail-item"><div class="proof-dot d1"></div><span data-i18n="pp1_d4">Battery-backed RTC · timestamp survives power loss</span></div>
+          <div class="proof-detail-item"><div class="proof-dot d1"></div><span data-i18n="pp1_d5">On-board flash · 1,000-event offline ring buffer</span></div>
+        </div>
+      </div>
+      <div class="proof-card p2">
+        <div class="proof-num">02 / 03</div>
+        <div class="proof-icon i2">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#13a0a0" stroke-width="1.8" stroke-linecap="round"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M9 7 Q12 5 15 7"/><path d="M8 10 Q12 7 16 10"/><circle cx="12" cy="14" r="1.5" fill="#13a0a0"/><line x1="12" y1="16" x2="12" y2="18"/></svg>
+        </div>
+        <h3 data-i18n="pp2_h">Tap the cabinet. Get the answer.</h3>
+        <p data-i18n="pp2_body">Passive NFC — no app, no network, no login. Tap any NFC phone: current rail voltage, last instability event, uptime. Works inside a metal Faraday cage via an external antenna fitted to the enclosure.</p>
+        <div class="proof-detail">
+          <div class="proof-detail-item"><div class="proof-dot d2"></div><span data-i18n="pp2_d1">Passive NFC tag · no power needed, no network required</span></div>
+          <div class="proof-detail-item"><div class="proof-dot d2"></div><span data-i18n="pp2_d2">Live data snapshot refreshed every 30 seconds</span></div>
+          <div class="proof-detail-item"><div class="proof-dot d2"></div><span data-i18n="pp2_d3">Field variant · external antenna exits IP67 enclosure</span></div>
+          <div class="proof-detail-item"><div class="proof-dot d2"></div><span data-i18n="pp2_d4">First assessment before the cabinet door is open</span></div>
+        </div>
+      </div>
+      <div class="proof-card p3">
+        <div class="proof-num">03 / 03</div>
+        <div class="proof-icon i3">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#22a860" stroke-width="1.8" stroke-linecap="round"><path d="M3 18 L8 12 L13 15 L18 8 L22 10"/><circle cx="22" cy="10" r="2" fill="#22a860"/><line x1="3" y1="21" x2="22" y2="21" stroke-opacity=".3"/></svg>
+        </div>
+        <h3 data-i18n="pp3_h">Know it's degrading before it stops working.</h3>
+        <p data-i18n="pp3_body">Rail voltage trending. Cabinet load profiling. Thermal drift across four sensor channels. The dashboard shows trajectory — flag the fault weeks before the charger calls you.</p>
+        <div class="proof-detail">
+          <div class="proof-detail-item"><div class="proof-dot d3"></div><span data-i18n="pp3_d1">Precision voltage & current · 12–62V range, ±0.5% after calibration</span></div>
+          <div class="proof-detail-item"><div class="proof-dot d3"></div><span data-i18n="pp3_d2">4-channel thermal + ambient sensing · cabinet heat mapping</span></div>
+          <div class="proof-detail-item"><div class="proof-dot d3"></div><span data-i18n="pp3_d3">MEMS microphone · acoustic fingerprint per instability event</span></div>
+          <div class="proof-detail-item"><div class="proof-dot d3"></div><span data-i18n="pp3_d4">Fleet dashboard · trend view across all monitored devices</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ HOW IT WORKS ════════════════════════════════════════ -->
+<section id="how">
+  <div class="container">
+    <div class="hiw-header fade-in">
+      <p class="eyebrow" style="color:var(--blue)" data-i18n="hiw_eye">System architecture</p>
+      <h2 class="section-h-dark" data-i18n="hiw_h">Hardware inside. Insight outside.</h2>
+      <p style="font-size:15px;color:var(--ink4);max-width:520px;margin:14px auto 0;line-height:1.7" data-i18n="hiw_sub">RS-24 fits on the charger cabinet DIN rail. It is the only device in the chain that observes the auxiliary power supply at hardware level — before, during, and after any instability event.</p>
+    </div>
+    <div class="hiw-flow fade-in">
+      <div class="hiw-step">
+        <div class="hiw-node n1"><svg viewBox="0 0 24 24" fill="none" stroke="#1A6FD4" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="9" x2="9" y2="21"/></svg></div>
+        <h4 data-i18n="hiw_s1_h">Cabinet</h4>
+        <p data-i18n="hiw_s1_p">RS-24 DIN-rail mounted, inline on the aux power rail. Passive observer — does not disturb the circuit it monitors.</p>
+      </div>
+      <div class="hiw-step">
+        <div class="hiw-node n2"><svg viewBox="0 0 24 24" fill="none" stroke="#107878" stroke-width="1.8" stroke-linecap="round"><rect x="4" y="6" width="16" height="12" rx="2"/><polyline points="8,10 10,12 8,14"/><line x1="12" y1="10" x2="16" y2="10"/><line x1="12" y1="14" x2="16" y2="14"/></svg></div>
+        <h4 data-i18n="hiw_s2_h">RS-24 Board Stack</h4>
+        <p data-i18n="hiw_s2_p">Main board + optional Sensing Expansion + COM board. Captures voltage, current, waveform, acoustic, thermal. Stores events in on-board flash.</p>
+      </div>
+      <div class="hiw-step">
+        <div class="hiw-node n3"><svg viewBox="0 0 24 24" fill="none" stroke="#187840" stroke-width="1.8" stroke-linecap="round"><path d="M4 12 Q4 4 12 4 Q20 4 20 12 Q20 20 12 20"/><polyline points="8,16 12,20 16,16"/><line x1="12" y1="12" x2="12" y2="20"/></svg></div>
+        <h4 data-i18n="hiw_s3_h">Cloud</h4>
+        <p data-i18n="hiw_s3_p">Encrypted MQTT over Ethernet or cellular. Telemetry and event data stored with per-device access control. Automatic backfill on reconnect.</p>
+      </div>
+      <div class="hiw-step">
+        <div class="hiw-node n4"><svg viewBox="0 0 24 24" fill="none" stroke="#B03808" stroke-width="1.8" stroke-linecap="round"><rect x="2" y="4" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="18" x2="12" y2="21"/><polyline points="6,10 9,10 11,7 13,13 15,10 18,10" stroke-width="1.5"/></svg></div>
+        <h4 data-i18n="hiw_s4_h">Dashboard</h4>
+        <p data-i18n="hiw_s4_p">Fleet health map. Per-device trend charts. Instability event log with waveform. Commissioning PDF report. Role-based access control.</p>
+      </div>
+    </div>
+    <div style="margin-top:48px;background:var(--bg);border:1px solid var(--rule);border-radius:var(--r2);padding:22px 30px;display:flex;align-items:center;gap:22px;flex-wrap:wrap" class="fade-in">
+      <div style="width:40px;height:40px;background:rgba(16,120,120,.1);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#107878" stroke-width="1.8" stroke-linecap="round"><path d="M6 5a11 11 0 010 14M10 8a7 7 0 010 8M14 11a3 3 0 010 2"/><circle cx="18" cy="12" r="1.5" fill="#107878"/></svg>
+      </div>
+      <div style="flex:1;min-width:200px">
+        <div style="font-size:11px;font-weight:700;color:var(--teal);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:4px" data-i18n="nfc_label">NFC tap path — no cloud required</div>
+        <p style="font-size:13px;color:var(--ink3);line-height:1.6" data-i18n="nfc_body">Cabinet NFC antenna → any NFC phone → instant fault snapshot. Works offline. Works in a metal cabinet via external antenna. No app, no login. First assessment before the cabinet door is open.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ SEGMENTS ═══════════════════════════════════════════ -->
+<section id="segments">
+  <div class="container">
+    <div class="section-intro fade-in">
+      <p class="eyebrow" data-i18n="seg_eye">Built for your workflow</p>
+      <h2 class="section-h-dark" data-i18n="seg_h">Different roles. Different problems. One device.</h2>
+    </div>
+    <div class="seg-tabs fade-in">
+      <button class="seg-tab active" onclick="showSeg(0)" data-i18n="seg_tab1">CPO Fleet</button>
+      <button class="seg-tab" onclick="showSeg(1)" data-i18n="seg_tab2">Service Company</button>
+      <button class="seg-tab" onclick="showSeg(2)" data-i18n="seg_tab3">EVSE OEM</button>
+    </div>
+
+    <div class="seg-panel active" id="seg0">
+      <div>
+        <div class="chip chip-blue" style="margin-bottom:16px" data-i18n="chip_cpo">Charge Point Operator</div>
+        <h3 class="seg-hook" data-i18n="seg1_hook">Cut unplanned downtime. Prove rail health. Win warranty disputes.</h3>
+        <p class="seg-body" data-i18n="seg1_body">A single avoided callout pays for a full year of RS-24 monitoring. Every instability event is logged with timestamp, waveform, and thermal context — the evidence your service company needs, and your PSU supplier cannot reject.</p>
+        <div class="seg-features">
+          <div class="seg-feature"><div class="seg-check c-blue"><svg width="10" height="10" viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3" stroke="#1A6FD4" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg></div><span data-i18n="seg1_f1">Fleet dashboard: per-charger PSU health trend across all sites</span></div>
+          <div class="seg-feature"><div class="seg-check c-blue"><svg width="10" height="10" viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3" stroke="#1A6FD4" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg></div><span data-i18n="seg1_f2">Proactive threshold alerts — know before the charger goes offline</span></div>
+          <div class="seg-feature"><div class="seg-check c-blue"><svg width="10" height="10" viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3" stroke="#1A6FD4" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg></div><span data-i18n="seg1_f3">Commissioning report: timestamped PSU health at installation date</span></div>
+          <div class="seg-feature"><div class="seg-check c-blue"><svg width="10" height="10" viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3" stroke="#1A6FD4" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg></div><span data-i18n="seg1_f4">AFIR-ready export: fleet control-power health for compliance review</span></div>
+        </div>
+      </div>
+      <div class="seg-right s1">
+        <div class="scenario-label sl1" data-i18n="seg1_sc_label">Scenario · CPO Fleet</div>
+        <div class="scenario-title" data-i18n="seg1_sc_title">Site 3, Charger 2 — PSU output trending low for 6 days. No downtime yet.</div>
+        <div class="outcome-row">
+          <div class="outcome-cell">
+            <div class="outcome-cell-label bad" data-i18n="lbl_without">Without RS-24</div>
+            <p data-i18n="seg1_bad_p">No data until the charger stops. Emergency callout. No root cause. Repeat next month.</p>
+            <div class="outcome-cell-num bad" data-i18n="seg1_bad_n">€400 × 6 events</div>
+          </div>
+          <div class="outcome-cell">
+            <div class="outcome-cell-label good" data-i18n="lbl_with">With RS-24</div>
+            <p data-i18n="seg1_good_p">Trending alert fires on day 4. Planned visit, correct part in van. Zero downtime.</p>
+            <div class="outcome-cell-num good" data-i18n="seg1_good_n">1 planned visit</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="seg-panel" id="seg1">
+      <div>
+        <div class="chip chip-teal" style="margin-bottom:16px" data-i18n="chip_svc">EVSE Service Company</div>
+        <h3 class="seg-hook" data-i18n="seg2_hook">Show up with the answer, not the question.</h3>
+        <p class="seg-body" data-i18n="seg2_body">NFC tap at the cabinet gives you the fault summary before you open the door. Commission every charger with a PDF health report. Build the evidence base for every warranty claim before the first dispute arrives.</p>
+        <div class="seg-features">
+          <div class="seg-feature"><div class="seg-check c-teal"><svg width="10" height="10" viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3" stroke="#107878" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg></div><span data-i18n="seg2_f1">NFC tap: fault log and PSU status before opening the cabinet</span></div>
+          <div class="seg-feature"><div class="seg-check c-teal"><svg width="10" height="10" viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3" stroke="#107878" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg></div><span data-i18n="seg2_f2">Event waveform on phone: assess fault type before driving to site</span></div>
+          <div class="seg-feature"><div class="seg-check c-teal"><svg width="10" height="10" viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3" stroke="#107878" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg></div><span data-i18n="seg2_f3">Commissioning PDF: branded handover report, legally defensible baseline</span></div>
+          <div class="seg-feature"><div class="seg-check c-teal"><svg width="10" height="10" viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3" stroke="#107878" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg></div><span data-i18n="seg2_f4">Revenue share model: recurring SaaS income from your installed base</span></div>
+        </div>
+      </div>
+      <div class="seg-right s2">
+        <div class="scenario-label sl2" data-i18n="seg2_sc_label">Scenario · Service Tech</div>
+        <div class="scenario-title" data-i18n="seg2_sc_title">Charger offline. Intermittent fault. Can't reproduce on site.</div>
+        <div class="outcome-row">
+          <div class="outcome-cell">
+            <div class="outcome-cell-label bad" data-i18n="lbl_without">Without RS-24</div>
+            <p data-i18n="seg2_bad_p">Three visits. Power-cycle, wait, repeat. Root cause found on visit 3 with a scope.</p>
+            <div class="outcome-cell-num bad" data-i18n="seg2_bad_n">3 callouts · €600</div>
+          </div>
+          <div class="outcome-cell">
+            <div class="outcome-cell-label good" data-i18n="lbl_with">With RS-24</div>
+            <p data-i18n="seg2_good_p">NFC tap: 3 instability events in 24h, relay load pattern confirmed. Drive with correct part.</p>
+            <div class="outcome-cell-num good" data-i18n="seg2_good_n">1 visit · done</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="seg-panel" id="seg2">
+      <div>
+        <div class="chip chip-rust" style="margin-bottom:16px" data-i18n="chip_oem">EVSE OEM</div>
+        <h3 class="seg-hook" data-i18n="seg3_hook">Turn warranty disputes into engineering data.</h3>
+        <p class="seg-body" data-i18n="seg3_body">RS-24-M integrates at PCB level in your charger. Every unit shipped feeds the same field data pipeline. Your MTBF model learns from real operating conditions — not lab cycles. Warranty disputes resolve on data, not argument.</p>
+        <div class="seg-features">
+          <div class="seg-feature"><div class="seg-check c-rust"><svg width="10" height="10" viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3" stroke="#B03808" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg></div><span data-i18n="seg3_f1">12–62V range covers your 12V, 24V, and 48V aux platforms in one SKU</span></div>
+          <div class="seg-feature"><div class="seg-check c-rust"><svg width="10" height="10" viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3" stroke="#B03808" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg></div><span data-i18n="seg3_f2">OEM REST API: instability event distribution by site and load class</span></div>
+          <div class="seg-feature"><div class="seg-check c-rust"><svg width="10" height="10" viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3" stroke="#B03808" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg></div><span data-i18n="seg3_f3">Annual MTBF engineering report: built from your actual deployed fleet</span></div>
+          <div class="seg-feature"><div class="seg-check c-rust"><svg width="10" height="10" viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3" stroke="#B03808" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg></div><span data-i18n="seg3_f4">Warranty arbitration: logs distinguish grid-side from charger-side events</span></div>
+        </div>
+      </div>
+      <div class="seg-right s3">
+        <div class="scenario-label sl3" data-i18n="seg3_sc_label">Scenario · OEM Engineering</div>
+        <div class="scenario-title" data-i18n="seg3_sc_title">Board returned. "Intermittent shutdown under load." No fault reproduced in lab.</div>
+        <div class="outcome-row">
+          <div class="outcome-cell">
+            <div class="outcome-cell-label bad" data-i18n="lbl_without">Without RS-24</div>
+            <p data-i18n="seg3_bad_p">400h bench test. No fault. Returned to customer. Comes back. OEM pays. Root cause unknown.</p>
+            <div class="outcome-cell-num bad" data-i18n="seg3_bad_n">Unresolved claim</div>
+          </div>
+          <div class="outcome-cell">
+            <div class="outcome-cell-label good" data-i18n="lbl_with">With RS-24</div>
+            <p data-i18n="seg3_good_p">Field logs: instability events correlate with high-current switching at that site. Grid-side confirmed.</p>
+            <div class="outcome-cell-num good" data-i18n="seg3_good_n">OEM not liable</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ PRODUCTS ═══════════════════════════════════════════ -->
+<section id="products">
+  <div class="container">
+    <div class="section-intro fade-in">
+      <p class="eyebrow" style="color:var(--blue3)" data-i18n="prod_eye">Hardware variants</p>
+      <h2 class="section-h-light" data-i18n="prod_h">One platform. Three configurations.</h2>
+      <p style="font-size:15px;color:rgba(255,255,255,.38);max-width:480px;line-height:1.7;margin-top:8px" data-i18n="prod_sub">Same main board, same firmware, same cloud backend. Enclosure and connectivity vary by deployment context.</p>
+    </div>
+    <div class="products-grid fade-in">
+      <div class="product-card">
+        <div class="product-badge pb1">RS-24-S</div>
+        <h3 data-i18n="prod1_name">Standard</h3>
+        <div class="sku" data-i18n="prod1_sku">DIN RAIL · IP40 · MANAGED SITES</div>
+        <p data-i18n="prod1_desc">For managed CPO sites with Ethernet infrastructure. DIN rail enclosure. Monitors the auxiliary power supply on any DC fast charger regardless of manufacturer.</p>
+        <div class="product-specs">
+          <div class="spec-row"><span class="spec-key" data-i18n="spec_conn">Connectivity</span><span class="spec-val">Ethernet / WiFi</span></div>
+          <div class="spec-row"><span class="spec-key" data-i18n="spec_encl">Enclosure</span><span class="spec-val" data-i18n="spec_s_encl">DIN rail, IP40</span></div>
+          <div class="spec-row"><span class="spec-key" data-i18n="spec_nfc">NFC access</span><span class="spec-val" data-i18n="spec_s_nfc">DIN rail face (plastic housing)</span></div>
+          <div class="spec-row"><span class="spec-key" data-i18n="spec_range">PSU range</span><span class="spec-val">12–62 V</span></div>
+          <div class="spec-row"><span class="spec-key" data-i18n="spec_sens">Sensing EXP</span><span class="spec-val" data-i18n="spec_s_sens">Optional (Full variant)</span></div>
+        </div>
+        <a href="#cta" class="product-cta" data-i18n="prod_cta_pilot">Request pilot</a>
+      </div>
+      <div class="product-card">
+        <div class="product-badge pb2">RS-24-F</div>
+        <h3 data-i18n="prod2_name">Field</h3>
+        <div class="sku" data-i18n="prod2_sku">IP67 · REMOTE / MOTORWAY</div>
+        <p data-i18n="prod2_desc">For remote and motorway sites with no managed network. Cellular connectivity independent of site infrastructure. IP67 enclosure with external NFC antenna.</p>
+        <div class="product-specs">
+          <div class="spec-row"><span class="spec-key" data-i18n="spec_conn">Connectivity</span><span class="spec-val">NB-IoT / LTE-M cellular</span></div>
+          <div class="spec-row"><span class="spec-key" data-i18n="spec_encl">Enclosure</span><span class="spec-val" data-i18n="spec_f_encl">Bopla Bocube, IP67</span></div>
+          <div class="spec-row"><span class="spec-key" data-i18n="spec_nfc">NFC access</span><span class="spec-val" data-i18n="spec_f_nfc">External antenna, through IP67 lid</span></div>
+          <div class="spec-row"><span class="spec-key" data-i18n="spec_range">PSU range</span><span class="spec-val">12–62 V</span></div>
+          <div class="spec-row"><span class="spec-key" data-i18n="spec_holdup">Power holdup</span><span class="spec-val" data-i18n="spec_f_holdup">Supercapacitor, 1.68 s</span></div>
+        </div>
+        <a href="#cta" class="product-cta" data-i18n="prod_cta_pilot">Request pilot</a>
+      </div>
+      <div class="product-card">
+        <div class="product-badge pb3">RS-24-M</div>
+        <h3 data-i18n="prod3_name">OEM</h3>
+        <div class="sku" data-i18n="prod3_sku">BARE PCB · FACTORY INTEGRATION</div>
+        <p data-i18n="prod3_desc">For EVSE manufacturers. Main board without enclosure. Designed for factory integration. CE certification scoped to the module. Per-unit license fee model.</p>
+        <div class="product-specs">
+          <div class="spec-row"><span class="spec-key" data-i18n="spec_form">Form factor</span><span class="spec-val">65×55 mm bare PCB</span></div>
+          <div class="spec-row"><span class="spec-key" data-i18n="spec_range">PSU range</span><span class="spec-val">12–62 V (12V, 24V, 48V platforms)</span></div>
+          <div class="spec-row"><span class="spec-key" data-i18n="spec_api">Data interface</span><span class="spec-val">OEM REST API</span></div>
+          <div class="spec-row"><span class="spec-key" data-i18n="spec_ota">Firmware</span><span class="spec-val" data-i18n="spec_m_ota">OTA signed updates</span></div>
+          <div class="spec-row"><span class="spec-key" data-i18n="spec_model">Commercial</span><span class="spec-val" data-i18n="spec_m_model">Per-unit license fee</span></div>
+        </div>
+        <a href="#cta" class="product-cta" data-i18n="prod_cta_oem">Request OEM brief</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ NUMBERS ════════════════════════════════════════════ -->
+<section id="numbers">
+  <div class="container">
+    <div class="numbers-grid fade-in">
+      <div class="number-card"><div class="n rust">1 in 3</div><div class="nlabel" data-i18n="num1_label">DC fast-charging attempts fail on stations that report full uptime</div><div class="nsource">ChargerHelp! 2025</div></div>
+      <div class="number-card"><div class="n blue">€800</div><div class="nlabel" data-i18n="num2_label">maximum cost per unplanned downtime event — before repeated callouts compound it</div></div>
+      <div class="number-card"><div class="n teal">&lt; 1µs</div><div class="nlabel" data-i18n="num3_label">control-power instability detection — hardware circuit, no firmware latency</div></div>
+      <div class="number-card"><div class="n green">1,000</div><div class="nlabel" data-i18n="num4_label">events stored locally — no data loss during network outage or power interruption</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CTA ════════════════════════════════════════════════ -->
+<section id="cta">
+  <div class="container" style="position:relative;z-index:1">
+    <h2 class="cta-h fade-in" data-i18n="cta_h">Ready to see inside your charger cabinet?</h2>
+    <p class="cta-sub fade-in" data-i18n="cta_sub">RS-24 is in active development. A limited number of pilot slots is open for service companies and CPO fleet operators — get in touch to reserve one.</p>
+    <div class="cta-grid fade-in">
+      <div class="cta-card">
+        <div class="cta-card-label l1" data-i18n="cta1_label">Service companies &amp; CPOs</div>
+        <h4 data-i18n="cta1_h">Request a pilot unit</h4>
+        <p data-i18n="cta1_p">Units at cost for pilot partners. Revenue share on SaaS. No long-term commitment required to start.</p>
+        <a href="mailto:hello@morgen-tech.com?subject=RS-24 Pilot Request" class="cta-btn b1" data-i18n="cta1_btn">Get in touch</a>
+      </div>
+      <div class="cta-card">
+        <div class="cta-card-label l2" data-i18n="cta2_label">EVSE OEM teams</div>
+        <h4 data-i18n="cta2_h">OEM integration brief</h4>
+        <p data-i18n="cta2_p">RS-24-M bare PCB, OEM REST API, field data pipeline. 12–62V covers your 12V, 24V and 48V aux platforms in one module.</p>
+        <a href="mailto:hello@morgen-tech.com?subject=RS-24 OEM Integration" class="cta-btn b2" data-i18n="cta2_btn">Request OEM brief</a>
+      </div>
+      <div class="cta-card">
+        <div class="cta-card-label l3" data-i18n="cta3_label">Engineers &amp; evaluators</div>
+        <h4 data-i18n="cta3_h">Technical documentation</h4>
+        <p data-i18n="cta3_p">Hardware design, software architecture, calibration, and sensing analysis documents available on request.</p>
+        <a href="mailto:hello@morgen-tech.com?subject=RS-24 Technical Docs" class="cta-btn b3" data-i18n="cta3_btn">Request docs</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FOOTER ═════════════════════════════════════════════ -->
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-brand">RAILSENTINEL-24 · PSU MONITOR · MORGEN TECH · © 2026</div>
+      <div class="footer-links">
+        <a href="#problem" data-i18n="nav_why">Why</a>
+        <a href="#proof" data-i18n="nav_how">How</a>
+        <a href="#products" data-i18n="nav_products">Products</a>
+        <a href="mailto:hello@morgen-tech.com" data-i18n="footer_contact">Contact</a>
+        <a href="impressum.html">Impressum</a>
+      </div>
+    </div>
+    <p class="footer-legal" data-i18n="footer_legal">Product in active development. Specifications reflect design target. Not yet CE certified or commercially available.</p>
+  </div>
+</footer>
+
+<script>
+// ══ TRANSLATIONS ═════════════════════════════════════════
+const T = {
+  en: {
+    page_title:"RailSentinel-24 · Auxiliary Power Supply Monitor for EV Fast Chargers",
+    nav_why:"Why", nav_how:"How", nav_for_you:"For you", nav_products:"Products", nav_cta:"Request pilot",
+    btn_see_how:"See how it works",
+    hero_eye:"Auxiliary Power Supply Monitor · EV Fast Charging Infrastructure",
+    hero_h:"Know why your charger<br>keeps going down.<br><em>Before the next callout.</em>",
+    hero_sub:"RS-24 monitors the auxiliary power supply inside every DC fast charger cabinet — the control-power layer that OCPP cannot see — and tells you what caused the fault before you pick up the phone.",
+    stat1_label:"DC fast-charging attempts fail — on chargers that report 100% uptime<br><span style='opacity:.5;font-size:10px'>ChargerHelp! 2025</span>",
+    stat2_label:"cost per unplanned downtime event for a CPO fleet operator — before root cause is found",
+    stat3_label:"of the above comes from inside the charger cabinet — until now",
+    prob_eye:"The Problem",
+    prob_h:"The charger went offline. OCPP says \"faulted.\" That's all anyone knows.",
+    prob_p1:"Charge Point Operators call the service company. The tech drives out, power-cycles the charger, and drives back. It runs for a day, then fails again. No root cause. No trend. No data.",
+    prob_p2:"The reason is structural: OCPP monitoring reports protocol state — what the charger software knows. It cannot report control-power events that crash the controller <em>before it can write a log entry.</em>",
+    prob_p3:"The auxiliary power supply is the control backbone of a DC fast charger. Every relay driver, contactor coil, and controller board depends on it. When it becomes unstable — under load, over time, as components age — the charger behaves unpredictably. And nobody can see it.",
+    pstat1_label:"of failed charging sessions attributed to station-connectivity loss — invisible at protocol level",
+    pstat2_label:"Power supply faults — the single largest category of maintenance callouts",
+    voc1:"I drove out there, opened the cabinet, nothing obviously wrong. Power-cycled it. It ran. I drove back. Down again the next morning.",
+    voc1_tag:"EVSE Service Technician",
+    voc2:"The OCPP dashboard just says \"faulted.\" That's all I get. I have no idea what actually happened. I'm just paying for restarts.",
+    voc2_tag:"CPO Fleet Manager · 40 chargers",
+    voc3:"Board returns keep coming back. No fault found on the bench. We return them. They come back again. We have no field data.",
+    voc3_tag:"EVSE OEM · Field Quality Engineering",
+    voc4:"It's intermittent. That's the worst kind. I can't reproduce it in the depot. It only fails when I'm gone.",
+    voc4_tag:"Service Tech · 80 sites under management",
+    proof_eye:"What RS-24 does",
+    proof_h:"Three capabilities. One device.",
+    pp1_h:"See what knocked it out — not just that it went down.",
+    pp1_body:"Hardware-level control-power monitoring, independent of charger firmware. Captures instability events the OCPP stack never logs — because the event crashes the controller before it can write.",
+    pp1_d1:"Hardware comparator trigger · sub-2µs detection latency",
+    pp1_d2:"Passive peak-hold circuit · amplitude captured in 0.53µs",
+    pp1_d3:"DMA waveform capture · 5,000 samples @ 100kHz, 50ms window",
+    pp1_d4:"Battery-backed RTC · timestamp survives power loss",
+    pp1_d5:"On-board flash · 1,000-event offline ring buffer",
+    pp2_h:"Tap the cabinet. Get the answer.",
+    pp2_body:"Passive NFC — no app, no network, no login. Tap any NFC phone: current rail voltage, last instability event, uptime. Works inside a metal Faraday cage via an external antenna fitted to the enclosure.",
+    pp2_d1:"Passive NFC tag · no power needed, no network required",
+    pp2_d2:"Live data snapshot refreshed every 30 seconds",
+    pp2_d3:"Field variant · external antenna exits IP67 enclosure",
+    pp2_d4:"First assessment before the cabinet door is open",
+    pp3_h:"Know it's degrading before it stops working.",
+    pp3_body:"Rail voltage trending. Cabinet load profiling. Thermal drift across four sensor channels. The dashboard shows trajectory — flag the fault weeks before the charger calls you.",
+    pp3_d1:"Precision voltage & current · 12–62V range, ±0.5% after calibration",
+    pp3_d2:"4-channel thermal + ambient sensing · cabinet heat mapping",
+    pp3_d3:"MEMS microphone · acoustic fingerprint per instability event",
+    pp3_d4:"Fleet dashboard · trend view across all monitored devices",
+    hiw_eye:"System architecture", hiw_h:"Hardware inside. Insight outside.",
+    hiw_sub:"RS-24 fits on the charger cabinet DIN rail. It is the only device in the chain that observes the auxiliary power supply at hardware level — before, during, and after any instability event.",
+    hiw_s1_h:"Cabinet", hiw_s1_p:"RS-24 DIN-rail mounted, inline on the aux power rail. Passive observer — does not disturb the circuit it monitors.",
+    hiw_s2_h:"RS-24 Board Stack", hiw_s2_p:"Main board + optional Sensing Expansion + COM board. Captures voltage, current, waveform, acoustic, thermal. Stores events in on-board flash.",
+    hiw_s3_h:"Cloud", hiw_s3_p:"Encrypted MQTT over Ethernet or cellular. Telemetry and event data stored with per-device access control. Automatic backfill on reconnect.",
+    hiw_s4_h:"Dashboard", hiw_s4_p:"Fleet health map. Per-device trend charts. Instability event log with waveform. Commissioning PDF report. Role-based access control.",
+    nfc_label:"NFC tap path — no cloud required",
+    nfc_body:"Cabinet NFC antenna → any NFC phone → instant fault snapshot. Works offline. Works in a metal cabinet via external antenna. No app, no login. First assessment before the cabinet door is open.",
+    seg_eye:"Built for your workflow", seg_h:"Different roles. Different problems. One device.",
+    seg_tab1:"CPO Fleet", seg_tab2:"Service Company", seg_tab3:"EVSE OEM",
+    chip_cpo:"Charge Point Operator", chip_svc:"EVSE Service Company", chip_oem:"EVSE OEM",
+    seg1_hook:"Cut unplanned downtime. Prove PSU health. Win warranty disputes.",
+    seg1_body:"A single avoided callout pays for a full year of RS-24 monitoring. Every instability event is logged with timestamp, waveform, and thermal context.",
+    seg1_f1:"Fleet dashboard: per-charger PSU health trend across all sites",
+    seg1_f2:"Proactive threshold alerts — know before the charger goes offline",
+    seg1_f3:"Commissioning report: timestamped PSU health at installation date",
+    seg1_f4:"AFIR-ready export: fleet control-power health for compliance review",
+    seg1_sc_label:"Scenario · CPO Fleet",
+    seg1_sc_title:"Site 3, Charger 2 — PSU output trending low for 6 days. No downtime yet.",
+    lbl_without:"Without RS-24", lbl_with:"With RS-24",
+    seg1_bad_p:"No data until the charger stops. Emergency callout. No root cause. Repeat next month.",
+    seg1_bad_n:"€400 × 6 events",
+    seg1_good_p:"Trending alert fires on day 4. Planned visit, correct part in van. Zero downtime.",
+    seg1_good_n:"1 planned visit",
+    seg2_hook:"Show up with the answer, not the question.",
+    seg2_body:"NFC tap at the cabinet gives you the fault summary before you open the door. Commission every charger with a PDF health report.",
+    seg2_f1:"NFC tap: fault log and PSU status before opening the cabinet",
+    seg2_f2:"Event waveform on phone: assess fault type before driving to site",
+    seg2_f3:"Commissioning PDF: branded handover report, legally defensible baseline",
+    seg2_f4:"Revenue share model: recurring SaaS income from your installed base",
+    seg2_sc_label:"Scenario · Service Tech",
+    seg2_sc_title:"Charger offline. Intermittent fault. Can't reproduce on site.",
+    seg2_bad_p:"Three visits. Power-cycle, wait, repeat. Root cause found on visit 3 with a scope.",
+    seg2_bad_n:"3 callouts · €600",
+    seg2_good_p:"NFC tap: 3 instability events in 24h confirmed. Drive with correct part.",
+    seg2_good_n:"1 visit · done",
+    seg3_hook:"Turn warranty disputes into engineering data.",
+    seg3_body:"RS-24-M integrates at PCB level. Every unit shipped feeds the same field data pipeline. Your MTBF model learns from real operating conditions.",
+    seg3_f1:"12–62V range covers 12V, 24V, and 48V aux platforms in one SKU",
+    seg3_f2:"OEM REST API: instability event distribution by site and load class",
+    seg3_f3:"Annual MTBF engineering report from your actual deployed fleet",
+    seg3_f4:"Warranty arbitration: logs distinguish grid-side from charger-side events",
+    seg3_sc_label:"Scenario · OEM Engineering",
+    seg3_sc_title:"Board returned. \"Intermittent shutdown under load.\" No fault in lab.",
+    seg3_bad_p:"400h bench test. No fault. Returned to customer. Comes back. OEM pays.",
+    seg3_bad_n:"Unresolved claim",
+    seg3_good_p:"Field logs: instability events correlate with high-current switching at site. Grid-side confirmed.",
+    seg3_good_n:"OEM not liable",
+    prod_eye:"Hardware variants", prod_h:"One platform. Three configurations.",
+    prod_sub:"Same main board, same firmware, same cloud backend. Enclosure and connectivity vary by deployment context.",
+    prod1_name:"Standard", prod1_sku:"DIN RAIL · IP40 · MANAGED SITES",
+    prod1_desc:"For managed CPO sites with Ethernet infrastructure. DIN rail enclosure. Monitors the auxiliary power supply on any DC fast charger regardless of manufacturer.",
+    prod2_name:"Field", prod2_sku:"IP67 · REMOTE / MOTORWAY",
+    prod2_desc:"For remote and motorway sites with no managed network. Cellular connectivity independent of site infrastructure. IP67 enclosure with external NFC antenna.",
+    prod3_name:"OEM", prod3_sku:"BARE PCB · FACTORY INTEGRATION",
+    prod3_desc:"For EVSE manufacturers. Main board without enclosure. Factory integration. CE certification scoped to the module. Per-unit license fee model.",
+    spec_conn:"Connectivity", spec_encl:"Enclosure", spec_nfc:"NFC access", spec_range:"PSU range",
+    spec_sens:"Sensing EXP", spec_holdup:"Power holdup", spec_form:"Form factor",
+    spec_api:"Data interface", spec_ota:"Firmware", spec_model:"Commercial",
+    spec_s_encl:"DIN rail, IP40", spec_s_nfc:"DIN rail face (plastic)",
+    spec_f_encl:"Bopla Bocube, IP67", spec_f_nfc:"External antenna, through IP67 lid",
+    spec_f_holdup:"Supercapacitor, 1.68 s",
+    spec_m_ota:"OTA signed updates", spec_m_model:"Per-unit license fee",
+    prod_cta_pilot:"Request pilot", prod_cta_oem:"Request OEM brief",
+    num1_label:"DC fast-charging attempts fail on stations that report full uptime",
+    num2_label:"maximum cost per unplanned downtime event — before repeated callouts compound it",
+    num3_label:"control-power instability detection — hardware circuit, no firmware latency",
+    num4_label:"events stored locally — no data loss during network outage or power interruption",
+    cta_h:"Ready to see inside your charger cabinet?",
+    cta_sub:"RS-24 is in active development. A limited number of pilot slots is open for service companies and CPO fleet operators — get in touch to reserve one.",
+    cta1_label:"Service companies & CPOs", cta1_h:"Request a pilot unit",
+    cta1_p:"Units at cost for pilot partners. Revenue share on SaaS. No long-term commitment required to start.",
+    cta1_btn:"Get in touch",
+    cta2_label:"EVSE OEM teams", cta2_h:"OEM integration brief",
+    cta2_p:"RS-24-M bare PCB, OEM REST API, field data pipeline. 12–62V covers your 12V, 24V and 48V aux platforms in one module.",
+    cta2_btn:"Request OEM brief",
+    cta3_label:"Engineers & evaluators", cta3_h:"Technical documentation",
+    cta3_p:"Hardware design, software architecture, calibration, and sensing analysis documents available on request.",
+    cta3_btn:"Request docs",
+    footer_contact:"Contact",
+    footer_legal:"Product in active development. Specifications reflect design target. Not yet CE certified or commercially available.",
+  },
+
+  de: {
+    page_title:"RailSentinel-24 · Hilfsspannungsüberwachung für EV-Schnellladepunkte",
+    nav_why:"Warum", nav_how:"Funktionsweise", nav_for_you:"Für Sie", nav_products:"Produkte", nav_cta:"Pilotgerät anfragen",
+    btn_see_how:"So funktioniert es",
+    hero_eye:"Hilfsspannungsüberwachung · EV-Schnellladeinfrastruktur",
+    hero_h:"Erfahren Sie, warum Ihr Ladepunkt<br>immer wieder ausfällt —<br><em>bevor der nächste Einsatz nötig wird.</em>",
+    hero_sub:"RS-24 überwacht die Hilfsstromversorgung in jedem DC-Schnellladeschrank — die Steuerungsebene, die OCPP nicht erfassen kann — und zeigt die Ursache, bevor Sie zum Telefon greifen.",
+    stat1_label:"DC-Schnellladeversuche schlagen fehl — bei Ladepunkten, die 100 % Verfügbarkeit melden<br><span style='opacity:.5;font-size:10px'>ChargerHelp! 2025</span>",
+    stat2_label:"Kosten pro ungeplanter Ausfallzeit für einen CPO-Flottenmanager — bevor die Ursache gefunden wird",
+    stat3_label:"dieser Informationen stammen aus dem Inneren des Ladeschranks — bis jetzt",
+    prob_eye:"Das Problem",
+    prob_h:"Der Ladepunkt ist offline. OCPP meldet \"Fehler.\" Das ist alles, was bekannt ist.",
+    prob_p1:"Netzbetreiber rufen das Serviceunternehmen an. Der Techniker fährt raus, startet den Ladepunkt neu und fährt zurück. Einen Tag später fällt er wieder aus. Keine Ursache. Kein Trend. Keine Daten.",
+    prob_p2:"Der Grund ist strukturell: OCPP-Monitoring meldet den Protokollstatus — was die Ladepunktsoftware weiß. Es erfasst keine Steuerspannungsereignisse, die den Controller zum Absturz bringen, <em>bevor dieser einen Logeintrag schreiben kann.</em>",
+    prob_p3:"Die Hilfsstromversorgung ist das Steuerungsrückgrat jedes DC-Schnellladepunkts. Jeder Relaisansteuerung, jede Schützspule und jede Controllerplatine hängt davon ab. Wird sie instabil, verhält sich der Ladepunkt unvorhersehbar — und niemand sieht es.",
+    pstat1_label:"fehlgeschlagener Ladesitzungen auf Verbindungsausfälle zurückzuführen — auf Protokollebene unsichtbar",
+    pstat2_label:"Netzteildefekte — die häufigste Ursache für Wartungseinsätze",
+    voc1:"Ich bin hingefahren, habe den Schrank geöffnet, nichts Offensichtliches gefunden. Neugestartet. Es lief. Zurückgefahren. Am nächsten Morgen wieder offline.",
+    voc1_tag:"EVSE-Servicetechniker",
+    voc2:"Das OCPP-Dashboard zeigt nur \"Fehler\". Das ist alles. Ich zahle für Neustarts, ohne zu wissen warum.",
+    voc2_tag:"CPO-Flottenmanager · 40 Ladepunkte",
+    voc3:"Retouren kommen immer wieder. Kein Fehler auf dem Prüfstand gefunden. Wir senden zurück. Sie kommen wieder. Wir haben keine Felddaten.",
+    voc3_tag:"EVSE-OEM · Feldqualitätsingenieur",
+    voc4:"Es ist intermittierend. Das Schlimmste. Ich kann es im Depot nicht reproduzieren. Es versagt nur, wenn ich weg bin.",
+    voc4_tag:"Servicetechniker · 80 Standorte im Management",
+    proof_eye:"Was RS-24 leistet",
+    proof_h:"Drei Fähigkeiten. Ein Gerät.",
+    pp1_h:"Sehen, was zum Ausfall geführt hat — nicht nur, dass er ausgefallen ist.",
+    pp1_body:"Hardwareseitige Steuerspannungsüberwachung, unabhängig von der Ladepunkte-Firmware. Erfasst Instabilitätsereignisse, die der OCPP-Stack nie protokolliert — weil das Ereignis den Controller zum Absturz bringt, bevor er schreiben kann.",
+    pp1_d1:"Hardware-Komparator-Trigger · unter 2 µs Erkennungslatenz",
+    pp1_d2:"Passiver Spitzenwert-Haltekreis · Amplitude erfasst in 0,53 µs",
+    pp1_d3:"DMA-Wellenformerfassung · 5.000 Samples @ 100 kHz, 50 ms Fenster",
+    pp1_d4:"Batteriepufferung der Echtzeituhr · Zeitstempel übersteht Stromausfall",
+    pp1_d5:"Onboard-Flash · Offline-Ringpuffer für 1.000 Ereignisse",
+    pp2_h:"Gehäuse antippen. Antwort erhalten.",
+    pp2_body:"Passives NFC — keine App, kein Netzwerk, keine Anmeldung. Mit jedem NFC-fähigen Smartphone antippen: aktuelle Hilfsspannung, letztes Instabilitätsereignis, Betriebszeit. Funktioniert im Metallgehäuse über eine externe Antenne.",
+    pp2_d1:"Passiver NFC-Chip · kein Strom erforderlich, kein Netzwerk nötig",
+    pp2_d2:"Live-Datenschnappschuss alle 30 Sekunden aktualisiert",
+    pp2_d3:"Feldvariante · externe Antenne durch IP67-Gehäuse geführt",
+    pp2_d4:"Erste Diagnose vor dem Öffnen des Schranks",
+    pp3_h:"Degradation erkennen, bevor das Gerät ausfällt.",
+    pp3_body:"Hilfsspannungstrend. Kabinenlastregelung. Thermodrift über vier Sensorkanäle. Das Dashboard zeigt den Verlauf — Probleme erkennen, bevor der Ladepunkt ausfällt.",
+    pp3_d1:"Präzisions-Spannungs- & Strommessung · 12–62 V, ±0,5 % nach Kalibrierung",
+    pp3_d2:"4-Kanal-Thermometrie + Umgebungssensor · Wärmekartierung des Schranks",
+    pp3_d3:"MEMS-Mikrofon · akustischer Fingerabdruck pro Instabilitätsereignis",
+    pp3_d4:"Flotten-Dashboard · Verlaufsansicht aller überwachten Geräte",
+    hiw_eye:"Systemarchitektur", hiw_h:"Hardware innen. Erkenntnis außen.",
+    hiw_sub:"RS-24 wird auf der DIN-Schiene im Ladeschrank montiert. Es ist das einzige Gerät in der Kette, das die Hilfsstromversorgung auf Hardwareebene beobachtet.",
+    hiw_s1_h:"Schrank", hiw_s1_p:"RS-24 auf DIN-Schiene, inline auf der Hilfsstromschiene. Passiver Beobachter — stört den überwachten Stromkreis nicht.",
+    hiw_s2_h:"RS-24-Platinenstack", hiw_s2_p:"Hauptplatine + optionale Sensorerweiterung + COM-Platine. Erfasst Spannung, Strom, Wellenform, Akustik, Temperatur.",
+    hiw_s3_h:"Cloud", hiw_s3_p:"Verschlüsseltes MQTT über Ethernet oder Mobilfunk. Telemetrie- und Ereignisdaten gespeichert mit geräteindividueller Zugangskontrolle.",
+    hiw_s4_h:"Dashboard", hiw_s4_p:"Flottenkarte. Gerätespezifische Trenddiagramme. Ereignisprotokoll mit Wellenform. Inbetriebnahme-PDF. Rollenbasierte Zugangskontrolle.",
+    nfc_label:"NFC-Tap-Pfad — ohne Cloud",
+    nfc_body:"Gehäuse-NFC-Antenne → beliebiges NFC-Smartphone → sofortiger Fehlerüberblick. Funktioniert offline, im Metallgehäuse. Keine App, kein Login.",
+    seg_eye:"Für Ihren Workflow", seg_h:"Verschiedene Rollen. Verschiedene Probleme. Ein Gerät.",
+    seg_tab1:"CPO-Flotte", seg_tab2:"Serviceunternehmen", seg_tab3:"EVSE-OEM",
+    chip_cpo:"Ladepunktbetreiber", chip_svc:"EVSE-Serviceunternehmen", chip_oem:"EVSE-OEM",
+    seg1_hook:"Ungeplante Ausfallzeiten reduzieren. Netzteilgesundheit nachweisen. Garantieansprüche gewinnen.",
+    seg1_body:"Ein einziger vermiedener Einsatz amortisiert ein Jahr RS-24-Monitoring. Jedes Instabilitätsereignis wird mit Zeitstempel, Wellenform und Wärmekontext protokolliert.",
+    seg1_f1:"Flotten-Dashboard: Netzteil-Gesundheitstrend je Ladepunkt", seg1_f2:"Proaktive Schwellwertalarmierung — vor dem Ausfall informiert",
+    seg1_f3:"Inbetriebnahmeprotokoll: Zeitgestempelte Netzteilgesundheit bei Installation",
+    seg1_f4:"AFIR-Export: Steuerspannungsgesundheit der Flotte für Compliance",
+    seg1_sc_label:"Szenario · CPO-Flotte",
+    seg1_sc_title:"Standort 3, Ladepunkt 2 — Netzteilausgang seit 6 Tagen sinkend. Noch kein Ausfall.",
+    lbl_without:"Ohne RS-24", lbl_with:"Mit RS-24",
+    seg1_bad_p:"Keine Daten bis zum Ausfall. Notfalleinsatz. Keine Ursache. Nächsten Monat wieder.",
+    seg1_bad_n:"400 € × 6 Ereignisse",
+    seg1_good_p:"Trendalarm an Tag 4. Geplanter Einsatz, richtiges Ersatzteil dabei. Null Ausfallzeit.",
+    seg1_good_n:"1 geplanter Einsatz",
+    seg2_hook:"Mit der Antwort ankommen, nicht mit der Frage.",
+    seg2_body:"NFC-Tap am Schrank liefert die Fehlerzusammenfassung, bevor die Tür geöffnet wird.",
+    seg2_f1:"NFC-Tap: Fehlerprotokoll und Netzteilstatus vor dem Öffnen",
+    seg2_f2:"Ereigniswellenform am Telefon: Fehlertyp vor der Fahrt einschätzen",
+    seg2_f3:"Inbetriebnahme-PDF: Übergabeprotokoll mit rechtlicher Absicherung",
+    seg2_f4:"Revenue-Share-Modell: wiederkehrendes SaaS-Einkommen aus installierter Basis",
+    seg2_sc_label:"Szenario · Servicetechniker",
+    seg2_sc_title:"Ladepunkt offline. Intermittierender Fehler. Vor Ort nicht reproduzierbar.",
+    seg2_bad_p:"Drei Einsätze. Neustart, warten, wiederholen. Ursache erst beim dritten Einsatz gefunden.",
+    seg2_bad_n:"3 Einsätze · 600 €",
+    seg2_good_p:"NFC-Tap: 3 Instabilitätsereignisse in 24 h bestätigt. Mit richtigem Ersatzteil fahren.",
+    seg2_good_n:"1 Einsatz · erledigt",
+    seg3_hook:"Garantiestreitigkeiten in Ingenieurdaten verwandeln.",
+    seg3_body:"RS-24-M wird auf Platinenebene integriert. Jede gelieferte Einheit speist dieselbe Felddatenpipeline.",
+    seg3_f1:"12–62 V-Bereich deckt 12 V, 24 V und 48 V-Plattformen in einer SKU",
+    seg3_f2:"OEM-REST-API: Instabilitätsereignisverteilung nach Standort und Lastklasse",
+    seg3_f3:"Jährlicher MTBF-Ingenieurbericht aus Ihrer tatsächlichen Flotte",
+    seg3_f4:"Garantiearbitration: Protokolle unterscheiden netzseitig von gerätseitig",
+    seg3_sc_label:"Szenario · OEM-Engineering",
+    seg3_sc_title:"Retoure. \"Intermittierender Ausfall unter Last.\" Kein Fehler im Labor.",
+    seg3_bad_p:"400 h Prüfstandstest. Kein Fehler. Zurückgesendet. Kommt wieder. OEM zahlt.",
+    seg3_bad_n:"Offener Anspruch",
+    seg3_good_p:"Felddaten: Instabilitätsereignisse korrelieren mit Hochstromschalten an diesem Standort. Netzseitig bestätigt.",
+    seg3_good_n:"OEM nicht haftbar",
+    prod_eye:"Hardwarevarianten", prod_h:"Eine Plattform. Drei Konfigurationen.",
+    prod_sub:"Gleiche Hauptplatine, gleiche Firmware, gleiche Cloud. Gehäuse und Konnektivität je nach Einsatzkontext.",
+    prod1_name:"Standard", prod1_sku:"DIN-SCHIENE · IP40 · MANAGED SITES",
+    prod1_desc:"Für verwaltete CPO-Standorte mit Ethernet-Infrastruktur. DIN-Schienen-Gehäuse. Überwacht die Hilfsstromversorgung jedes DC-Schnellladepunkts.",
+    prod2_name:"Field", prod2_sku:"IP67 · ABGELEGENE STANDORTE / AUTOBAHN",
+    prod2_desc:"Für abgelegene Standorte ohne Netzwerk. Mobilfunk unabhängig von der Standortinfrastruktur. IP67-Gehäuse mit externer NFC-Antenne.",
+    prod3_name:"OEM", prod3_sku:"PLATINE OHNE GEHÄUSE · WERKSINTEGRATION",
+    prod3_desc:"Für EVSE-Hersteller. Hauptplatine ohne Gehäuse. Werksintegration. CE-Zertifizierung für das Modul. Lizenzgebühr pro Einheit.",
+    spec_conn:"Konnektivität", spec_encl:"Gehäuse", spec_nfc:"NFC-Zugang", spec_range:"PSU-Bereich",
+    spec_sens:"Sensor-Erw.", spec_holdup:"Strom-Puffer", spec_form:"Formfaktor",
+    spec_api:"Datenschnittstelle", spec_ota:"Firmware", spec_model:"Kommerziell",
+    spec_s_encl:"DIN-Schiene, IP40", spec_s_nfc:"DIN-Schienen-Frontseite",
+    spec_f_encl:"Bopla Bocube, IP67", spec_f_nfc:"Externe Antenne durch IP67-Gehäuse",
+    spec_f_holdup:"Superkondensator, 1,68 s",
+    spec_m_ota:"OTA signierte Updates", spec_m_model:"Lizenzgebühr pro Einheit",
+    prod_cta_pilot:"Pilotgerät anfragen", prod_cta_oem:"OEM-Brief anfragen",
+    num1_label:"DC-Schnellladeversuche schlagen bei Stationen mit 100%-Verfügbarkeitsmeldung fehl",
+    num2_label:"maximale Kosten pro ungeplanter Ausfallzeit — bevor Wiederholungseinsätze hinzukommen",
+    num3_label:"Erkennung von Steuerspannungsinstabilität — Hardwareschaltkreis, keine Firmware-Latenz",
+    num4_label:"Ereignisse lokal gespeichert — kein Datenverlust bei Netzwerkausfall",
+    cta_h:"Bereit, in Ihren Ladeschrank zu sehen?",
+    cta_sub:"RS-24 befindet sich in aktiver Entwicklung. Eine begrenzte Zahl an Pilotplätzen ist für Serviceunternehmen und CPO-Flottenbetreiber offen — melden Sie sich, um einen zu reservieren.",
+    cta1_label:"Serviceunternehmen & CPOs", cta1_h:"Pilotgerät anfragen",
+    cta1_p:"Geräte zum Selbstkostenpreis für Pilotpartner. Revenue-Share auf SaaS. Keine langfristige Verpflichtung.",
+    cta1_btn:"Kontakt aufnehmen",
+    cta2_label:"EVSE-OEM-Teams", cta2_h:"OEM-Integrationsbrief",
+    cta2_p:"RS-24-M Platine ohne Gehäuse, OEM-REST-API, Felddatenpipeline. 12–62 V deckt Ihre 12 V-, 24 V- und 48 V-Plattformen in einem Modul.",
+    cta2_btn:"OEM-Brief anfragen",
+    cta3_label:"Ingenieure & Evaluatoren", cta3_h:"Technische Dokumentation",
+    cta3_p:"Hardware-Design, Software-Architektur, Kalibrierung und Sensoranalyse-Dokumente auf Anfrage.",
+    cta3_btn:"Docs anfragen",
+    footer_contact:"Kontakt",
+    footer_legal:"Produkt in aktiver Entwicklung. Spezifikationen entsprechen dem Designziel. Noch nicht CE-zertifiziert oder kommerziell verfügbar.",
+  },
+
+  fr: {
+    page_title:"RailSentinel-24 · Surveillance d'alimentation auxiliaire pour bornes de recharge rapide",
+    nav_why:"Pourquoi", nav_how:"Fonctionnement", nav_for_you:"Pour vous", nav_products:"Produits", nav_cta:"Demander un pilote",
+    btn_see_how:"Voir comment ça marche",
+    hero_eye:"Surveillance d'alimentation auxiliaire · Infrastructure de recharge rapide",
+    hero_h:"Comprenez pourquoi<br>votre borne tombe en panne.<br><em>Avant la prochaine intervention.</em>",
+    hero_sub:"RS-24 surveille l'alimentation auxiliaire dans chaque armoire de borne de recharge rapide DC — la couche d'alimentation de commande qu'OCPP ne peut pas voir — et vous indique la cause avant que vous décrochiez le téléphone.",
+    stat1_label:"Des tentatives de recharge rapide échouent — sur des bornes affichant 100 % de disponibilité<br><span style='opacity:.5;font-size:10px'>ChargerHelp! 2025</span>",
+    stat2_label:"coût par arrêt non planifié pour un opérateur CPO — avant de trouver la cause",
+    stat3_label:"de ces informations viennent de l'intérieur de l'armoire — jusqu'à maintenant",
+    prob_eye:"Le Problème",
+    prob_h:"La borne est hors ligne. L'OCPP affiche \"défaut.\" C'est tout ce qu'on sait.",
+    prob_p1:"L'opérateur appelle le prestataire de service. Le technicien se déplace, redémarre la borne, et rentre. Elle fonctionne un jour, puis tombe à nouveau. Pas de cause. Pas de tendance. Pas de données.",
+    prob_p2:"La raison est structurelle : la supervision OCPP rapporte l'état du protocole — ce que sait le logiciel de la borne. Elle ne peut pas rapporter les événements d'alimentation de commande qui font planter le contrôleur <em>avant qu'il puisse écrire un journal.</em>",
+    prob_p3:"L'alimentation auxiliaire est l'épine dorsale de contrôle de toute borne de recharge rapide DC. Quand elle devient instable — sous charge, avec le temps, en vieillissant — la borne se comporte de manière imprévisible. Et personne ne le voit.",
+    pstat1_label:"des sessions de recharge échouées dues à une perte de connectivité — invisible au niveau protocole",
+    pstat2_label:"Défauts d'alimentation — la première cause d'interventions de maintenance",
+    voc1:"Je me suis déplacé, j'ai ouvert l'armoire, rien d'évident. Redémarré. Ça marchait. Rentré. À nouveau hors ligne le lendemain matin.",
+    voc1_tag:"Technicien de service EVSE",
+    voc2:"Le tableau de bord OCPP affiche juste \"défaut\". C'est tout ce que j'obtiens. Je paye pour des redémarrages.",
+    voc2_tag:"Gestionnaire de flotte CPO · 40 bornes",
+    voc3:"Les retours continuent. Aucun défaut trouvé sur le banc. On renvoie. Ils reviennent. Pas de données terrain.",
+    voc3_tag:"OEM EVSE · Ingénierie qualité terrain",
+    voc4:"C'est intermittent. C'est le pire. Je ne peux pas reproduire en atelier. Ça tombe en panne seulement quand je suis parti.",
+    voc4_tag:"Technicien · 80 sites sous gestion",
+    proof_eye:"Ce que fait RS-24",
+    proof_h:"Trois capacités. Un seul appareil.",
+    pp1_h:"Voir ce qui l'a mis hors tension — pas seulement que c'est tombé en panne.",
+    pp1_body:"Surveillance matérielle de l'alimentation de commande, indépendante du firmware de la borne. Capture les événements d'instabilité que l'OCPP ne journalise jamais — parce que l'événement fait planter le contrôleur avant qu'il puisse écrire.",
+    pp1_d1:"Déclencheur comparateur matériel · latence de détection inférieure à 2 µs",
+    pp1_d2:"Circuit de maintien de crête passif · amplitude capturée en 0,53 µs",
+    pp1_d3:"Capture de forme d'onde DMA · 5 000 échantillons @ 100 kHz, fenêtre 50 ms",
+    pp1_d4:"Horloge temps réel sur batterie · horodatage survit à une coupure de courant",
+    pp1_d5:"Flash embarqué · tampon circulaire hors ligne de 1 000 événements",
+    pp2_h:"Appuyez sur l'armoire. Obtenez la réponse.",
+    pp2_body:"NFC passif — pas d'application, pas de réseau, pas de connexion. Appuyez avec n'importe quel téléphone NFC : tension actuelle, dernier événement d'instabilité, temps de fonctionnement. Fonctionne dans une cage de Faraday métallique via une antenne externe.",
+    pp2_d1:"Puce NFC passive · pas d'alimentation nécessaire, pas de réseau requis",
+    pp2_d2:"Instantané de données en direct actualisé toutes les 30 secondes",
+    pp2_d3:"Variante terrain · antenne externe traversant le boîtier IP67",
+    pp2_d4:"Premier diagnostic avant d'ouvrir l'armoire",
+    pp3_h:"Savoir que ça se dégrade avant que ça s'arrête.",
+    pp3_body:"Tendance de tension d'alimentation. Profilage de charge. Dérive thermique sur quatre canaux. Le tableau de bord montre la trajectoire — signalez le défaut des semaines avant la panne.",
+    pp3_d1:"Mesure tension & courant de précision · plage 12–62 V, ±0,5 % après étalonnage",
+    pp3_d2:"Thermométrie 4 canaux + ambiance · cartographie thermique de l'armoire",
+    pp3_d3:"Microphone MEMS · empreinte acoustique par événement d'instabilité",
+    pp3_d4:"Tableau de bord de flotte · vue des tendances sur tous les appareils surveillés",
+    hiw_eye:"Architecture système", hiw_h:"Matériel dedans. Données dehors.",
+    hiw_sub:"RS-24 se monte sur le rail DIN dans l'armoire. C'est le seul appareil de la chaîne qui observe l'alimentation auxiliaire au niveau matériel.",
+    hiw_s1_h:"Armoire", hiw_s1_p:"RS-24 monté sur rail DIN, en ligne sur le rail d'alimentation auxiliaire. Observateur passif — ne perturbe pas le circuit surveillé.",
+    hiw_s2_h:"Stack de cartes RS-24", hiw_s2_p:"Carte principale + extension de capteurs + carte COM. Capture tension, courant, forme d'onde, acoustique, thermique.",
+    hiw_s3_h:"Cloud", hiw_s3_p:"MQTT chiffré via Ethernet ou cellulaire. Données de télémétrie et d'événements avec contrôle d'accès par appareil.",
+    hiw_s4_h:"Tableau de bord", hiw_s4_p:"Carte de santé de flotte. Graphiques de tendances. Journal d'événements avec forme d'onde. Rapport PDF de mise en service. Contrôle d'accès.",
+    nfc_label:"Chemin NFC — sans cloud requis",
+    nfc_body:"Antenne NFC de l'armoire → n'importe quel téléphone NFC → instantané de défaut immédiat. Fonctionne hors ligne, dans un boîtier métallique. Pas d'application, pas de connexion.",
+    seg_eye:"Conçu pour votre flux de travail", seg_h:"Rôles différents. Problèmes différents. Un seul appareil.",
+    seg_tab1:"Flotte CPO", seg_tab2:"Prestataire de service", seg_tab3:"OEM EVSE",
+    chip_cpo:"Opérateur de point de charge", chip_svc:"Prestataire EVSE", chip_oem:"OEM EVSE",
+    seg1_hook:"Réduire les pannes imprévues. Prouver la santé PSU. Gagner les litiges de garantie.",
+    seg1_body:"Une seule intervention évitée rembourse un an de surveillance RS-24.",
+    seg1_f1:"Tableau de bord de flotte : tendance santé PSU par borne et par site",
+    seg1_f2:"Alertes de seuil proactives — informé avant la panne",
+    seg1_f3:"Rapport de mise en service : santé PSU horodatée à la date d'installation",
+    seg1_f4:"Export AFIR : santé d'alimentation de commande pour conformité réglementaire",
+    seg1_sc_label:"Scénario · Flotte CPO",
+    seg1_sc_title:"Site 3, Borne 2 — sortie PSU en baisse depuis 6 jours. Pas encore de panne.",
+    lbl_without:"Sans RS-24", lbl_with:"Avec RS-24",
+    seg1_bad_p:"Pas de données jusqu'à la panne. Intervention d'urgence. Pas de cause. Répétition le mois suivant.",
+    seg1_bad_n:"400 € × 6 événements",
+    seg1_good_p:"Alerte de tendance à J+4. Intervention planifiée, bonne pièce dans le véhicule. Zéro arrêt.",
+    seg1_good_n:"1 intervention planifiée",
+    seg2_hook:"Arriver avec la réponse, pas avec la question.",
+    seg2_body:"Le scan NFC à l'armoire vous donne le résumé du défaut avant d'ouvrir la porte.",
+    seg2_f1:"Scan NFC : journal des défauts et état PSU avant d'ouvrir",
+    seg2_f2:"Forme d'onde sur téléphone : évaluer le type de défaut avant de se déplacer",
+    seg2_f3:"PDF de mise en service : rapport de remise, base légalement défendable",
+    seg2_f4:"Modèle de partage des revenus : revenus SaaS récurrents de votre base installée",
+    seg2_sc_label:"Scénario · Technicien de service",
+    seg2_sc_title:"Borne hors ligne. Défaut intermittent. Impossible à reproduire sur site.",
+    seg2_bad_p:"Trois interventions. Redémarrage, attente, répétition. Cause trouvée à la 3e visite.",
+    seg2_bad_n:"3 interventions · 600 €",
+    seg2_good_p:"Scan NFC : 3 événements d'instabilité en 24 h confirmés. Se déplacer avec la bonne pièce.",
+    seg2_good_n:"1 visite · résolu",
+    seg3_hook:"Transformer les litiges de garantie en données d'ingénierie.",
+    seg3_body:"RS-24-M s'intègre au niveau PCB. Chaque unité livrée alimente le même pipeline de données terrain.",
+    seg3_f1:"Plage 12–62 V couvre vos plateformes 12 V, 24 V et 48 V en une seule référence",
+    seg3_f2:"API REST OEM : distribution des événements d'instabilité par site et classe de charge",
+    seg3_f3:"Rapport MTBF annuel à partir de votre flotte déployée réelle",
+    seg3_f4:"Arbitrage garantie : journaux distinguent côté réseau de côté équipement",
+    seg3_sc_label:"Scénario · Ingénierie OEM",
+    seg3_sc_title:"Retour en SAV. \"Arrêt intermittent sous charge.\" Pas de défaut reproduit en labo.",
+    seg3_bad_p:"400 h de test banc. Aucun défaut. Renvoyé. Revient. L'OEM paie.",
+    seg3_bad_n:"Litige non résolu",
+    seg3_good_p:"Données terrain : événements corrèlent avec commutation haute intensité à ce site. Côté réseau confirmé.",
+    seg3_good_n:"OEM non responsable",
+    prod_eye:"Variantes matérielles", prod_h:"Une plateforme. Trois configurations.",
+    prod_sub:"Même carte principale, même firmware, même backend cloud. Boîtier et connectivité varient selon le contexte de déploiement.",
+    prod1_name:"Standard", prod1_sku:"RAIL DIN · IP40 · SITES GÉRÉS",
+    prod1_desc:"Pour les sites CPO gérés avec infrastructure Ethernet. Boîtier sur rail DIN. Surveille l'alimentation auxiliaire de toute borne de recharge rapide DC.",
+    prod2_name:"Field", prod2_sku:"IP67 · SITES DISTANTS / AUTOROUTE",
+    prod2_desc:"Pour les sites distants sans réseau géré. Connectivité cellulaire indépendante de l'infrastructure. Boîtier IP67 avec antenne NFC externe.",
+    prod3_name:"OEM", prod3_sku:"PCB NU · INTÉGRATION EN USINE",
+    prod3_desc:"Pour les fabricants EVSE. Carte principale sans boîtier. Intégration en usine. Certification CE pour le module. Licence par unité.",
+    spec_conn:"Connectivité", spec_encl:"Boîtier", spec_nfc:"Accès NFC", spec_range:"Plage PSU",
+    spec_sens:"Ext. capteurs", spec_holdup:"Maintien courant", spec_form:"Facteur de forme",
+    spec_api:"Interface données", spec_ota:"Firmware", spec_model:"Commercial",
+    spec_s_encl:"Rail DIN, IP40", spec_s_nfc:"Face rail DIN (boîtier plastique)",
+    spec_f_encl:"Bopla Bocube, IP67", spec_f_nfc:"Antenne externe traversant le couvercle IP67",
+    spec_f_holdup:"Supercondensateur, 1,68 s",
+    spec_m_ota:"Mises à jour OTA signées", spec_m_model:"Licence par unité",
+    prod_cta_pilot:"Demander un pilote", prod_cta_oem:"Demander le brief OEM",
+    num1_label:"Des tentatives de recharge rapide échouent sur des bornes affichant 100 % de disponibilité",
+    num2_label:"coût maximal par arrêt non planifié — avant que les interventions répétées s'accumulent",
+    num3_label:"détection d'instabilité d'alimentation de commande — circuit matériel, sans latence firmware",
+    num4_label:"événements stockés localement — pas de perte de données en cas de panne réseau",
+    cta_h:"Prêt à voir à l'intérieur de votre armoire ?",
+    cta_sub:"RS-24 est en développement actif. Un nombre limité de places pilotes est ouvert aux prestataires et aux opérateurs CPO — contactez-nous pour en réserver une.",
+    cta1_label:"Prestataires & CPOs", cta1_h:"Demander une unité pilote",
+    cta1_p:"Unités au prix coûtant pour les partenaires pilotes. Partage des revenus sur le SaaS.",
+    cta1_btn:"Prendre contact",
+    cta2_label:"Équipes OEM EVSE", cta2_h:"Brief d'intégration OEM",
+    cta2_p:"PCB RS-24-M nu, API REST OEM, pipeline de données terrain. 12–62 V couvre vos plateformes 12 V, 24 V et 48 V.",
+    cta2_btn:"Demander le brief OEM",
+    cta3_label:"Ingénieurs & évaluateurs", cta3_h:"Documentation technique",
+    cta3_p:"Documents de conception matérielle, architecture logicielle, étalonnage et analyse de capteurs disponibles sur demande.",
+    cta3_btn:"Demander les docs",
+    footer_contact:"Contact",
+    footer_legal:"Produit en développement actif. Les spécifications reflètent l'objectif de conception. Pas encore certifié CE ni disponible commercialement.",
+  },
+
+  es: {
+    page_title:"RailSentinel-24 · Monitor de fuente de alimentación auxiliar para cargadores rápidos",
+    nav_why:"Por qué", nav_how:"Cómo funciona", nav_for_you:"Para usted", nav_products:"Productos", nav_cta:"Solicitar piloto",
+    btn_see_how:"Ver cómo funciona",
+    hero_eye:"Monitor de fuente de alimentación auxiliar · Infraestructura de carga rápida",
+    hero_h:"Sepa por qué su cargador<br>sigue fallando.<br><em>Antes de la próxima llamada.</em>",
+    hero_sub:"RS-24 monitoriza la fuente de alimentación auxiliar dentro de cada armario de cargador rápido DC — la capa de alimentación de control que OCPP no puede ver — y le indica la causa del fallo antes de descolgar el teléfono.",
+    stat1_label:"Los intentos de carga rápida fallan — en cargadores que informan 100% de disponibilidad<br><span style='opacity:.5;font-size:10px'>ChargerHelp! 2025</span>",
+    stat2_label:"coste por tiempo de inactividad no planificado para un operador CPO — antes de encontrar la causa",
+    stat3_label:"de lo anterior proviene del interior del armario del cargador — hasta ahora",
+    prob_eye:"El Problema",
+    prob_h:"El cargador se desconectó. OCPP dice \"fallo.\" Eso es todo lo que sabe nadie.",
+    prob_p1:"Los operadores llaman a la empresa de servicio. El técnico va, reinicia el cargador y regresa. Funciona un día, luego falla de nuevo. Sin causa raíz. Sin tendencia. Sin datos.",
+    prob_p2:"La razón es estructural: la supervisión OCPP informa el estado del protocolo — lo que sabe el software del cargador. No puede informar eventos de alimentación de control que bloquean el controlador <em>antes de que pueda escribir un registro.</em>",
+    prob_p3:"La fuente de alimentación auxiliar es la columna vertebral de control de todo cargador rápido DC. Cuando se vuelve inestable — bajo carga, con el tiempo, al envejecer los componentes — el cargador se comporta de forma impredecible. Y nadie puede verlo.",
+    pstat1_label:"de sesiones de carga fallidas atribuidas a pérdida de conectividad — invisible a nivel de protocolo",
+    pstat2_label:"Fallos en la fuente de alimentación — la mayor categoría de llamadas de mantenimiento",
+    voc1:"Fui al sitio, abrí el armario, nada visiblemente mal. Lo reinicié. Funcionó. Volví. Al día siguiente estaba desconectado de nuevo.",
+    voc1_tag:"Técnico de servicio EVSE",
+    voc2:"El panel OCPP solo dice \"fallo\". Eso es todo lo que obtengo. Estoy pagando por reinicios.",
+    voc2_tag:"Gestor de flota CPO · 40 cargadores",
+    voc3:"Las devoluciones siguen llegando. Sin defecto encontrado en el banco. Lo devolvemos. Vuelven. No tenemos datos de campo.",
+    voc3_tag:"OEM EVSE · Ingeniería de calidad de campo",
+    voc4:"Es intermitente. Es lo peor. No puedo reproducirlo en el taller. Solo falla cuando me voy.",
+    voc4_tag:"Técnico de servicio · 80 sitios bajo gestión",
+    proof_eye:"Lo que hace RS-24",
+    proof_h:"Tres capacidades. Un dispositivo.",
+    pp1_h:"Ver qué lo apagó — no solo que se apagó.",
+    pp1_body:"Monitorización de alimentación de control a nivel hardware, independiente del firmware del cargador. Captura eventos de inestabilidad que el stack OCPP nunca registra.",
+    pp1_d1:"Disparador comparador hardware · latencia de detección inferior a 2 µs",
+    pp1_d2:"Circuito pasivo de retención de pico · amplitud capturada en 0,53 µs",
+    pp1_d3:"Captura de forma de onda DMA · 5.000 muestras @ 100 kHz, ventana 50 ms",
+    pp1_d4:"RTC con batería · marca de tiempo sobrevive a corte de alimentación",
+    pp1_d5:"Flash integrado · búfer circular offline de 1.000 eventos",
+    pp2_h:"Toque el armario. Obtenga la respuesta.",
+    pp2_body:"NFC pasivo — sin aplicación, sin red, sin inicio de sesión. Toque con cualquier teléfono NFC: tensión actual, último evento de inestabilidad, tiempo de actividad.",
+    pp2_d1:"Chip NFC pasivo · sin alimentación necesaria, sin red requerida",
+    pp2_d2:"Instantánea de datos en vivo actualizada cada 30 segundos",
+    pp2_d3:"Variante campo · antena externa atraviesa el enclosure IP67",
+    pp2_d4:"Primera evaluación antes de abrir el armario",
+    pp3_h:"Saber que se está degradando antes de que deje de funcionar.",
+    pp3_body:"Tendencia de tensión de alimentación. Perfil de carga. Deriva térmica en cuatro canales. El panel muestra la trayectoria.",
+    pp3_d1:"Tensión y corriente de precisión · rango 12–62 V, ±0,5% tras calibración",
+    pp3_d2:"Termometría 4 canales + ambiente · mapa térmico del armario",
+    pp3_d3:"Micrófono MEMS · huella acústica por evento de inestabilidad",
+    pp3_d4:"Panel de flota · vista de tendencias en todos los dispositivos monitorizados",
+    hiw_eye:"Arquitectura del sistema", hiw_h:"Hardware adentro. Conocimiento afuera.",
+    hiw_sub:"RS-24 se monta en el carril DIN del armario del cargador. Es el único dispositivo en la cadena que observa la fuente de alimentación auxiliar a nivel hardware.",
+    hiw_s1_h:"Armario", hiw_s1_p:"RS-24 montado en carril DIN, en línea en el carril de alimentación auxiliar. Observador pasivo.",
+    hiw_s2_h:"Stack de placas RS-24", hiw_s2_p:"Placa principal + expansión de sensores opcional + placa COM. Captura tensión, corriente, forma de onda, acústica, temperatura.",
+    hiw_s3_h:"Nube", hiw_s3_p:"MQTT cifrado vía Ethernet o celular. Datos almacenados con control de acceso por dispositivo.",
+    hiw_s4_h:"Panel", hiw_s4_p:"Mapa de salud de flota. Gráficos de tendencias. Registro de eventos con forma de onda. Informe PDF de puesta en marcha.",
+    nfc_label:"Ruta NFC — sin nube requerida",
+    nfc_body:"Antena NFC del armario → cualquier teléfono NFC → instantánea de fallo inmediata. Funciona sin conexión, en armario metálico. Sin aplicación, sin inicio de sesión.",
+    seg_eye:"Diseñado para su flujo de trabajo", seg_h:"Roles diferentes. Problemas diferentes. Un dispositivo.",
+    seg_tab1:"Flota CPO", seg_tab2:"Empresa de servicio", seg_tab3:"OEM EVSE",
+    chip_cpo:"Operador de punto de carga", chip_svc:"Empresa de servicio EVSE", chip_oem:"OEM EVSE",
+    seg1_hook:"Reducir el tiempo de inactividad. Probar la salud de la PSU. Ganar disputas de garantía.",
+    seg1_body:"Una sola visita evitada paga un año completo de monitorización RS-24.",
+    seg1_f1:"Panel de flota: tendencia de salud PSU por cargador y sitio",
+    seg1_f2:"Alertas de umbral proactivas — informado antes de la desconexión",
+    seg1_f3:"Informe de puesta en marcha: salud PSU con marca de tiempo en la fecha de instalación",
+    seg1_f4:"Exportación AFIR: datos de alimentación de control para cumplimiento normativo",
+    seg1_sc_label:"Escenario · Flota CPO",
+    seg1_sc_title:"Sitio 3, Cargador 2 — salida PSU bajando durante 6 días. Sin interrupción aún.",
+    lbl_without:"Sin RS-24", lbl_with:"Con RS-24",
+    seg1_bad_p:"Sin datos hasta la parada. Llamada de emergencia. Sin causa raíz. Se repite el mes siguiente.",
+    seg1_bad_n:"400 € × 6 eventos",
+    seg1_good_p:"Alerta de tendencia en día 4. Visita planificada, pieza correcta en el vehículo. Cero inactividad.",
+    seg1_good_n:"1 visita planificada",
+    seg2_hook:"Llegar con la respuesta, no con la pregunta.",
+    seg2_body:"El toque NFC en el armario le da el resumen del fallo antes de abrir la puerta.",
+    seg2_f1:"Toque NFC: registro de fallos y estado PSU antes de abrir",
+    seg2_f2:"Forma de onda en teléfono: evaluar tipo de fallo antes de desplazarse",
+    seg2_f3:"PDF de puesta en marcha: informe de entrega con base legalmente defendible",
+    seg2_f4:"Modelo de reparto de ingresos: ingresos SaaS recurrentes de su base instalada",
+    seg2_sc_label:"Escenario · Técnico de servicio",
+    seg2_sc_title:"Cargador desconectado. Fallo intermitente. No reproducible en sitio.",
+    seg2_bad_p:"Tres visitas. Reinicio, espera, repetición. Causa encontrada en visita 3 con osciloscopio.",
+    seg2_bad_n:"3 visitas · 600 €",
+    seg2_good_p:"Toque NFC: 3 eventos de inestabilidad en 24 h confirmados. Desplazarse con pieza correcta.",
+    seg2_good_n:"1 visita · resuelto",
+    seg3_hook:"Convertir disputas de garantía en datos de ingeniería.",
+    seg3_body:"RS-24-M se integra a nivel de PCB. Cada unidad enviada alimenta el mismo pipeline de datos de campo.",
+    seg3_f1:"Rango 12–62 V cubre plataformas de 12 V, 24 V y 48 V en una sola referencia",
+    seg3_f2:"API REST OEM: distribución de eventos de inestabilidad por sitio y clase de carga",
+    seg3_f3:"Informe MTBF anual de su flota desplegada real",
+    seg3_f4:"Arbitraje de garantía: registros distinguen lado red de lado equipo",
+    seg3_sc_label:"Escenario · Ingeniería OEM",
+    seg3_sc_title:"Devolución. \"Apagado intermitente bajo carga.\" Sin fallo reproducido en laboratorio.",
+    seg3_bad_p:"400 h de prueba en banco. Sin fallo. Devuelto. Vuelve. El OEM paga.",
+    seg3_bad_n:"Reclamación sin resolver",
+    seg3_good_p:"Datos de campo: eventos correlacionan con conmutación de alta corriente en ese sitio. Confirmado lado red.",
+    seg3_good_n:"OEM no responsable",
+    prod_eye:"Variantes de hardware", prod_h:"Una plataforma. Tres configuraciones.",
+    prod_sub:"Misma placa principal, mismo firmware, mismo backend cloud. Carcasa y conectividad varían según el contexto de despliegue.",
+    prod1_name:"Estándar", prod1_sku:"CARRIL DIN · IP40 · SITIOS GESTIONADOS",
+    prod1_desc:"Para sitios CPO gestionados con infraestructura Ethernet. Carcasa en carril DIN.",
+    prod2_name:"Field", prod2_sku:"IP67 · SITIOS REMOTOS / AUTOPISTA",
+    prod2_desc:"Para sitios remotos sin red gestionada. Conectividad celular independiente de la infraestructura del sitio. Carcasa IP67 con antena NFC externa.",
+    prod3_name:"OEM", prod3_sku:"PCB DESNUDO · INTEGRACIÓN EN FÁBRICA",
+    prod3_desc:"Para fabricantes de EVSE. Placa principal sin carcasa. Integración en fábrica. Certificación CE para el módulo. Tarifa de licencia por unidad.",
+    spec_conn:"Conectividad", spec_encl:"Carcasa", spec_nfc:"Acceso NFC", spec_range:"Rango PSU",
+    spec_sens:"Exp. sensores", spec_holdup:"Retención de alimentación", spec_form:"Factor de forma",
+    spec_api:"Interfaz de datos", spec_ota:"Firmware", spec_model:"Comercial",
+    spec_s_encl:"Carril DIN, IP40", spec_s_nfc:"Cara carril DIN (carcasa plástica)",
+    spec_f_encl:"Bopla Bocube, IP67", spec_f_nfc:"Antena externa a través de tapa IP67",
+    spec_f_holdup:"Supercondensador, 1,68 s",
+    spec_m_ota:"Actualizaciones OTA firmadas", spec_m_model:"Tarifa de licencia por unidad",
+    prod_cta_pilot:"Solicitar piloto", prod_cta_oem:"Solicitar brief OEM",
+    num1_label:"Los intentos de carga rápida fallan en estaciones que informan disponibilidad total",
+    num2_label:"coste máximo por tiempo de inactividad no planificado — antes de que las visitas repetidas lo eleven",
+    num3_label:"detección de inestabilidad de alimentación de control — circuito hardware, sin latencia de firmware",
+    num4_label:"eventos almacenados localmente — sin pérdida de datos durante cortes de red",
+    cta_h:"¿Listo para ver dentro de su armario de cargador?",
+    cta_sub:"RS-24 está en desarrollo activo. Hay un número limitado de plazas piloto para empresas de servicio y operadores CPO — contáctenos para reservar una.",
+    cta1_label:"Empresas de servicio y CPOs", cta1_h:"Solicitar una unidad piloto",
+    cta1_p:"Unidades a precio de coste para socios piloto. Reparto de ingresos en SaaS. Sin compromiso a largo plazo.",
+    cta1_btn:"Ponerse en contacto",
+    cta2_label:"Equipos OEM EVSE", cta2_h:"Brief de integración OEM",
+    cta2_p:"PCB RS-24-M desnudo, API REST OEM, pipeline de datos de campo. 12–62 V cubre sus plataformas de 12 V, 24 V y 48 V.",
+    cta2_btn:"Solicitar brief OEM",
+    cta3_label:"Ingenieros y evaluadores", cta3_h:"Documentación técnica",
+    cta3_p:"Documentos de diseño hardware, arquitectura software, calibración y análisis de sensores disponibles bajo solicitud.",
+    cta3_btn:"Solicitar documentación",
+    footer_contact:"Contacto",
+    footer_legal:"Producto en desarrollo activo. Las especificaciones reflejan el objetivo de diseño. Aún no certificado CE ni disponible comercialmente.",
+  },
+
+  it: {
+    page_title:"RailSentinel-24 · Monitor alimentatore ausiliario per punti di ricarica rapida",
+    nav_why:"Perché", nav_how:"Come funziona", nav_for_you:"Per te", nav_products:"Prodotti", nav_cta:"Richiedi pilota",
+    btn_see_how:"Scopri come funziona",
+    hero_eye:"Monitor alimentatore ausiliario · Infrastruttura di ricarica rapida",
+    hero_h:"Scopri perché il tuo<br>caricatore si ferma sempre.<br><em>Prima della prossima chiamata.</em>",
+    hero_sub:"RS-24 monitora l'alimentatore ausiliario all'interno di ogni armadio di ricarica rapida DC — il livello di alimentazione di controllo che l'OCPP non può vedere — e ti dice cosa ha causato il guasto prima che tu risponda al telefono.",
+    stat1_label:"I tentativi di ricarica rapida falliscono — su stazioni che riportano 100% di disponibilità<br><span style='opacity:.5;font-size:10px'>ChargerHelp! 2025</span>",
+    stat2_label:"costo per ogni fermo non pianificato per un operatore CPO — prima di trovare la causa",
+    stat3_label:"di quanto sopra proviene dall'interno dell'armadio del caricatore — fino ad ora",
+    prob_eye:"Il Problema",
+    prob_h:"Il caricatore è offline. L'OCPP dice \"guasto\". È tutto ciò che si sa.",
+    prob_p1:"Gli operatori chiamano l'azienda di servizio. Il tecnico va, riavvia il caricatore e torna. Funziona un giorno, poi si guasta di nuovo. Nessuna causa. Nessuna tendenza. Nessun dato.",
+    prob_p2:"Il motivo è strutturale: il monitoraggio OCPP riporta lo stato del protocollo — ciò che conosce il software del caricatore. Non può riportare eventi di alimentazione di controllo che mandano in crash il controller <em>prima che possa scrivere un registro.</em>",
+    prob_p3:"L'alimentatore ausiliario è la colonna vertebrale di controllo di ogni caricatore rapido DC. Quando diventa instabile — sotto carico, nel tempo, con l'invecchiamento dei componenti — il caricatore si comporta in modo imprevedibile. E nessuno può vederlo.",
+    pstat1_label:"delle sessioni di ricarica fallite attribuite a perdita di connettività — invisibile a livello di protocollo",
+    pstat2_label:"Guasti all'alimentazione — la principale categoria di interventi di manutenzione",
+    voc1:"Sono andato lì, ho aperto l'armadio, niente di ovviamente sbagliato. Riavviato. Funzionava. Tornato. Di nuovo offline la mattina dopo.",
+    voc1_tag:"Tecnico di servizio EVSE",
+    voc2:"Il pannello OCPP dice solo \"guasto\". È tutto ciò che ottengo. Sto pagando per i riavvii.",
+    voc2_tag:"Responsabile flotta CPO · 40 caricatori",
+    voc3:"I resi continuano ad arrivare. Nessun difetto trovato al banco. Lo rispediamo. Tornano. Non abbiamo dati sul campo.",
+    voc3_tag:"OEM EVSE · Ingegneria qualità sul campo",
+    voc4:"È intermittente. È il peggio. Non riesco a riprodurlo in officina. Si guasta solo quando me ne sono andato.",
+    voc4_tag:"Tecnico di servizio · 80 siti in gestione",
+    proof_eye:"Cosa fa RS-24",
+    proof_h:"Tre capacità. Un dispositivo.",
+    pp1_h:"Vedere cosa lo ha messo fuori tensione — non solo che si è fermato.",
+    pp1_body:"Monitoraggio hardware dell'alimentazione di controllo, indipendente dal firmware del caricatore. Cattura eventi di instabilità che lo stack OCPP non registra mai.",
+    pp1_d1:"Trigger comparatore hardware · latenza di rilevamento inferiore a 2 µs",
+    pp1_d2:"Circuito passivo di mantenimento del picco · ampiezza catturata in 0,53 µs",
+    pp1_d3:"Acquisizione forma d'onda DMA · 5.000 campioni @ 100 kHz, finestra 50 ms",
+    pp1_d4:"RTC con batteria · timestamp sopravvive a interruzione di alimentazione",
+    pp1_d5:"Flash integrato · buffer circolare offline da 1.000 eventi",
+    pp2_h:"Tocca l'armadio. Ottieni la risposta.",
+    pp2_body:"NFC passivo — nessuna app, nessuna rete, nessun accesso. Tocca con qualsiasi telefono NFC: tensione attuale, ultimo evento di instabilità, uptime.",
+    pp2_d1:"Chip NFC passivo · nessuna alimentazione necessaria, nessuna rete richiesta",
+    pp2_d2:"Snapshot dati in tempo reale aggiornato ogni 30 secondi",
+    pp2_d3:"Variante campo · antenna esterna fuoriesce dall'armadio IP67",
+    pp2_d4:"Prima valutazione prima di aprire l'armadio",
+    pp3_h:"Sapere che si sta degradando prima che smetta di funzionare.",
+    pp3_body:"Andamento della tensione di alimentazione. Profilazione del carico. Deriva termica su quattro canali sensore. Il pannello mostra la traiettoria.",
+    pp3_d1:"Misura tensione e corrente di precisione · range 12–62 V, ±0,5% dopo calibrazione",
+    pp3_d2:"Termometria a 4 canali + ambiente · mappatura termica dell'armadio",
+    pp3_d3:"Microfono MEMS · impronta acustica per evento di instabilità",
+    pp3_d4:"Dashboard fleet · vista tendenze su tutti i dispositivi monitorati",
+    hiw_eye:"Architettura di sistema", hiw_h:"Hardware dentro. Insight fuori.",
+    hiw_sub:"RS-24 si monta sulla guida DIN nell'armadio del caricatore. È l'unico dispositivo nella catena che osserva l'alimentatore ausiliario a livello hardware.",
+    hiw_s1_h:"Armadio", hiw_s1_p:"RS-24 montato su guida DIN, in linea sul binario dell'alimentazione ausiliaria. Osservatore passivo.",
+    hiw_s2_h:"Stack schede RS-24", hiw_s2_p:"Scheda principale + espansione sensori opzionale + scheda COM. Cattura tensione, corrente, forma d'onda, acustica, termica.",
+    hiw_s3_h:"Cloud", hiw_s3_p:"MQTT cifrato via Ethernet o cellulare. Dati di telemetria ed eventi con controllo accessi per dispositivo.",
+    hiw_s4_h:"Dashboard", hiw_s4_p:"Mappa salute flotta. Grafici di tendenza per dispositivo. Registro eventi con forma d'onda. Report PDF di messa in servizio.",
+    nfc_label:"Percorso NFC — senza cloud richiesto",
+    nfc_body:"Antenna NFC armadio → qualsiasi telefono NFC → snapshot guasto immediato. Funziona offline, in armadio metallico. Nessuna app, nessun accesso.",
+    seg_eye:"Costruito per il tuo flusso di lavoro", seg_h:"Ruoli diversi. Problemi diversi. Un dispositivo.",
+    seg_tab1:"Flotta CPO", seg_tab2:"Azienda di servizio", seg_tab3:"OEM EVSE",
+    chip_cpo:"Operatore punto di ricarica", chip_svc:"Azienda di servizio EVSE", chip_oem:"OEM EVSE",
+    seg1_hook:"Ridurre i fermi non pianificati. Dimostrare la salute PSU. Vincere le controversie di garanzia.",
+    seg1_body:"Un solo intervento evitato ripaga un anno completo di monitoraggio RS-24.",
+    seg1_f1:"Dashboard flotta: tendenza salute PSU per caricatore e sito",
+    seg1_f2:"Avvisi di soglia proattivi — informati prima del fermo",
+    seg1_f3:"Report di messa in servizio: salute PSU con timestamp alla data di installazione",
+    seg1_f4:"Export AFIR: dati di alimentazione di controllo per conformità normativa",
+    seg1_sc_label:"Scenario · Flotta CPO",
+    seg1_sc_title:"Sito 3, Caricatore 2 — uscita PSU in calo da 6 giorni. Ancora nessun fermo.",
+    lbl_without:"Senza RS-24", lbl_with:"Con RS-24",
+    seg1_bad_p:"Nessun dato fino al fermo. Intervento d'emergenza. Nessuna causa. Si ripete il mese dopo.",
+    seg1_bad_n:"400 € × 6 eventi",
+    seg1_good_p:"Avviso di tendenza al giorno 4. Visita pianificata, pezzo giusto nel veicolo. Zero fermi.",
+    seg1_good_n:"1 visita pianificata",
+    seg2_hook:"Arrivare con la risposta, non con la domanda.",
+    seg2_body:"Il tocco NFC all'armadio ti dà il riepilogo del guasto prima di aprire lo sportello.",
+    seg2_f1:"Tocco NFC: registro guasti e stato PSU prima di aprire",
+    seg2_f2:"Forma d'onda su telefono: valutare il tipo di guasto prima di spostarsi",
+    seg2_f3:"PDF di messa in servizio: report di consegna, base legalmente difendibile",
+    seg2_f4:"Modello di condivisione dei ricavi: entrate SaaS ricorrenti dalla tua base installata",
+    seg2_sc_label:"Scenario · Tecnico di servizio",
+    seg2_sc_title:"Caricatore offline. Guasto intermittente. Non riproducibile in loco.",
+    seg2_bad_p:"Tre interventi. Riavvio, attesa, ripetizione. Causa trovata al terzo intervento.",
+    seg2_bad_n:"3 interventi · 600 €",
+    seg2_good_p:"Tocco NFC: 3 eventi di instabilità in 24h confermati. Spostarsi con il pezzo giusto.",
+    seg2_good_n:"1 visita · risolto",
+    seg3_hook:"Trasformare le controversie di garanzia in dati ingegneristici.",
+    seg3_body:"RS-24-M si integra a livello di PCB. Ogni unità spedita alimenta la stessa pipeline di dati sul campo.",
+    seg3_f1:"Range 12–62 V copre piattaforme 12 V, 24 V e 48 V in un'unica referenza",
+    seg3_f2:"API REST OEM: distribuzione eventi di instabilità per sito e classe di carico",
+    seg3_f3:"Report MTBF annuale dalla tua flotta effettivamente distribuita",
+    seg3_f4:"Arbitrato garanzia: i log distinguono lato rete da lato dispositivo",
+    seg3_sc_label:"Scenario · Ingegneria OEM",
+    seg3_sc_title:"Reso. \"Spegnimento intermittente sotto carico.\" Nessun guasto in laboratorio.",
+    seg3_bad_p:"400h test su banco. Nessun guasto. Restituito. Torna. L'OEM paga.",
+    seg3_bad_n:"Reclamo irrisolto",
+    seg3_good_p:"Dati campo: eventi correlano con commutazione ad alta corrente in quel sito. Lato rete confermato.",
+    seg3_good_n:"OEM non responsabile",
+    prod_eye:"Varianti hardware", prod_h:"Una piattaforma. Tre configurazioni.",
+    prod_sub:"Stessa scheda principale, stesso firmware, stesso backend cloud. Enclosure e connettività variano per contesto di deployment.",
+    prod1_name:"Standard", prod1_sku:"GUIDA DIN · IP40 · SITI GESTITI",
+    prod1_desc:"Per siti CPO gestiti con infrastruttura Ethernet. Enclosure su guida DIN.",
+    prod2_name:"Field", prod2_sku:"IP67 · SITI REMOTI / AUTOSTRADA",
+    prod2_desc:"Per siti remoti senza rete gestita. Connettività cellulare indipendente dall'infrastruttura del sito. Enclosure IP67 con antenna NFC esterna.",
+    prod3_name:"OEM", prod3_sku:"PCB NUDO · INTEGRAZIONE IN FABBRICA",
+    prod3_desc:"Per produttori EVSE. Scheda principale senza enclosure. Integrazione in fabbrica. Certificazione CE per il modulo. Canone di licenza per unità.",
+    spec_conn:"Connettività", spec_encl:"Enclosure", spec_nfc:"Accesso NFC", spec_range:"Range PSU",
+    spec_sens:"Esp. sensori", spec_holdup:"Hold-up alimentazione", spec_form:"Fattore di forma",
+    spec_api:"Interfaccia dati", spec_ota:"Firmware", spec_model:"Commerciale",
+    spec_s_encl:"Guida DIN, IP40", spec_s_nfc:"Faccia guida DIN (housing plastica)",
+    spec_f_encl:"Bopla Bocube, IP67", spec_f_nfc:"Antenna esterna attraverso coperchio IP67",
+    spec_f_holdup:"Supercondensatore, 1,68 s",
+    spec_m_ota:"Aggiornamenti OTA firmati", spec_m_model:"Canone di licenza per unità",
+    prod_cta_pilot:"Richiedi pilota", prod_cta_oem:"Richiedi brief OEM",
+    num1_label:"I tentativi di ricarica rapida falliscono su stazioni che riportano disponibilità totale",
+    num2_label:"costo massimo per fermo non pianificato — prima che gli interventi ripetuti si accumulino",
+    num3_label:"rilevamento instabilità alimentazione di controllo — circuito hardware, senza latenza firmware",
+    num4_label:"eventi memorizzati localmente — nessuna perdita di dati durante interruzioni di rete",
+    cta_h:"Pronto a vedere dentro il tuo armadio?",
+    cta_sub:"RS-24 è in sviluppo attivo. Un numero limitato di posti pilota è aperto ad aziende di servizio e operatori CPO — contattaci per riservarne uno.",
+    cta1_label:"Aziende di servizio e CPO", cta1_h:"Richiedi un'unità pilota",
+    cta1_p:"Unità a prezzo di costo per partner pilota. Condivisione ricavi su SaaS. Nessun impegno a lungo termine.",
+    cta1_btn:"Contattaci",
+    cta2_label:"Team OEM EVSE", cta2_h:"Brief integrazione OEM",
+    cta2_p:"PCB RS-24-M nudo, API REST OEM, pipeline dati campo. 12–62 V copre piattaforme 12 V, 24 V e 48 V.",
+    cta2_btn:"Richiedi brief OEM",
+    cta3_label:"Ingegneri e valutatori", cta3_h:"Documentazione tecnica",
+    cta3_p:"Documenti di progettazione hardware, architettura software, calibrazione e analisi sensori disponibili su richiesta.",
+    cta3_btn:"Richiedi documentazione",
+    footer_contact:"Contatto",
+    footer_legal:"Prodotto in sviluppo attivo. Le specifiche riflettono l'obiettivo di progettazione. Non ancora certificato CE né disponibile commercialmente.",
+  },
+};
+
+// ══ LANGUAGE ENGINE ═══════════════════════════════════════
+function setLang(lang) {
+  if (!T[lang]) return;
+  document.documentElement.lang = lang;
+  try { localStorage.setItem('rs24-lang', lang); } catch(e){}
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.dataset.lang === lang));
+  const d = T[lang];
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const k = el.dataset.i18n;
+    if (d[k] !== undefined) el.innerHTML = d[k];
+  });
+  const titleEl = document.querySelector('title[data-i18n]');
+  if (titleEl && d.page_title) document.title = d.page_title;
+}
+
+(function(){
+  let lang = 'en';
+  try { lang = localStorage.getItem('rs24-lang') || lang; } catch(e){}
+  if (!T[lang]) lang = 'en';
+  if (lang === 'en') {
+    const bl = (navigator.language || '').toLowerCase().slice(0,2);
+    if (T[bl]) lang = bl;
+  }
+  setLang(lang);
+})();
+
+// ══ SEGMENT TABS ══════════════════════════════════════════
+function showSeg(i) {
+  document.querySelectorAll('.seg-tab').forEach((t,idx) => t.classList.toggle('active', idx===i));
+  document.querySelectorAll('.seg-panel').forEach((p,idx) => p.classList.toggle('active', idx===i));
+}
+
+// ══ SCROLL FADE-IN ════════════════════════════════════════
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }});
+}, {threshold: 0.1});
+document.querySelectorAll('.fade-in').forEach(el => io.observe(el));
+
+// ══ ACTIVE NAV HIGHLIGHT ══════════════════════════════════
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('.nav-links a:not(.nav-cta)');
+window.addEventListener('scroll', () => {
+  let cur = '';
+  sections.forEach(s => { if (window.scrollY >= s.offsetTop - 80) cur = s.id; });
+  navLinks.forEach(a => a.style.color = a.getAttribute('href') === '#'+cur ? '#fff' : 'rgba(255,255,255,.6)');
+}, {passive: true});
+</script>
+</body>
+</html>
