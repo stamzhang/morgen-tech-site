@@ -2,10 +2,28 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>RailSentinel-24 · See why your charger goes down</title>
 <meta name="description" content="RailSentinel-24 by Morgen Tech watches the 24 V control rail inside DC fast-charger cabinets — the layer OCPP can't see — and records what actually knocked the charger out.">
 <link rel="canonical" href="https://morgen-tech.com/railsentinel/">
+<meta property="og:type" content="product">
+<meta property="og:site_name" content="Morgen Tech">
+<meta property="og:title" content="RailSentinel-24 · See why your charger goes down">
+<meta property="og:description" content="Watches the 24 V control rail inside DC fast-charger cabinets — the layer OCPP can't see — and records what actually knocked the charger out.">
+<meta property="og:url" content="https://morgen-tech.com/railsentinel/">
+<meta property="og:image" content="https://morgen-tech.com/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="de_DE">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Product","name":"RailSentinel-24","alternateName":"RS-24","brand":{"@type":"Brand","name":"Morgen Tech"},"manufacturer":{"@type":"Organization","name":"Morgen Technologie UG (haftungsbeschränkt)","url":"https://morgen-tech.com/"},"url":"https://morgen-tech.com/railsentinel/","image":"https://morgen-tech.com/railsentinel/dashboard.png","description":"Isolated DC control-rail monitor for EV fast-charger cabinets: sub-2 µs transient capture, 16-bit peak hold, NFC readout at the cabinet, 1,000 events stored on board. Variants RS-24-S (DIN rail), RS-24-F (IP67, cellular), RS-24-M (OEM module). Pilot programme 2026.","category":"Industrial monitoring / EV charging infrastructure","releaseDate":"2026","additionalProperty":[{"@type":"PropertyValue","name":"Input range","value":"12–62 V DC"},{"@type":"PropertyValue","name":"Transient detection","value":"< 2 µs (hardware comparator)"},{"@type":"PropertyValue","name":"Isolation","value":"5 kVRMS reinforced"}]}
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
@@ -29,7 +47,7 @@ h1,h2,h3{text-wrap:balance}
 nav{position:fixed;inset:0 0 auto 0;z-index:50;background:rgba(13,35,64,.85);backdrop-filter:blur(14px);border-bottom:1px solid rgba(255,255,255,.06)}
 .nav-in{display:flex;align-items:center;justify-content:space-between;height:60px;gap:16px}
 .brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:#fff;font-family:var(--mono);font-size:13px;letter-spacing:1px}
-.brand svg{width:28px;height:28px}
+.brand .logo{height:24px;width:auto;display:block}.brand .fmark{display:none}
 .nav-r{display:flex;align-items:center;gap:14px}
 .lang{display:flex;gap:2px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:6px;padding:3px}
 .lang button{background:none;border:0;color:rgba(255,255,255,.4);font:700 11px var(--mono);padding:4px 8px;border-radius:4px;cursor:pointer}
@@ -189,7 +207,24 @@ footer{background:#07101d;padding:36px 0 26px;border-top:1px solid rgba(255,255,
 <body>
 
 <nav><div class="wrap nav-in">
-  <a class="brand" href="../"><svg viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="6" fill="#1A6FD4" opacity=".18"/><polyline points="2,18 7,18 9,10 12,22 15,14 17,18 22,18 24,12 26,18" stroke="#5fa8f8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg><span>MORGEN TECH <span style="opacity:.4">/</span> RAILSENTINEL·24</span></a>
+  <a class="brand" href="../"><svg class="logo" viewBox="40 40 902 140" role="img" aria-label="Morgen Tech"><path transform="translate(60,60)" d="M0,100 V0 H70 V100" fill="none" stroke="#FFFFFF" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
+<path transform="translate(60,60)" d="M35,0 V100" fill="none" stroke="#FFFFFF" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="216.0" cy="110.0" r="45.0" fill="none" stroke="#5fa8f8" stroke-width="14"/>
+<path d="M182.7,110.0 L197.7,110.0 L202.0,79.4 L208.7,128.3 L215.3,100.0 L221.3,114.7 L226.7,108.3 L232.7,110.0 L249.3,110.0" fill="none" stroke="#f0c040" stroke-width="10.08" stroke-linecap="round" stroke-linejoin="round"/>
+<path transform="translate(296,60)" d="M0,100 V0 H45 a27,27 0 0 1 0,54 H0" fill="none" stroke="#FFFFFF" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
+<path transform="translate(296,60)" d="M38,54 L70,100" fill="none" stroke="#FFFFFF" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
+<path transform="translate(400,60)" d="M70,22 A38,38 0 1 0 70,58 H40" fill="none" stroke="#FFFFFF" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
+<path transform="translate(504,60)" d="M70,0 H0 V100 H70" fill="none" stroke="#FFFFFF" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
+<path transform="translate(504,60)" d="M0,50 H56" fill="none" stroke="#FFFFFF" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
+<path transform="translate(608,60)" d="M0,100 V0 L70,100 V0" fill="none" stroke="#FFFFFF" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
+<path transform="translate(722,110.0) scale(0.5)" d="M0,0 H70" fill="none" stroke="#5fa8f8" stroke-width="21.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path transform="translate(722,110.0) scale(0.5)" d="M35,0 V100" fill="none" stroke="#5fa8f8" stroke-width="21.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path transform="translate(777.0,110.0) scale(0.5)" d="M70,0 H0 V100 H70" fill="none" stroke="#5fa8f8" stroke-width="21.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path transform="translate(777.0,110.0) scale(0.5)" d="M0,50 H56" fill="none" stroke="#5fa8f8" stroke-width="21.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path transform="translate(832.0,110.0) scale(0.5)" d="M70,22 A38,38 0 1 0 70,78" fill="none" stroke="#5fa8f8" stroke-width="21.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path transform="translate(887.0,110.0) scale(0.5)" d="M0,0 V100" fill="none" stroke="#5fa8f8" stroke-width="21.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path transform="translate(887.0,110.0) scale(0.5)" d="M70,0 V100" fill="none" stroke="#5fa8f8" stroke-width="21.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path transform="translate(887.0,110.0) scale(0.5)" d="M0,50 H70" fill="none" stroke="#5fa8f8" stroke-width="21.0" stroke-linecap="round" stroke-linejoin="round"/></svg><span><span style="opacity:.4">/</span> RAILSENTINEL·24</span></a>
   <div class="nav-r"><div class="lang"><button class="on" data-lang="en" onclick="setLang('en')">EN</button><button data-lang="de" onclick="setLang('de')">DE</button></div><a href="#cta" class="btn btn-primary nav-cta" data-i="cta_nav">Request a pilot</a></div>
 </div></nav>
 
