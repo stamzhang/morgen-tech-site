@@ -1,10 +1,12 @@
 # morgen-tech.com
 
-Static site for Morgen Tech / RailSentinel-24, hosted on GitHub Pages.
+Company site for Morgen Technologie UG, hosted on GitHub Pages (branch `main`, root).
 
-- `index.html` — landing page (EN/DE/FR/ES/IT, all inline, no build step)
+- `index.html` — company page: positioning, product pipeline with honest stage labels, how we work, about, contact (EN/DE)
+- `railsentinel/index.html` — RailSentinel-24 product page (cabinet animation, dashboard shot, variants, EN/DE)
+- `railsentinel/dashboard.png` — dashboard v1.4 rendered with bench data
 - `impressum.html` — legal notice (fill in the highlighted fields)
-- `CNAME` — custom domain for GitHub Pages
-- Master copy of the landing page also lives in the Claude project "Voltage remote monitor" (`claude/morgen-tech-index.html`); update here first, then mirror.
+- `CNAME` — custom domain
 
-Deploy: push to `main`, GitHub Pages serves it at https://morgen-tech.com within a minute or two.
+Master copies are mirrored in the Claude project "Voltage remote monitor" (`claude/morgen-tech-index.html`, `claude/railsentinel-index.html`).
+Deploy: push to `main`; live within a minute or two.

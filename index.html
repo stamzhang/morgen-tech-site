@@ -3,168 +3,104 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>RailSentinel-24 · See why your charger goes down</title>
-<meta name="description" content="RailSentinel-24 by Morgen Tech watches the 24 V control rail inside DC fast-charger cabinets — the layer OCPP can't see — and records what actually knocked the charger out.">
+<title>Morgen Tech · Sensing and analytics for charging and grid infrastructure</title>
+<meta name="description" content="Morgen Tech builds instruments and software that see what protocol-level monitoring can't: control-power monitoring for DC fast chargers today, signal analytics and grid-side diagnostics next.">
 <link rel="canonical" href="https://morgen-tech.com/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --navy:#0D2340;--ink:#0d1520;--ink3:#4a5e72;--ink4:#6b7f94;
-  --blue:#1A6FD4;--blue3:#5fa8f8;--teal:#13a0a0;--green:#22a860;--rust:#e06a3a;--gold:#f0c040;
-  --bg:#f4f6f9;--white:#fff;--rule:#e2e8f0;
-  --serif:'Playfair Display',Georgia,serif;--sans:'DM Sans',system-ui,sans-serif;--mono:'DM Mono',ui-monospace,monospace;
-  --r:8px;--r2:14px;--ease:cubic-bezier(.2,.7,.2,1);
-}
+:root{--navy:#0D2340;--ink:#0d1520;--ink3:#4a5e72;--ink4:#6b7f94;--blue:#1A6FD4;--blue3:#5fa8f8;--teal:#13a0a0;--green:#22a860;--rust:#e06a3a;--gold:#f0c040;--bg:#f4f6f9;--white:#fff;--rule:#e2e8f0;--serif:'Playfair Display',Georgia,serif;--sans:'DM Sans',system-ui,sans-serif;--mono:'DM Mono',ui-monospace,monospace;--r:8px;--r2:14px;--ease:cubic-bezier(.2,.7,.2,1)}
 html{scroll-behavior:smooth}
 body{font-family:var(--sans);background:var(--navy);color:#fff;-webkit-font-smoothing:antialiased;overflow-x:hidden;line-height:1.5}
 .wrap{max-width:1120px;margin:0 auto;padding:0 24px}
 @media(max-width:600px){.wrap{padding:0 18px}}
 h1,h2,h3{text-wrap:balance}
 .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--blue3)}
-.btn{display:inline-flex;align-items:center;gap:8px;padding:14px 26px;border-radius:var(--r);font-weight:600;font-size:15px;text-decoration:none;transition:transform .2s var(--ease),background .2s;cursor:pointer;border:0}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:14px 26px;border-radius:var(--r);font-weight:600;font-size:15px;text-decoration:none;transition:transform .2s var(--ease),background .2s;border:0}
 .btn-primary{background:var(--blue);color:#fff}.btn-primary:hover{background:#2d84ef;transform:translateY(-2px)}
 .btn-ghost{background:rgba(255,255,255,.08);color:#fff;border:1px solid rgba(255,255,255,.18)}.btn-ghost:hover{background:rgba(255,255,255,.14)}
 nav{position:fixed;inset:0 0 auto 0;z-index:50;background:rgba(13,35,64,.85);backdrop-filter:blur(14px);border-bottom:1px solid rgba(255,255,255,.06)}
 .nav-in{display:flex;align-items:center;justify-content:space-between;height:60px;gap:16px}
 .brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:#fff;font-family:var(--mono);font-size:13px;letter-spacing:1px}
-.brand svg{width:28px;height:28px}
+.brand i{width:28px;height:28px;border-radius:7px;background:linear-gradient(135deg,var(--blue),var(--teal));display:grid;place-items:center;font-style:normal;font-weight:700;color:#fff;font-size:13px}
+.nav-links{display:flex;gap:22px}
+.nav-links a{color:rgba(255,255,255,.6);text-decoration:none;font-size:13px;font-weight:500}.nav-links a:hover{color:#fff}
+@media(max-width:700px){.nav-links{display:none}}
 .nav-r{display:flex;align-items:center;gap:14px}
 .lang{display:flex;gap:2px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:6px;padding:3px}
 .lang button{background:none;border:0;color:rgba(255,255,255,.4);font:700 11px var(--mono);padding:4px 8px;border-radius:4px;cursor:pointer}
 .lang button.on{background:rgba(255,255,255,.14);color:#fff}
-.nav-cta{padding:8px 16px;font-size:13px}
-@media(max-width:480px){.brand span{display:none}}
 
-/* hero */
-#hero{position:relative;padding:112px 0 48px;overflow:hidden}
+#hero{position:relative;padding:130px 0 70px;overflow:hidden}
 #hero::before{content:'';position:absolute;inset:0;background:radial-gradient(circle,rgba(26,111,212,.16) 1px,transparent 1px);background-size:34px 34px;opacity:.5;pointer-events:none}
-.hero-grid{position:relative;display:grid;grid-template-columns:.9fr 1.1fr;gap:40px;align-items:center}
-@media(max-width:900px){.hero-grid{grid-template-columns:1fr;gap:28px}}
-.hero h1{font-family:var(--serif);font-size:clamp(36px,4.8vw,62px);line-height:1.04;margin:18px 0 18px}
+.hero{position:relative;max-width:760px}
+.hero h1{font-family:var(--serif);font-size:clamp(38px,5.4vw,68px);line-height:1.04;margin:18px 0 20px}
 .hero h1 em{font-style:italic;color:var(--gold)}
-.hero p{font-size:17px;color:rgba(255,255,255,.62);max-width:460px;margin-bottom:28px}
+.hero p{font-size:18px;color:rgba(255,255,255,.62);max-width:560px;margin-bottom:30px}
 .hero-actions{display:flex;gap:12px;flex-wrap:wrap}
 .reveal{opacity:0;transform:translateY(18px);animation:up .8s var(--ease) forwards}
 .reveal.d1{animation-delay:.1s}.reveal.d2{animation-delay:.25s}.reveal.d3{animation-delay:.4s}
 @keyframes up{to{opacity:1;transform:none}}
+.layers{position:relative;margin-top:56px;display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:rgba(255,255,255,.06);border-radius:var(--r2);overflow:hidden}
+@media(max-width:760px){.layers{grid-template-columns:1fr}}
+.layer{background:#101e32;padding:22px 24px}
+.layer small{font-family:var(--mono);font-size:10px;letter-spacing:2px;color:rgba(255,255,255,.35);text-transform:uppercase}
+.layer h3{font-size:17px;margin:6px 0 4px}
+.layer p{font-size:13px;color:rgba(255,255,255,.5)}
+.layer.hi{box-shadow:inset 0 3px 0 var(--gold)}
+.layer.hi small{color:var(--gold)}
 
-/* cabinet */
-.cab{background:#081527;border:1px solid rgba(95,168,248,.18);border-radius:var(--r2);padding:12px 12px 8px;box-shadow:0 30px 80px rgba(0,0,0,.45)}
-.cab-top{display:flex;justify-content:space-between;font-family:var(--mono);font-size:11px;color:rgba(255,255,255,.4);padding:2px 6px 8px}
-.cab svg{width:100%;height:auto;display:block}
-.cab text{font-family:var(--mono);fill:rgba(255,255,255,.55);font-size:10px}
-.cab .lbl{fill:rgba(255,255,255,.85);font-size:11px;font-weight:500}
-.cab .dim{fill:rgba(255,255,255,.35);font-size:9px}
-.rail{fill:#1c2f4b;stroke:#33507a;stroke-width:1}
-.mod{fill:#122238;stroke:#2b4468;stroke-width:1.2;rx:3}
-.bus{stroke:#5fa8f8;stroke-width:2.2;fill:none;stroke-linecap:round}
-.drop{stroke:#5fa8f8;stroke-width:1.6;fill:none;opacity:.7}
-.coil{fill:#243a5c;stroke:#4b6a93;transition:fill .15s}
-.k1.on .coil{fill:#e06a3a;stroke:#ffb08a}
-.spark{opacity:0;stroke:#ffd27a;stroke-width:1.6;fill:none;stroke-linecap:round}
-.k1.on .spark{opacity:1}
-.pulse{fill:#ffb35c;opacity:0;filter:url(#pg)}
-.pulse.go{opacity:1}
-.bump{fill:none;stroke:#ffb35c;stroke-width:2.4;opacity:0;stroke-linecap:round}
-.bump.go{opacity:1}
-.halo{fill:none;stroke:#f0c040;stroke-width:1.5;opacity:.0;animation:halo 3s ease-out infinite}
-@keyframes halo{0%{opacity:.55;transform:scale(1)}100%{opacity:0;transform:scale(1.12)}}
-.halo{transform-origin:506px 75px;transform-box:view-box}
-.led{fill:#22a860;transition:fill .2s}
-.led.hit{fill:#ff5a3c}
-.ctl{fill:#22a860;font-size:9px;transition:fill .2s}
-.ctl.reset{fill:#ff5a3c}
-.badge{opacity:0;transition:opacity .25s,transform .25s;transform:translateY(4px)}
-.badge.show{opacity:1;transform:none}
-.mini{stroke:#5fa8f8;stroke-width:1.2;fill:none}
-.mini2{stroke:#ffb35c;stroke-width:1.4;fill:none;opacity:0;transition:opacity .2s}
-.mini2.show{opacity:1}
-.cab-bot{display:flex;gap:8px;flex-wrap:wrap;font-family:var(--mono);font-size:11px;color:rgba(255,255,255,.4);padding:8px 6px 0}
-.cab-bot b{color:#fff;font-weight:500}
-
-/* sections */
 section{padding:88px 0}
 .light{background:var(--bg);color:var(--ink)}
 .light .eyebrow{color:var(--blue)}
 .sec-h{font-family:var(--serif);font-size:clamp(28px,3.6vw,46px);line-height:1.12;margin:14px 0 14px}
 .light .sec-h{color:var(--navy)}
-.lead{font-size:17px;color:rgba(255,255,255,.6);max-width:560px}
+.lead{font-size:17px;color:rgba(255,255,255,.6);max-width:600px}
 .light .lead{color:var(--ink3)}
 .io{opacity:0;transform:translateY(24px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
 .io.in{opacity:1;transform:none}
 
-.gap{display:grid;grid-template-columns:1fr auto 1fr;gap:20px;align-items:stretch;margin-top:44px}
-@media(max-width:760px){.gap{grid-template-columns:1fr}.gap .arrow{transform:rotate(90deg);justify-self:center}}
-.gcard{background:var(--white);border:1px solid var(--rule);border-radius:var(--r2);padding:28px}
-.gcard.dim{opacity:.72}
-.gcard .k{font-family:var(--mono);font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--ink4);margin-bottom:12px}
-.gcard h3{font-size:22px;line-height:1.25;margin-bottom:8px;color:var(--navy)}
-.gcard p{color:var(--ink3);font-size:15px}
-.gcard .big{font-family:var(--mono);font-size:44px;font-weight:500;color:var(--rust);line-height:1;margin:6px 0 4px}
-.gcard.hi .big{color:var(--blue)}
-.arrow{align-self:center;color:var(--blue);font-size:28px}
+.prods{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:40px}
+@media(max-width:820px){.prods{grid-template-columns:1fr}}
+.prod{background:var(--white);border:1px solid var(--rule);border-radius:var(--r2);padding:28px;display:flex;flex-direction:column;gap:10px;position:relative;transition:transform .25s var(--ease),box-shadow .25s}
+.prod:hover{transform:translateY(-3px);box-shadow:0 18px 40px rgba(13,35,64,.08)}
+.prod.lead-p{grid-column:1/-1;display:grid;grid-template-columns:1.3fr 1fr;gap:28px;align-items:center;border-color:var(--gold);box-shadow:0 0 0 3px rgba(240,192,64,.15)}
+@media(max-width:820px){.prod.lead-p{grid-template-columns:1fr}}
+.prod .st{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;padding:4px 10px;border-radius:20px;width:fit-content}
+.st.pilot{background:rgba(34,168,96,.12);color:#187840}.st.dev{background:rgba(26,111,212,.12);color:var(--blue)}.st.concept{background:rgba(107,127,148,.14);color:var(--ink4)}
+.prod .cat{font-family:var(--mono);font-size:11px;letter-spacing:2px;color:var(--ink4);text-transform:uppercase}
+.prod h3{font-size:22px;color:var(--navy);line-height:1.2}
+.prod.lead-p h3{font-family:var(--serif);font-size:30px}
+.prod p{color:var(--ink3);font-size:15px;flex:1}
+.prod .more{color:var(--blue);text-decoration:none;font-weight:600;font-size:14px}
+.prod .more:hover{text-decoration:underline}
+.prod .meta{font-family:var(--mono);font-size:11px;color:var(--ink4)}
+.pshot{border-radius:10px;overflow:hidden;border:1px solid var(--rule);background:#081527}
+.pshot img{width:100%;display:block}
+.roadnote{font-size:13px;color:var(--ink4);margin-top:18px;max-width:640px}
 
-.pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:40px}
-@media(max-width:820px){.pillars{grid-template-columns:1fr}}
-.pillar{background:#101e32;border:1px solid rgba(255,255,255,.07);border-radius:var(--r2);padding:30px 26px;transition:transform .3s var(--ease),border-color .3s}
-.pillar:hover{transform:translateY(-4px);border-color:rgba(95,168,248,.4)}
-.pillar .ic{width:44px;height:44px;border-radius:10px;display:grid;place-items:center;margin-bottom:20px;background:rgba(26,111,212,.15)}
-.pillar:nth-child(2) .ic{background:rgba(19,160,160,.15)}.pillar:nth-child(3) .ic{background:rgba(34,168,96,.15)}
-.pillar h3{font-size:21px;margin-bottom:8px;line-height:1.25}
-.pillar p{color:rgba(255,255,255,.55);font-size:15px}
-.pillar .spec{margin-top:18px;font-family:var(--mono);font-size:11px;color:rgba(255,255,255,.35)}
-.shot{margin-top:28px;border-radius:var(--r2);overflow:hidden;border:1px solid rgba(95,168,248,.2);box-shadow:0 30px 70px rgba(0,0,0,.4);position:relative}
-.shot img{width:100%;display:block}
-.shot figcaption{position:absolute;left:14px;bottom:12px;background:rgba(8,21,39,.85);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.1);border-radius:6px;padding:6px 10px;font-family:var(--mono);font-size:11px;color:rgba(255,255,255,.7)}
+.how{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:40px}
+@media(max-width:820px){.how{grid-template-columns:1fr}}
+.hcard{background:#101e32;border:1px solid rgba(255,255,255,.07);border-radius:var(--r2);padding:28px}
+.hcard .n{font-family:var(--mono);color:var(--blue3);font-size:12px;letter-spacing:2px;margin-bottom:12px}
+.hcard h3{font-size:19px;margin-bottom:8px}
+.hcard p{color:rgba(255,255,255,.55);font-size:14px}
 
-.tabs{display:inline-flex;border:1px solid var(--rule);border-radius:var(--r2);overflow:hidden;margin:30px 0 22px;background:var(--white)}
-.tabs button{padding:11px 22px;border:0;background:none;font:600 13px var(--sans);color:var(--ink4);cursor:pointer;transition:background .2s}
-.tabs button.on{background:var(--navy);color:#fff}
-@media(max-width:600px){.tabs{width:100%}.tabs button{flex:1;padding:11px 8px}}
-.who{display:none;grid-template-columns:1.1fr .9fr;gap:36px;align-items:center}
-.who.on{display:grid;animation:up .5s var(--ease)}
-@media(max-width:760px){.who{grid-template-columns:1fr}}
-.who h3{font-family:var(--serif);font-size:clamp(22px,2.6vw,32px);line-height:1.2;color:var(--navy);margin-bottom:12px}
-.who p{color:var(--ink3);font-size:16px}
-.vs{background:var(--white);border:1px solid var(--rule);border-radius:var(--r2);overflow:hidden;display:grid;grid-template-columns:1fr 1fr}
-.vs div{padding:20px}.vs div+div{border-left:1px solid var(--rule)}
-.vs small{display:block;font-family:var(--mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;margin-bottom:8px}
-.vs .bad small{color:var(--rust)}.vs .good small{color:var(--green)}
-.vs b{display:block;font-family:var(--mono);font-weight:500;font-size:22px;margin-top:8px}
-.vs .bad b{color:var(--rust)}.vs .good b{color:var(--green)}
-.vs p{font-size:13px;color:var(--ink3)}
+.about{display:grid;grid-template-columns:1.2fr .8fr;gap:40px;align-items:start}
+@media(max-width:820px){.about{grid-template-columns:1fr}}
+.about p{color:var(--ink3);font-size:16px;margin-bottom:12px}
+.facts{background:var(--white);border:1px solid var(--rule);border-radius:var(--r2);padding:24px;display:grid;gap:14px}
+.facts div{display:grid;grid-template-columns:110px 1fr;gap:10px;font-size:14px}
+.facts b{font-family:var(--mono);font-weight:500;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink4);padding-top:2px}
 
-.vars{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:rgba(255,255,255,.06);border-radius:var(--r2);overflow:hidden;margin-top:36px}
-@media(max-width:760px){.vars{grid-template-columns:1fr}}
-.var{background:#101e32;padding:22px 24px 26px}
-.var svg{width:100%;height:auto;display:block;margin-bottom:16px;border-radius:8px;background:#0a1830}
-.var svg text{font-family:var(--mono);font-size:9px;fill:rgba(255,255,255,.45)}
-.var .tag{font-family:var(--mono);font-size:11px;letter-spacing:2px;color:var(--gold);margin-bottom:6px}
-.var h3{font-size:20px;margin-bottom:4px}
-.var p{color:rgba(255,255,255,.5);font-size:14px}
-.var ul{list-style:none;margin-top:14px;display:grid;gap:6px;font-family:var(--mono);font-size:12px;color:rgba(255,255,255,.55)}
-.var li::before{content:'·';color:var(--blue3);margin-right:8px}
-
-.other{background:var(--white);border:1px solid var(--rule);border-radius:var(--r2);padding:28px;display:grid;grid-template-columns:1.2fr 2fr;gap:28px;align-items:center;margin-top:34px}
-@media(max-width:820px){.other{grid-template-columns:1fr}}
-.other h3{font-family:var(--serif);font-size:24px;color:var(--navy);line-height:1.2;margin-bottom:8px}
-.other p{color:var(--ink3);font-size:14px}
-.other ul{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;list-style:none}
-@media(max-width:600px){.other ul{grid-template-columns:1fr}}
-.other li{background:var(--bg);border-radius:var(--r);padding:14px;font-size:14px;color:var(--ink)}
-.other li b{display:block;font-family:var(--mono);font-weight:500;font-size:12px;color:var(--blue);margin-bottom:4px}
-.other .note{font-family:var(--mono);font-size:11px;color:var(--ink4);margin-top:10px}
-
-#cta{position:relative;overflow:hidden}
-#cta::before{content:'';position:absolute;top:-120px;left:50%;transform:translateX(-50%);width:640px;height:640px;background:radial-gradient(ellipse,rgba(26,111,212,.16),transparent 70%);pointer-events:none}
+#contact{position:relative;overflow:hidden}
+#contact::before{content:'';position:absolute;top:-120px;left:50%;transform:translateX(-50%);width:640px;height:640px;background:radial-gradient(ellipse,rgba(26,111,212,.16),transparent 70%);pointer-events:none}
 .cta-h{font-family:var(--serif);font-size:clamp(30px,4.2vw,54px);text-align:center;line-height:1.08;max-width:700px;margin:0 auto 12px;position:relative}
 .cta-sub{text-align:center;color:rgba(255,255,255,.5);max-width:520px;margin:0 auto 40px;position:relative}
 .cta-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;max-width:900px;margin:0 auto;position:relative}
 @media(max-width:760px){.cta-grid{grid-template-columns:1fr}}
-.cta-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:var(--r2);padding:26px;display:flex;flex-direction:column;gap:8px;transition:transform .25s var(--ease),border-color .25s}
-.cta-card:hover{transform:translateY(-3px);border-color:rgba(95,168,248,.45)}
+.cta-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:var(--r2);padding:26px;display:flex;flex-direction:column;gap:8px}
 .cta-card small{font-family:var(--mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--blue3)}
 .cta-card h4{font-size:18px}
 .cta-card p{color:rgba(255,255,255,.45);font-size:14px;flex:1}
@@ -180,232 +116,114 @@ footer{background:#07101d;padding:36px 0 26px;border-top:1px solid rgba(255,255,
 <body>
 
 <nav><div class="wrap nav-in">
-  <a class="brand" href="#"><svg viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="6" fill="#1A6FD4" opacity=".18"/><polyline points="2,18 7,18 9,10 12,22 15,14 17,18 22,18 24,12 26,18" stroke="#5fa8f8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg><span>RAILSENTINEL·24</span></a>
-  <div class="nav-r"><div class="lang"><button class="on" data-lang="en" onclick="setLang('en')">EN</button><button data-lang="de" onclick="setLang('de')">DE</button></div><a href="#cta" class="btn btn-primary nav-cta" data-i="cta_nav">Request a pilot</a></div>
+  <a class="brand" href="#"><i>M</i><span>MORGEN TECH</span></a>
+  <div class="nav-links"><a href="#products" data-i="n_prod">Products</a><a href="#how" data-i="n_how">How we work</a><a href="#about" data-i="n_about">About</a><a href="railsentinel/">RailSentinel-24</a></div>
+  <div class="nav-r"><div class="lang"><button class="on" data-lang="en" onclick="setLang('en')">EN</button><button data-lang="de" onclick="setLang('de')">DE</button></div><a href="#contact" class="btn btn-primary" style="padding:8px 16px;font-size:13px" data-i="n_cta">Contact</a></div>
 </div></nav>
 
-<section id="hero"><div class="wrap hero-grid">
+<section id="hero"><div class="wrap">
   <div class="hero">
-    <div class="eyebrow reveal" style="color:var(--gold)" data-i="h_eye">Control-power monitor for DC fast chargers</div>
-    <h1 class="reveal d1" data-i="h_h">The charger says<br>"faulted".<br><em>We say why.</em></h1>
-    <p class="reveal d2" data-i="h_p">RailSentinel-24 clips onto the DIN rail and watches the 24 V control supply every relay, contactor and controller in the cabinet depends on — the one layer OCPP can't see.</p>
-    <div class="hero-actions reveal d3"><a href="#cta" class="btn btn-primary" data-i="h_b1">Request a pilot</a><a href="#what" class="btn btn-ghost" data-i="h_b2">See what it does</a></div>
+    <div class="eyebrow reveal" style="color:var(--gold)" data-i="h_eye">Morgen Tech · Stuttgart</div>
+    <h1 class="reveal d1" data-i="h_h">We see what the protocol<br>layer <em>can't.</em></h1>
+    <p class="reveal d2" data-i="h_p">Instruments and software for the electrical layer underneath charging and grid infrastructure — where faults actually start, and where OCPP, SCADA and dashboards have no eyes.</p>
+    <div class="hero-actions reveal d3"><a href="#products" class="btn btn-primary" data-i="h_b1">See the products</a><a href="railsentinel/" class="btn btn-ghost" data-i="h_b2">RailSentinel-24 →</a></div>
   </div>
-
-  <div class="cab reveal d2">
-    <div class="cab-top"><span data-i="cab_t">DC FAST CHARGER · CONTROL CABINET · 24 V AUX</span><span id="cab-state" data-i="cab_ok">NORMAL</span></div>
-    <svg id="cab" viewBox="0 0 620 340" role="img" aria-label="Animated cabinet schematic: a contactor switches, a transient runs along the 24 V rail, the controller resets and RS-24 captures the event">
-      <defs><filter id="pg"><feGaussianBlur stdDeviation="3"/></filter><filter id="glow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
-      <rect x="6" y="6" width="608" height="328" rx="8" fill="none" stroke="#2b4468" stroke-width="1.5" stroke-dasharray="5 5"/>
-      <!-- top rail -->
-      <rect class="rail" x="30" y="72" width="560" height="10"/>
-      <rect class="mod" x="44" y="40" width="120" height="70"/><text class="lbl" x="104" y="66" text-anchor="middle">PSU</text><text class="dim" x="104" y="82" text-anchor="middle">AC/DC · 24 V · 10 A</text>
-      <rect class="mod" x="182" y="46" width="14" height="58"/><rect class="mod" x="200" y="46" width="14" height="58"/><rect class="mod" x="218" y="46" width="14" height="58"/>
-      <!-- RS-24 -->
-      <g id="rs24">
-        <rect class="halo" x="438" y="28" width="136" height="94" rx="8"/>
-        <rect x="444" y="34" width="124" height="82" rx="4" fill="#1a2b1f" stroke="#f0c040" stroke-width="2" filter="url(#glow)"/>
-        <rect x="444" y="34" width="124" height="10" rx="4" fill="#f0c040"/><text x="506" y="42" text-anchor="middle" style="fill:#0d2340;font-size:8px;font-weight:700;letter-spacing:1px">RAILSENTINEL</text>
-        <text class="lbl" x="496" y="57" text-anchor="middle" style="fill:#f0c040;font-size:13px;font-weight:700">RS-24</text>
-        <rect x="456" y="62" width="80" height="32" rx="3" fill="#050f1f" stroke="#1f3554"/>
-        <polyline class="mini" points="460,78 470,77 480,78 490,77 500,78 510,77 520,78 532,77"/>
-        <polyline class="mini2" id="mini2" points="460,78 486,78 490,64 494,86 498,74 501,80 504,78 532,77"/>
-        <circle class="led" id="led" cx="552" cy="66" r="4"/><text class="dim" x="552" y="88" text-anchor="middle">NFC</text><text x="506" y="21" text-anchor="middle" style="fill:#f0c040;font-size:9px;letter-spacing:2px" data-i="cab_this">THIS IS THE PRODUCT ▼</text>
-      </g>
-      <!-- bus -->
-      <path class="bus" d="M104 110 V150 H520 V116"/>
-      <path class="drop" d="M115 150 V226"/><path class="drop" d="M270 150 V226"/><path class="drop" d="M410 150 V226"/>
-      <text class="dim" x="330" y="144" text-anchor="middle">+24 V CONTROL RAIL</text>
-      <!-- bottom rail + loads -->
-      <rect class="rail" x="30" y="268" width="560" height="10"/>
-      <rect class="mod" x="60" y="226" width="110" height="72"/><text class="lbl" x="115" y="250" text-anchor="middle" data-i="cab_ctl">CONTROLLER</text><text class="ctl" id="ctl" x="115" y="270" text-anchor="middle">● OK</text><text class="dim" x="115" y="286" text-anchor="middle">OCPP</text>
-      <g class="k1" id="k1"><rect class="mod" x="215" y="226" width="110" height="72"/><text class="lbl" x="270" y="250" text-anchor="middle" data-i="cab_k1">CONTACTOR K1</text>
-        <rect class="coil" x="248" y="258" width="44" height="14" rx="2"/><text class="dim" x="270" y="290" text-anchor="middle" data-i="cab_k1s">DC OUTPUT</text>
-        <path class="spark" d="M296 258 l5-6 M300 265 l7 0 M296 272 l5 6"/></g>
-      <rect class="mod" x="355" y="226" width="110" height="72"/><text class="lbl" x="410" y="250" text-anchor="middle" data-i="cab_rb">RELAY BOARD</text><text class="dim" x="410" y="286" text-anchor="middle">×8</text>
-      <!-- transient -->
-      <path class="bump" id="bump" d="M250 150 L262 150 L266 128 L272 164 L277 142 L281 154 L285 150 L300 150"/>
-      <circle class="pulse" id="p1" r="6" cx="270" cy="150"/><circle class="pulse" id="p2" r="6" cx="270" cy="150"/>
-      <!-- badge -->
-      <g class="badge" id="badge"><rect x="404" y="176" width="176" height="30" rx="5" fill="#e06a3a"/><text x="492" y="195" text-anchor="middle" style="fill:#fff;font-size:11px;font-weight:500" id="badge-t">▲ 41.8 V · 2 µs · captured</text></g>
-    </svg>
-    <div class="cab-bot"><span data-i="cb1">rail <b id="cb-rail">24.1 V</b></span><span data-i="cb2">last peak <b id="cb-peak">—</b></span><span data-i="cb3">events 24 h <b id="cb-ev">0</b></span></div>
+  <div class="layers reveal d3">
+    <div class="layer"><small data-i="l1_s">Layer 3 · what you have today</small><h3 data-i="l1_h">Protocol monitoring</h3><p data-i="l1_p">OCPP, SCADA, cloud dashboards. Tells you the charger is "faulted".</p></div>
+    <div class="layer"><small data-i="l2_s">Layer 2 · the controller</small><h3 data-i="l2_h">Firmware logs</h3><p data-i="l2_p">Useful — until the event resets the controller before it can write.</p></div>
+    <div class="layer hi"><small data-i="l3_s">Layer 1 · where we work</small><h3 data-i="l3_h">The electrical signals</h3><p data-i="l3_p">Control power, pilot lines, leakage currents. Measured in hardware, analysed in software.</p></div>
   </div>
 </div></section>
 
-<section class="light" id="why"><div class="wrap">
-  <div class="io"><div class="eyebrow" data-i="w_eye">The blind spot</div>
-  <h2 class="sec-h" data-i="w_h">Your monitoring stops one layer above the fault.</h2>
-  <p class="lead" data-i="w_p">When a contactor opens, the 24 V rail rings. The controller browns out before it can write a log — and the dashboard just says "faulted".</p></div>
-  <div class="gap io">
-    <div class="gcard dim"><div class="k" data-i="g1_k">What you see today</div><div class="big">?</div><h3 data-i="g1_h">"Faulted." Then a callout.</h3><p data-i="g1_p">Power-cycle, drive home, wait for it to happen again.</p></div>
-    <div class="arrow">→</div>
-    <div class="gcard hi"><div class="k" data-i="g2_k">What RS-24 sees</div><div class="big">41.8 V</div><h3 data-i="g2_h">The spike, the time, the trend.</h3><p data-i="g2_p">Captured in hardware at microsecond speed, stored on the board, sent to you.</p></div>
-  </div>
-</div></section>
-
-<section id="what"><div class="wrap">
-  <div class="io"><div class="eyebrow" data-i="p_eye">What it does</div>
-  <h2 class="sec-h" data-i="p_h">Three things. One small module on the DIN rail.</h2></div>
-  <div class="pillars">
-    <div class="pillar io"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#5fa8f8" stroke-width="1.8" stroke-linecap="round"><polyline points="2,16 6,16 8,8 11,20 14,12 16,16 20,16 22,10"/></svg></div><h3 data-i="p1_h">Catches the event</h3><p data-i="p1_p">Hardware trigger, peak capture and a waveform snapshot of every transient — timestamped, even through a power loss.</p><div class="spec" data-i="p1_s">&lt;2 µs trigger · 100 kHz capture · 1,000-event buffer</div></div>
-    <div class="pillar io"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#13a0a0" stroke-width="1.8" stroke-linecap="round"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M9 7q3-2 6 0M8 10q4-3 8 0"/></svg></div><h3 data-i="p2_h">Answers at the cabinet</h3><p data-i="p2_p">Tap your phone on the enclosure and read the last events before you open the door. No app, no network, no login.</p><div class="spec" data-i="p2_s">Passive NFC · works offline · metal cabinets</div></div>
-    <div class="pillar io"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#22a860" stroke-width="1.8" stroke-linecap="round"><path d="M3 18l5-6 5 3 5-7 3 2"/></svg></div><h3 data-i="p3_h">Shows it coming</h3><p data-i="p3_p">Rail voltage, load, vibration, sound and cabinet temperature, trended per device and across the fleet — the visit is planned, not emergency.</p><div class="spec" data-i="p3_s">12–62 V · ±0.15 V · fleet dashboard</div></div>
-  </div>
-  <figure class="shot io"><img src="dashboard.png" alt="RS-24 dashboard: voltage, current, vibration and acoustic trends with telemetry and spike-event logs" loading="lazy"><figcaption data-i="shot_c">RS-24 dashboard v1.4 · bench data</figcaption></figure>
-</div></section>
-
-<section class="light" id="who"><div class="wrap">
-  <div class="io"><div class="eyebrow" data-i="s_eye">Who it's for</div>
-  <h2 class="sec-h" data-i="s_h">One device, three ways to stop paying for restarts.</h2>
-  <div class="tabs"><button class="on" onclick="tab(0)" data-i="s_t1">CPO fleet</button><button onclick="tab(1)" data-i="s_t2">Service company</button><button onclick="tab(2)" data-i="s_t3">Charger OEM</button></div></div>
-  <div class="who on"><div><h3 data-i="s1_h">Know which charger is drifting before it goes offline.</h3><p data-i="s1_p">One avoided callout pays for a year of monitoring. Every event is evidence your PSU supplier can't wave away.</p></div>
-    <div class="vs"><div class="bad"><small data-i="v_no">Without</small><p data-i="s1_b">Six emergency visits, no root cause.</p><b>6 × €400</b></div><div class="good"><small data-i="v_yes">With RS-24</small><p data-i="s1_g">Alert on day 4, one planned visit, right part in the van.</p><b data-i="s1_gb">1 × planned</b></div></div></div>
-  <div class="who"><div><h3 data-i="s2_h">Arrive with the answer, not the question.</h3><p data-i="s2_p">Tap the cabinet, see the fault history, fix it once. Hand over every commissioning with a signed PSU health report.</p></div>
-    <div class="vs"><div class="bad"><small data-i="v_no">Without</small><p data-i="s2_b">Three trips, a scope on the third.</p><b data-i="s2_bb">3 × callout</b></div><div class="good"><small data-i="v_yes">With RS-24</small><p data-i="s2_g">Three events read off the phone before opening the door.</p><b data-i="s2_gb">1 × done</b></div></div></div>
-  <div class="who"><div><h3 data-i="s3_h">Turn "no fault found" into field data.</h3><p data-i="s3_p">Integrate the bare module at PCB level. Every shipped unit reports real operating conditions — warranty disputes end on data.</p></div>
-    <div class="vs"><div class="bad"><small data-i="v_no">Without</small><p data-i="s3_b">400 h bench test, board comes back again.</p><b data-i="s3_bb">Open claim</b></div><div class="good"><small data-i="v_yes">With RS-24</small><p data-i="s3_g">Logs show grid-side switching at that site.</p><b data-i="s3_gb">Not liable</b></div></div></div>
-</div></section>
-
-<section id="variants"><div class="wrap">
-  <div class="io"><div class="eyebrow" data-i="r_eye">Variants &amp; mounting</div>
-  <h2 class="sec-h" data-i="r_h">Same board. Pick the enclosure.</h2></div>
-  <div class="vars io">
-    <div class="var">
-      <svg viewBox="0 0 300 170" aria-label="RS-24-S snapped onto a DIN rail between other modules">
-        <rect x="20" y="70" width="260" height="14" fill="#1c2f4b" stroke="#33507a"/><rect x="20" y="66" width="260" height="4" fill="#33507a"/><rect x="20" y="84" width="260" height="4" fill="#33507a"/>
-        <rect x="40" y="34" width="52" height="84" rx="3" fill="#122238" stroke="#2b4468"/><rect x="98" y="34" width="52" height="84" rx="3" fill="#122238" stroke="#2b4468"/>
-        <rect x="156" y="30" width="66" height="92" rx="4" fill="#132a48" stroke="#f0c040" stroke-width="1.6"/><rect x="166" y="42" width="46" height="22" rx="2" fill="#050f1f" stroke="#1f3554"/><polyline points="170,54 180,53 186,46 190,60 195,52 208,53" fill="none" stroke="#5fa8f8" stroke-width="1.2"/>
-        <circle cx="189" cy="96" r="9" fill="none" stroke="#13a0a0" stroke-width="1.3"/><circle cx="189" cy="96" r="4" fill="none" stroke="#13a0a0" stroke-width="1.3"/><text x="189" y="118" text-anchor="middle" style="fill:#13a0a0">NFC</text>
-        <rect x="228" y="34" width="34" height="84" rx="3" fill="#122238" stroke="#2b4468"/>
-        <text x="150" y="150" text-anchor="middle">35 mm DIN RAIL · 6 M · SNAP-ON</text>
-      </svg>
-      <div class="tag">RS-24-S</div><h3 data-i="r1_h">Standard</h3><p data-i="r1_p">DIN rail, IP40, for managed sites with Ethernet.</p><ul><li>Ethernet / WiFi</li><li data-i="r1_l2">NFC on the front face</li><li>12–62 V</li></ul>
+<section class="light" id="products"><div class="wrap">
+  <div class="io"><div class="eyebrow" data-i="p_eye">Products</div>
+  <h2 class="sec-h" data-i="p_h">One product you can pilot today. A pipeline behind it.</h2>
+  <p class="lead" data-i="p_p">We build one thing at a time and say plainly what stage it's at.</p></div>
+  <div class="prods">
+    <div class="prod lead-p io">
+      <div style="display:flex;flex-direction:column;gap:10px"><span class="st pilot" data-i="st_pilot">● Pilot units · 2026</span><span class="cat" data-i="p1_c">Hardware + dashboard</span><h3>RailSentinel-24</h3><p data-i="p1_p">Control-power monitor for DC fast-charger cabinets. Captures the transients that reset controllers, reads out by NFC at the cabinet, trends the rail across a fleet. DIN rail, IP67 and OEM module variants.</p><a class="more" href="railsentinel/" data-i="p1_m">Product page →</a></div>
+      <a class="pshot" href="railsentinel/"><img src="railsentinel/dashboard.png" alt="RailSentinel-24 dashboard" loading="lazy"></a>
     </div>
-    <div class="var">
-      <svg viewBox="0 0 300 170" aria-label="RS-24-F in an IP67 box with cable gland and external NFC antenna">
-        <rect x="70" y="30" width="160" height="110" rx="10" fill="#132a48" stroke="#f0c040" stroke-width="1.6"/><rect x="82" y="42" width="136" height="86" rx="6" fill="none" stroke="#2b4468" stroke-dasharray="3 3"/>
-        <circle cx="80" cy="40" r="3" fill="#33507a"/><circle cx="220" cy="40" r="3" fill="#33507a"/><circle cx="80" cy="130" r="3" fill="#33507a"/><circle cx="220" cy="130" r="3" fill="#33507a"/>
-        <rect x="236" y="136" width="18" height="16" rx="3" fill="#1c2f4b" stroke="#33507a"/><path d="M245 152 v14" stroke="#5fa8f8" stroke-width="2"/>
-        <circle cx="180" cy="85" r="16" fill="#0a1830" stroke="#13a0a0" stroke-width="1.3"/><circle cx="180" cy="85" r="9" fill="none" stroke="#13a0a0" stroke-width="1.3"/><circle cx="180" cy="85" r="3" fill="#13a0a0"/>
-        <text x="180" y="120" text-anchor="middle" style="fill:#13a0a0">NFC · EXT</text>
-        <text x="150" y="24" text-anchor="middle">IP67 · BOPLA BOCUBE · M12 GLAND</text><text x="120" y="163" text-anchor="middle">WALL / MAGNET MOUNT · CELLULAR</text>
-      </svg>
-      <div class="tag">RS-24-F</div><h3 data-i="r2_h">Field</h3><p data-i="r2_p">IP67, cellular, for remote and motorway sites.</p><ul><li>NB-IoT / LTE-M</li><li data-i="r2_l2">External NFC antenna</li><li data-i="r2_l3">Supercap hold-up</li></ul>
-    </div>
-    <div class="var">
-      <svg viewBox="0 0 300 170" aria-label="RS-24-M bare module on standoffs above a host board">
-        <path d="M30 120 L150 150 L270 100 L150 70 Z" fill="#101e32" stroke="#2b4468"/>
-        <path d="M110 102 L150 112 L190 96 L150 86 Z" fill="none" stroke="#2b4468" stroke-dasharray="2 2"/>
-        <line x1="112" y1="102" x2="112" y2="78" stroke="#4b6a93" stroke-width="2"/><line x1="150" y1="112" x2="150" y2="88" stroke="#4b6a93" stroke-width="2"/><line x1="188" y1="96" x2="188" y2="72" stroke="#4b6a93" stroke-width="2"/><line x1="150" y1="86" x2="150" y2="62" stroke="#4b6a93" stroke-width="2"/>
-        <path d="M110 78 L150 88 L190 72 L150 62 Z" fill="#132a48" stroke="#f0c040" stroke-width="1.6"/>
-        <rect x="132" y="70" width="18" height="8" fill="#0a1830" stroke="#1f3554" transform="skewY(14)"/><circle cx="168" cy="72" r="2.5" fill="#22a860"/>
-        <path d="M150 88 v10" stroke="#ffb35c" stroke-width="1.5"/><text x="205" y="128" text-anchor="start">HOST PCB</text><text x="150" y="40" text-anchor="middle">65 × 55 mm · 4 × M2.5 STANDOFF · PIN HEADER</text>
-      </svg>
-      <div class="tag">RS-24-M</div><h3 data-i="r3_h">OEM module</h3><p data-i="r3_p">Bare PCB for factory integration.</p><ul><li>65 × 55 mm</li><li>REST API</li><li data-i="r3_l3">Signed OTA updates</li></ul>
-    </div>
+    <div class="prod io"><span class="st dev" data-i="st_dev">● In development</span><span class="cat" data-i="p2_c">Software</span><h3 data-i="p2_h">Signal analytics</h3><p data-i="p2_p">Pattern recognition on the data RS-24 and other sensors produce: which cabinets are drifting, which events repeat, which fault signature belongs to which component. Fleet view first, then per-site diagnosis.</p><span class="meta" data-i="p2_m">Builds on RS-24 fleet data</span></div>
+    <div class="prod io"><span class="st concept" data-i="st_concept">○ Concept</span><span class="cat" data-i="p3_c">Charger diagnostics</span><h3 data-i="p3_h">Pilot-line analysis (CP / PP)</h3><p data-i="p3_p">Correlating the control-power rail with the vehicle communication lines, to separate charger-side from vehicle-side failures in IEC 61851 / ISO 15118 sessions.</p><span class="meta" data-i="p3_m">Next hardware add-on candidate</span></div>
+    <div class="prod io"><span class="st concept" data-i="st_concept2">○ Concept</span><span class="cat" data-i="p4_c">Grid side · DSO</span><h3 data-i="p4_h">Ground-fault detection</h3><p data-i="p4_p">Continuous leakage and insulation monitoring for distribution assets and charging sites — the same sensing approach applied where a DSO needs it.</p><span class="meta" data-i="p4_m">Exploring with partners</span></div>
+    <div class="prod io"><span class="st concept" data-i="st_concept3">○ Concept</span><span class="cat" data-i="p5_c">AC infrastructure</span><h3 data-i="p5_h">AC supply monitoring</h3><p data-i="p5_p">Instability, sag and transient capture on the AC feed of charging and industrial sites. Separate front-end from RS-24; same software.</p><span class="meta" data-i="p5_m">Follows RS-24 certification</span></div>
+  </div>
+  <p class="roadnote" data-i="p_note">Stages mean what they say: "Pilot" has hardware you can put in a cabinet; "In development" has code and a date; "Concept" is a direction we're validating with customers, not a promise.</p>
+</div></section>
+
+<section id="how"><div class="wrap">
+  <div class="io"><div class="eyebrow" data-i="w_eye">How we work</div>
+  <h2 class="sec-h" data-i="w_h">Measure it, then explain it.</h2></div>
+  <div class="how">
+    <div class="hcard io"><div class="n">01</div><h3 data-i="w1_h">Hardware at the source</h3><p data-i="w1_p">Small, isolated, field-mountable instruments that sit on the signal itself — not a proxy of it — and survive the cabinet.</p></div>
+    <div class="hcard io"><div class="n">02</div><h3 data-i="w2_h">Software that finds the pattern</h3><p data-i="w2_p">Events are only useful in context. We trend, correlate and classify across devices and sites, so the answer is a cause, not a log line.</p></div>
+    <div class="hcard io"><div class="n">03</div><h3 data-i="w3_h">Built for European infrastructure</h3><p data-i="w3_p">Designed around IEC 61851 / ISO 15118 / OCPP, CE and CRA obligations, and the way CPOs, service companies and DSOs actually operate.</p></div>
   </div>
 </div></section>
 
-<section class="light" id="other"><div class="wrap">
-  <div class="other io">
-    <div><div class="eyebrow" data-i="o_eye">Beyond EV chargers</div><h3 data-i="o_h">Same board, other cabinets.</h3><p data-i="o_p">RS-24 measures any 12–62 V DC supply. Chargers are where we start; if your control power lives elsewhere, talk to us.</p><p class="note" data-i="o_n">DC only — 230 V AC mains monitoring is a different product.</p></div>
-    <ul>
-      <li><b>24 V</b><span data-i="o1">Industrial control cabinets — PLC, drives, HVAC, lifts</span></li>
-      <li><b>48 V</b><span data-i="o2">Telecom, battery and solar DC systems</span></li>
-      <li><b>36–48 V</b><span data-i="o3">UPS battery strings and server-room backup</span></li>
-    </ul>
-  </div>
+<section class="light" id="about"><div class="wrap about">
+  <div class="io"><div class="eyebrow" data-i="a_eye">About</div>
+  <h2 class="sec-h" data-i="a_h">Founded by an engineer who has stood in front of too many "faulted" cabinets.</h2>
+  <p data-i="a_p1">Morgen Tech started with a familiar frustration: fast chargers that fail intermittently, get power-cycled, and fail again — with nothing in any log to explain why. Years of chasing such faults showed that the answer usually sits in the electrical layer no monitoring system watches. RailSentinel-24 is the instrument we always wished we had in the van.</p>
+  <p data-i="a_p2">Behind it is fifteen years in EV charging and power electronics: charger platforms, communication standards, certification and compliance. We know what the inside of the cabinet looks like, and what the operator on the other end of the phone actually needs.</p></div>
+  <div class="facts io"><div><b data-i="f1">Company</b><span>Morgen Technologie UG (haftungsbeschränkt)</span></div><div><b data-i="f2">Based</b><span data-i="f2v">Stuttgart region, Germany</span></div><div><b data-i="f3">Focus</b><span data-i="f3v">EV charging &amp; grid infrastructure diagnostics</span></div><div><b data-i="f4">Stage</b><span data-i="f4v">First product in pilot; partners wanted</span></div></div>
 </div></section>
 
-<section id="cta"><div class="wrap">
-  <h2 class="cta-h io" data-i="c_h">Ready to see inside the cabinet?</h2>
-  <p class="cta-sub io" data-i="c_p">RS-24 is in active development. A limited number of pilot slots is open — units at cost, revenue share on the software, no long-term commitment.</p>
+<section id="contact"><div class="wrap">
+  <h2 class="cta-h io" data-i="c_h">Talk to us.</h2>
+  <p class="cta-sub io" data-i="c_p">Pilots, OEM integration, or a problem in your infrastructure you can't see — write a few lines and we'll reply personally.</p>
   <div class="cta-grid io">
-    <div class="cta-card p"><small data-i="c1_s">CPOs &amp; service companies</small><h4 data-i="c1_h">Request a pilot unit</h4><p data-i="c1_p">Tell us your fleet size and the chargers that keep coming back.</p><a href="mailto:hello@morgen-tech.com?subject=RS-24 Pilot">hello@morgen-tech.com</a></div>
-    <div class="cta-card"><small data-i="c2_s">Charger OEMs</small><h4 data-i="c2_h">OEM integration brief</h4><p data-i="c2_p">RS-24-M module, API and data pipeline for your 12 / 24 / 48 V platforms.</p><a href="mailto:sales@morgen-tech.com?subject=RS-24 OEM">sales@morgen-tech.com</a></div>
-    <div class="cta-card"><small data-i="c3_s">Engineers</small><h4 data-i="c3_h">Technical documentation</h4><p data-i="c3_p">Hardware design, sensing analysis and calibration documents on request.</p><a href="mailto:info@morgen-tech.com?subject=RS-24 Docs">info@morgen-tech.com</a></div>
+    <div class="cta-card p"><small data-i="c1_s">Pilots &amp; partnerships</small><h4 data-i="c1_h">hello@</h4><p data-i="c1_p">CPOs, service companies and anyone who wants RS-24 in a cabinet.</p><a href="mailto:hello@morgen-tech.com">hello@morgen-tech.com</a></div>
+    <div class="cta-card"><small data-i="c2_s">OEM &amp; commercial</small><h4 data-i="c2_h">sales@</h4><p data-i="c2_p">Module integration, licensing, volume.</p><a href="mailto:sales@morgen-tech.com">sales@morgen-tech.com</a></div>
+    <div class="cta-card"><small data-i="c3_s">Everything else</small><h4 data-i="c3_h">info@</h4><p data-i="c3_p">Documentation, press, general questions.</p><a href="mailto:info@morgen-tech.com">info@morgen-tech.com</a></div>
   </div>
 </div></section>
 
 <footer><div class="wrap">
-  <div class="f-in"><span>MORGEN TECH · RAILSENTINEL-24 · © 2026</span><span><a href="#why" data-i="f_why">Why</a><a href="#what" data-i="f_what">What</a><a href="#variants" data-i="f_var">Variants</a><a href="mailto:info@morgen-tech.com" data-i="f_contact">Contact</a><a href="impressum.html">Impressum</a></span></div>
-  <p class="f-legal" data-i="f_legal">Product in development. Specifications are design targets. Not yet CE certified or commercially available.</p>
+  <div class="f-in"><span>MORGEN TECHNOLOGIE UG · © 2026</span><span><a href="#products" data-i="n_prod">Products</a><a href="railsentinel/">RailSentinel-24</a><a href="mailto:info@morgen-tech.com" data-i="f_contact">Contact</a><a href="impressum.html">Impressum</a></span></div>
+  <p class="f-legal" data-i="f_legal">Products in development. Specifications are design targets. Not yet CE certified or commercially available.</p>
 </div></footer>
 
 <script>
 const T={en:{},de:{
-cta_nav:"Pilot anfragen",
-h_eye:"Steuerspannungs-Monitor für DC-Schnelllader",
-h_h:"Der Lader meldet<br>„Fehler“.<br><em>Wir sagen warum.</em>",
-h_p:"RailSentinel-24 sitzt auf der DIN-Schiene und überwacht die 24-V-Steuerversorgung, von der jedes Relais, jedes Schütz und der Controller im Schrank abhängen — die eine Ebene, die OCPP nicht sieht.",
-h_b1:"Pilot anfragen",h_b2:"Was es kann",
-cab_t:"DC-SCHNELLLADER · STEUERSCHRANK · 24 V HILFSSPANNUNG",cab_ok:"NORMAL",cab_ctl:"CONTROLLER",cab_k1:"SCHÜTZ K1",cab_k1s:"DC-AUSGANG",cab_this:"DAS IST DAS PRODUKT ▼",cab_rb:"RELAISPLATINE",
-cb1:"Schiene <b id=\"cb-rail\">24,1 V</b>",cb2:"letzter Peak <b id=\"cb-peak\">—</b>",cb3:"Events 24 h <b id=\"cb-ev\">0</b>",
-w_eye:"Der blinde Fleck",w_h:"Ihr Monitoring endet eine Ebene über dem Fehler.",
-w_p:"Öffnet ein Schütz, schwingt die 24-V-Schiene. Der Controller bricht ein, bevor er ein Log schreiben kann — und das Dashboard sagt nur „Fehler“.",
-g1_k:"Was Sie heute sehen",g1_h:"„Fehler.“ Dann ein Einsatz.",g1_p:"Neustart, Heimfahrt, warten bis es wieder passiert.",
-g2_k:"Was RS-24 sieht",g2_h:"Den Spike, die Zeit, den Trend.",g2_p:"In Hardware im Mikrosekundenbereich erfasst, auf der Platine gespeichert, an Sie gesendet.",
-p_eye:"Was es tut",p_h:"Drei Dinge. Ein kleines Modul auf der DIN-Schiene.",
-p1_h:"Fängt das Ereignis",p1_p:"Hardware-Trigger, Spitzenwert und Wellenform jedes Transienten — mit Zeitstempel, auch bei Stromausfall.",p1_s:"<2 µs Trigger · 100 kHz Erfassung · 1.000 Ereignisse",
-p2_h:"Antwortet am Schrank",p2_p:"Handy an das Gehäuse halten und die letzten Ereignisse lesen, bevor die Tür aufgeht. Keine App, kein Netz, kein Login.",p2_s:"Passives NFC · offline · Metallschränke",
-p3_h:"Zeigt es kommen",p3_p:"Schienenspannung, Last, Vibration, Geräusch und Schranktemperatur als Trend je Gerät und über die Flotte — der Einsatz wird geplant statt Notfall.",p3_s:"12–62 V · ±0,15 V · Flotten-Dashboard",
-shot_c:"RS-24 Dashboard v1.4 · Labordaten",
-s_eye:"Für wen",s_h:"Ein Gerät, drei Wege, nicht mehr für Neustarts zu zahlen.",
-s_t1:"CPO-Flotte",s_t2:"Serviceunternehmen",s_t3:"Lader-OEM",
-s1_h:"Wissen, welcher Lader driftet, bevor er offline geht.",s1_p:"Ein vermiedener Einsatz zahlt ein Jahr Monitoring. Jedes Ereignis ist Beweis, den Ihr Netzteil-Lieferant nicht wegwinken kann.",
-s1_b:"Sechs Notfalleinsätze, keine Ursache.",s1_g:"Alarm an Tag 4, ein geplanter Einsatz, das richtige Teil im Wagen.",s1_gb:"1 × geplant",
-s2_h:"Mit der Antwort ankommen, nicht mit der Frage.",s2_p:"Schrank antippen, Fehlerhistorie sehen, einmal reparieren. Jede Inbetriebnahme mit signiertem Netzteil-Report übergeben.",
-s2_b:"Drei Fahrten, beim dritten Mal mit Oszilloskop.",s2_bb:"3 × Einsatz",s2_g:"Drei Ereignisse vom Handy gelesen, bevor die Tür aufgeht.",s2_gb:"1 × erledigt",
-s3_h:"Aus „kein Fehler gefunden“ werden Felddaten.",s3_p:"Das nackte Modul auf Platinenebene integrieren. Jede ausgelieferte Einheit meldet reale Betriebsbedingungen — Garantiestreit endet auf Daten.",
-s3_b:"400 h Prüfstand, Platine kommt wieder zurück.",s3_g:"Logs zeigen netzseitiges Schalten an diesem Standort.",s3_bb:"Offener Fall",s3_gb:"Nicht haftbar",
-v_no:"Ohne",v_yes:"Mit RS-24",
-r_eye:"Varianten & Montage",r_h:"Gleiche Platine. Gehäuse wählen.",
-r1_h:"Standard",r1_p:"DIN-Schiene, IP40, für verwaltete Standorte mit Ethernet.",r1_l2:"NFC auf der Frontseite",
-r2_h:"Field",r2_p:"IP67, Mobilfunk, für abgelegene und Autobahn-Standorte.",r2_l2:"Externe NFC-Antenne",r2_l3:"Supercap-Überbrückung",
-r3_h:"OEM-Modul",r3_p:"Nackte Platine zur Werksintegration.",r3_l3:"Signierte OTA-Updates",
-o_eye:"Über Ladesäulen hinaus",o_h:"Gleiche Platine, andere Schränke.",o_p:"RS-24 misst jede 12–62-V-DC-Versorgung. Lader sind unser Start; wenn Ihre Steuerspannung woanders sitzt, sprechen Sie uns an.",o_n:"Nur DC — 230-V-Netzüberwachung ist ein anderes Produkt.",
-o1:"Industrielle Steuerschränke — SPS, Antriebe, HLK, Aufzüge",o2:"Telekom-, Batterie- und Solar-DC-Systeme",o3:"USV-Batteriestränge und Server-Notstrom",
-c_h:"Bereit, in den Schrank zu sehen?",c_p:"RS-24 ist in aktiver Entwicklung. Eine begrenzte Zahl an Pilotplätzen ist offen — Geräte zum Selbstkostenpreis, Revenue-Share auf die Software, keine langfristige Bindung.",
-c1_s:"CPOs & Serviceunternehmen",c1_h:"Pilotgerät anfragen",c1_p:"Nennen Sie uns Flottengröße und die Lader, die immer wieder ausfallen.",
-c2_s:"Lader-OEMs",c2_h:"OEM-Integrationsbrief",c2_p:"RS-24-M Modul, API und Datenpipeline für Ihre 12/24/48-V-Plattformen.",
-c3_s:"Ingenieure",c3_h:"Technische Dokumentation",c3_p:"Hardware-Design, Sensoranalyse und Kalibrierung auf Anfrage.",
-f_why:"Warum",f_what:"Was",f_var:"Varianten",f_contact:"Kontakt",
-f_legal:"Produkt in Entwicklung. Angaben sind Designziele. Noch nicht CE-zertifiziert oder kommerziell verfügbar."
+n_prod:"Produkte",n_how:"Arbeitsweise",n_about:"Über uns",n_cta:"Kontakt",
+h_eye:"Morgen Tech · Stuttgart",h_h:"Wir sehen, was die Protokoll-<br>ebene <em>nicht sieht.</em>",
+h_p:"Messgeräte und Software für die elektrische Ebene unter Lade- und Netzinfrastruktur — dort, wo Fehler wirklich entstehen und wo OCPP, SCADA und Dashboards keine Augen haben.",
+h_b1:"Zu den Produkten",h_b2:"RailSentinel-24 →",
+l1_s:"Ebene 3 · was Sie heute haben",l1_h:"Protokoll-Monitoring",l1_p:"OCPP, SCADA, Cloud-Dashboards. Sagt Ihnen, dass der Lader „Fehler“ hat.",
+l2_s:"Ebene 2 · der Controller",l2_h:"Firmware-Logs",l2_p:"Nützlich — bis das Ereignis den Controller resettet, bevor er schreiben kann.",
+l3_s:"Ebene 1 · hier arbeiten wir",l3_h:"Die elektrischen Signale",l3_p:"Steuerspannung, Pilotleitungen, Ableitströme. In Hardware gemessen, in Software ausgewertet.",
+p_eye:"Produkte",p_h:"Ein Produkt, das Sie heute pilotieren können. Eine Pipeline dahinter.",p_p:"Wir bauen eine Sache nach der anderen und sagen klar, in welchem Stadium sie ist.",
+st_pilot:"● Pilotgeräte · 2026",st_dev:"● In Entwicklung",st_concept:"○ Konzept",st_concept2:"○ Konzept",st_concept3:"○ Konzept",
+p1_c:"Hardware + Dashboard",p1_p:"Steuerspannungs-Monitor für DC-Schnellladeschränke. Erfasst die Transienten, die Controller resetten, liest per NFC am Schrank aus, trendet die Schiene über die Flotte. DIN-Schiene, IP67 und OEM-Modul.",p1_m:"Produktseite →",
+p2_c:"Software",p2_h:"Signalanalytik",p2_p:"Mustererkennung auf den Daten von RS-24 und anderen Sensoren: welche Schränke driften, welche Ereignisse sich wiederholen, welche Fehlersignatur zu welchem Bauteil gehört. Erst Flottensicht, dann Diagnose je Standort.",p2_m:"Baut auf RS-24-Flottendaten auf",
+p3_c:"Lader-Diagnose",p3_h:"Pilotleitungs-Analyse (CP / PP)",p3_p:"Korrelation der Steuerspannung mit den Fahrzeug-Kommunikationsleitungen, um lader- von fahrzeugseitigen Fehlern in IEC-61851-/ISO-15118-Sitzungen zu trennen.",p3_m:"Nächster Hardware-Add-on-Kandidat",
+p4_c:"Netzseite · VNB",p4_h:"Erdschluss-Erkennung",p4_p:"Kontinuierliche Ableitstrom- und Isolationsüberwachung für Verteilnetz-Assets und Ladestandorte — derselbe Messansatz dort, wo ein Netzbetreiber ihn braucht.",p4_m:"In Erkundung mit Partnern",
+p5_c:"AC-Infrastruktur",p5_h:"AC-Versorgungsüberwachung",p5_p:"Instabilität, Einbrüche und Transienten auf der AC-Einspeisung von Lade- und Industriestandorten. Eigenes Frontend, gleiche Software.",p5_m:"Folgt der RS-24-Zertifizierung",
+p_note:"Die Stufen meinen, was sie sagen: „Pilot“ hat Hardware, die Sie in einen Schrank setzen können; „In Entwicklung“ hat Code und ein Datum; „Konzept“ ist eine Richtung, die wir mit Kunden prüfen — kein Versprechen.",
+w_eye:"Arbeitsweise",w_h:"Erst messen, dann erklären.",
+w1_h:"Hardware an der Quelle",w1_p:"Kleine, isolierte, feldtaugliche Messgeräte direkt am Signal — nicht an einem Stellvertreter — die den Schrank überleben.",
+w2_h:"Software, die das Muster findet",w2_p:"Ereignisse sind nur im Kontext nützlich. Wir trenden, korrelieren und klassifizieren über Geräte und Standorte — die Antwort ist eine Ursache, keine Logzeile.",
+w3_h:"Für europäische Infrastruktur gebaut",w3_p:"Entwickelt um IEC 61851 / ISO 15118 / OCPP, CE- und CRA-Pflichten und die Art, wie CPOs, Servicefirmen und Netzbetreiber wirklich arbeiten.",
+a_eye:"Über uns",a_h:"Gegründet von einem Ingenieur, der vor zu vielen „Fehler“-Schränken gestanden hat.",
+a_p1:"Morgen Tech begann mit einer vertrauten Erfahrung: Schnelllader, die sporadisch ausfallen, neu gestartet werden und wieder ausfallen — ohne dass irgendein Log erklärt, warum. Jahre der Fehlersuche haben gezeigt, dass die Antwort meist in der elektrischen Ebene liegt, die kein Monitoring-System beobachtet. RailSentinel-24 ist das Messgerät, das wir uns im Servicewagen immer gewünscht haben.",
+a_p2:"Dahinter stehen fünfzehn Jahre Ladetechnik und Leistungselektronik: Laderplattformen, Kommunikationsstandards, Zertifizierung und Compliance. Wir wissen, wie es im Schrank aussieht — und was der Betreiber am anderen Ende der Leitung wirklich braucht.",
+f1:"Unternehmen",f2:"Sitz",f2v:"Region Stuttgart, Deutschland",f3:"Fokus",f3v:"Diagnostik für Lade- & Netzinfrastruktur",f4:"Stadium",f4v:"Erstes Produkt im Pilot; Partner gesucht",
+c_h:"Sprechen Sie mit uns.",c_p:"Pilot, OEM-Integration oder ein Problem in Ihrer Infrastruktur, das Sie nicht sehen können — ein paar Zeilen genügen, wir antworten persönlich.",
+c1_s:"Pilot & Partnerschaft",c1_p:"CPOs, Servicefirmen und alle, die RS-24 in einen Schrank setzen wollen.",
+c2_s:"OEM & Kommerzielles",c2_p:"Modulintegration, Lizenz, Stückzahlen.",
+c3_s:"Alles andere",c3_p:"Dokumentation, Presse, allgemeine Fragen.",
+f_contact:"Kontakt",f_legal:"Produkte in Entwicklung. Angaben sind Designziele. Noch nicht CE-zertifiziert oder kommerziell verfügbar."
 }};
 const EN={};document.querySelectorAll('[data-i]').forEach(el=>EN[el.dataset.i]=el.innerHTML);T.en=EN;
 function setLang(l){document.documentElement.lang=l;try{localStorage.setItem('mt-lang',l)}catch(e){}
   document.querySelectorAll('.lang button').forEach(b=>b.classList.toggle('on',b.dataset.lang===l));
   document.querySelectorAll('[data-i]').forEach(el=>{const v=T[l][el.dataset.i];if(v!==undefined)el.innerHTML=v});
-  document.title=l==='de'?'RailSentinel-24 · Warum Ihr Lader ausfällt':'RailSentinel-24 · See why your charger goes down';}
+  document.title=l==='de'?'Morgen Tech · Messtechnik und Analytik für Lade- und Netzinfrastruktur':'Morgen Tech · Sensing and analytics for charging and grid infrastructure';}
 (function(){let l='';try{l=localStorage.getItem('mt-lang')||''}catch(e){}if(!l){l=(navigator.language||'').slice(0,2)==='de'?'de':'en'}if(l!=='en')setLang(l)})();
-function tab(i){document.querySelectorAll('.tabs button').forEach((b,k)=>b.classList.toggle('on',k===i));document.querySelectorAll('.who').forEach((p,k)=>p.classList.toggle('on',k===i))}
 const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.12});
 document.querySelectorAll('.io').forEach(el=>io.observe(el));
-
-/* cabinet animation */
-(function(){
-  const $=id=>document.getElementById(id);
-  const k1=$('k1'),p1=$('p1'),p2=$('p2'),bump=$('bump'),led=$('led'),ctl=$('ctl'),badge=$('badge'),bt=$('badge-t'),m2=$('mini2'),st=$('cab-state');
-  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;let ev=0;
-  const de=()=>document.documentElement.lang==='de';
-  function slide(el,from,to,ms,cb){const t0=performance.now();el.classList.add('go');(function f(t){const k=Math.min(1,(t-t0)/ms);el.setAttribute('cx',from+(to-from)*k);if(k<1)requestAnimationFrame(f);else{el.classList.remove('go');cb&&cb()}})(t0)}
-  function cycle(){
-    const pk=(36+Math.random()*7).toFixed(1);
-    k1.classList.add('on');bump.classList.add('go');st.textContent=de()?'K1 SCHALTET':'K1 SWITCHING';st.style.color='#ffb35c';
-    setTimeout(()=>{slide(p1,270,115,420);slide(p2,270,520,520,()=>{
-      led.classList.add('hit');m2.classList.add('show');bt.textContent='▲ '+pk+' V · 2 µs · '+(de()?'gespeichert':'captured');badge.classList.add('show');
-      ev++;$('cb-ev').textContent=ev;$('cb-peak').textContent=pk+' V';st.textContent=de()?'TRANSIENT ERFASST':'TRANSIENT CAPTURED';st.style.color='#ff8a5c';
-    })},120);
-    setTimeout(()=>{ctl.textContent='● RESET';ctl.classList.add('reset')},520);
-    setTimeout(()=>{k1.classList.remove('on');bump.classList.remove('go')},700);
-    setTimeout(()=>{ctl.textContent='● OK';ctl.classList.remove('reset')},2300);
-    setTimeout(()=>{led.classList.remove('hit');m2.classList.remove('show');badge.classList.remove('show');st.textContent=de()?'NORMAL':'NORMAL';st.style.color=''},3600);
-  }
-  if(reduce){k1.classList.add('on');bump.classList.add('go');led.classList.add('hit');m2.classList.add('show');badge.classList.add('show');ctl.textContent='● RESET';ctl.classList.add('reset');return}
-  setTimeout(cycle,1400);setInterval(cycle,6500);
-  setInterval(()=>{$('cb-rail').textContent=(24+(Math.random()-.5)*.2).toFixed(1).replace('.',de()?',':'.')+' V'},900);
-})();
 </script>
 </body>
 </html>
