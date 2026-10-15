@@ -25,7 +25,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="robots" content="index,follow,max-image-preview:large">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"Product","name":"RailSentinel-24","alternateName":"RS-24","brand":{"@type":"Brand","name":"Morgen Tech"},"manufacturer":{"@type":"Organization","name":"Morgen Technologie UG (haftungsbeschränkt)","url":"https://morgen-tech.com/"},"url":"https://morgen-tech.com/railsentinel/","image":"https://morgen-tech.com/railsentinel/dashboard.png","description":"Isolated DC control-rail monitor for EV fast-charger cabinets: sub-2 µs transient capture, 16-bit peak hold, NFC readout at the cabinet, 1,000 events stored on board. Variants RS-24-S (DIN rail), RS-24-F (IP67, cellular), RS-24-M (OEM module). Pilot programme 2026.","category":"Industrial monitoring / EV charging infrastructure","releaseDate":"2026","additionalProperty":[{"@type":"PropertyValue","name":"Input range","value":"12–62 V DC"},{"@type":"PropertyValue","name":"Transient detection","value":"< 2 µs (hardware comparator)"},{"@type":"PropertyValue","name":"Isolation","value":"5 kVRMS reinforced"}]}
+{"@context":"https://schema.org","@type":"Product","name":"RailSentinel-24","alternateName":"RS-24","brand":{"@type":"Brand","name":"Morgen Tech"},"manufacturer":{"@type":"Organization","name":"Morgen Technologie UG (haftungsbeschränkt)","url":"https://morgen-tech.com/"},"url":"https://morgen-tech.com/railsentinel/","image":"https://morgen-tech.com/railsentinel/dashboard.png","description":"Isolated 24 V control-power monitor for EV fast-charger cabinets: µs transient trigger, peak + 50 ms waveform, NFC readout at the cabinet, 1,000 events stored on board. Variants RS-24-S (DIN rail), RS-24-F (IP67, via site router), RS-24-M (OEM module). Pilot programme 2026.","category":"Industrial monitoring / EV charging infrastructure","releaseDate":"2026","additionalProperty":[{"@type":"PropertyValue","name":"Input range","value":"12–62 V DC"},{"@type":"PropertyValue","name":"Transient detection","value":"µs trigger (hardware comparator)"},{"@type":"PropertyValue","name":"Isolation","value":"5 kVRMS reinforced"}]}
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -297,7 +297,7 @@ footer{background:#07101d;padding:36px 0 26px;border-top:1px solid rgba(255,255,
       <path class="bump" id="bump" d="M250 150 L262 150 L266 128 L272 164 L277 142 L281 154 L285 150 L300 150"/>
       <circle class="pulse" id="p1" r="6" cx="270" cy="150"/><circle class="pulse" id="p2" r="6" cx="270" cy="150"/>
       <!-- badge -->
-      <g class="badge" id="badge"><rect x="404" y="176" width="176" height="30" rx="5" fill="#e06a3a"/><text x="492" y="195" text-anchor="middle" style="fill:#fff;font-size:11px;font-weight:500" id="badge-t">▲ 41.8 V · 2 µs · captured</text></g>
+      <g class="badge" id="badge"><rect x="386" y="176" width="212" height="30" rx="5" fill="#e06a3a"/><text x="492" y="195" text-anchor="middle" style="fill:#fff;font-size:11px;font-weight:500" id="badge-t">▲ 41.8 V · 50 ms · captured</text></g>
     </svg>
     <div class="cab-bot"><span data-i="cb1">rail <b id="cb-rail">24.1 V</b></span><span data-i="cb2">last peak <b id="cb-peak">—</b></span><span data-i="cb3">events 24 h <b id="cb-ev">0</b></span></div>
   </div>
@@ -391,7 +391,7 @@ footer{background:#07101d;padding:36px 0 26px;border-top:1px solid rgba(255,255,
 <section class="light" id="safety"><div class="wrap">
   <div class="duo io">
     <div><div class="eyebrow" data-i="sf_eye">Self-supervising</div><h3 data-i="sf_h">Two controllers.<br>Each watches the other.</h3>
-      <div class="chips"><span><b>2×</b><span data-i="sf1">separate clocks &amp; supplies</span></span><span><b>auto</b><span data-i="sf2">fault → restart → logged</span></span><span><b>safe</b><span data-i="sf3">alarm contact opens</span></span></div>
+      <div class="chips"><span><b>2×</b><span data-i="sf1">separate clocks &amp; supplies</span></span><span><b>auto</b><span data-i="sf2">fault → restart → logged</span></span><span><b>alarm</b><span data-i="sf3">alarm contact opens</span></span></div>
       <p class="note" data-i="sf_n">Safety function for OEMs: under evaluation — talk to us. Not a certified safety component today.</p></div>
     <svg viewBox="0 0 560 212" role="img" aria-label="Two controllers on both sides of an isolation barrier supervise each other; the alarm contact stays closed while both are healthy">
       <rect x="20" y="40" width="150" height="96" rx="10" fill="#0D2340"/>
@@ -420,10 +420,6 @@ footer{background:#07101d;padding:36px 0 26px;border-top:1px solid rgba(255,255,
   <div class="io"><div class="eyebrow" data-i="d_eye">Downloads</div>
   <h2 class="sec-h" data-i="d_h">Documents.</h2>
   <p class="lead" data-i="d_p">Preliminary — design targets, replaced by measured data after validation.</p></div>
-  <div class="dl io">
-    <a href="downloads/RailSentinel-24_Product_Brief.pdf" download><span class="ico">PDF</span><span><h4 data-i="d1_h">Product brief</h4><p data-i="d1_p">Problem, device, pilot — one page.</p></span><span class="m">1 p · EN</span></a>
-    <a href="downloads/RailSentinel-24_Datasheet_P1.pdf" download><span class="ico">PDF</span><span><h4 data-i="d2_h">Preliminary datasheet</h4><p data-i="d2_p">Electrical, capture, isolation, variants.</p></span><span class="m">2 p · EN · Rev. P1</span></a>
-  </div>
   <p class="dl-note" data-i="d_n">Design documents for pilot partners under NDA: info@morgen-tech.com</p>
 </div></section>
 
@@ -509,7 +505,7 @@ document.querySelectorAll('.io').forEach(el=>io.observe(el));
     const pk=(36+Math.random()*7).toFixed(1);
     k1.classList.add('on');bump.classList.add('go');st.textContent=tx(0);st.style.color='#ffb35c';
     setTimeout(()=>{slide(p1,270,115,420);slide(p2,270,520,520,()=>{
-      led.classList.add('hit');m2.classList.add('show');bt.textContent='▲ '+num(pk)+' V · 2 µs · '+tx(2);badge.classList.add('show');
+      led.classList.add('hit');m2.classList.add('show');bt.textContent='▲ '+num(pk)+' V · 50 ms · '+tx(2);badge.classList.add('show');
       ev++;$('cb-ev').textContent=ev;$('cb-peak').textContent=num(pk)+' V';st.textContent=tx(1);st.style.color='#ff8a5c';
     })},120);
     setTimeout(()=>{ctl.textContent='● RESET';ctl.classList.add('reset')},520);
