@@ -382,7 +382,7 @@ nav,.beats span{transition:none!important}
   .hmedia{order:2;position:relative;inset:auto;aspect-ratio:16/9}
   .hmedia .shade{display:none}
 }
-@media(prefers-reduced-motion:reduce){.creplay{display:none}}
+@media(prefers-reduced-motion:reduce){.creplay{display:none} #cabbox *{transition:none!important}}
 </style>
 </head>
 <body>
@@ -710,18 +710,18 @@ document.querySelectorAll('.io').forEach(el=>io.observe(el));
   let busy=false;
   function cycle(){
     if(busy)return;busy=true;led.classList.remove('hit');m2.classList.remove('show');badge.classList.remove('show');
-    const pk=(36+Math.random()*7).toFixed(1);
+    const pk='41.8';  // fixed example value (spec M-8: no random numbers)
     k1.classList.add('on');bump.classList.add('go');st.textContent=tx(0);st.style.color='#ffb35c';
     setTimeout(()=>{slide(p1,270,115,420);slide(p2,270,520,520,()=>{
       led.classList.add('hit');m2.classList.add('show');bt.textContent='▲ '+num(pk)+' V · 50 ms · '+tx(2);badge.classList.add('show');
-      ev++;$('cb-ev').textContent=ev;$('cb-peak').textContent=num(pk)+' V';st.textContent=tx(1);st.style.color='#ff8a5c';
+      $('cb-ev').textContent='1';$('cb-peak').textContent=num(pk)+' V';st.textContent=tx(1);st.style.color='#ff8a5c';
     })},120);
     setTimeout(()=>{ctl.textContent='● RESET';ctl.classList.add('reset')},520);
     setTimeout(()=>{k1.classList.remove('on');bump.classList.remove('go')},700);
     setTimeout(()=>{ctl.textContent='● OK';ctl.classList.remove('reset')},2300);
     setTimeout(()=>{busy=false},2400);  // holds the captured state (no auto-clear, no loop)
   }
-  if(reduce){k1.classList.add('on');bump.classList.add('go');led.classList.add('hit');m2.classList.add('show');badge.classList.add('show');ctl.textContent='● RESET';ctl.classList.add('reset');return}
+  if(reduce){k1.classList.add('on');bump.classList.add('go');led.classList.add('hit');m2.classList.add('show');badge.classList.add('show');ctl.textContent='● RESET';ctl.classList.add('reset');$('cb-peak').textContent=num('41.8')+' V';$('cb-ev').textContent='1';return}
   const seen=new IntersectionObserver(es=>{if(es.some(e=>e.isIntersecting)){seen.disconnect();cycle()}},{threshold:.4});seen.observe($('cabbox'));
   $('creplay').addEventListener('click',cycle);
 })();
@@ -731,7 +731,7 @@ document.querySelectorAll('.io').forEach(el=>io.observe(el));
   const nav=document.querySelector('nav'),hero=document.getElementById('vhero'),hv=document.getElementById('hv'),hb=document.getElementById('hplay');
   const navTop=()=>nav.classList.toggle('top',scrollY<hero.offsetHeight*.6);
   addEventListener('scroll',navTop,{passive:true});navTop();
-  hb.addEventListener('click',()=>{hv.removeAttribute('aria-hidden');hv.controls=true;hv.loop=false;hv.currentTime=0;hv.play().catch(()=>{});hb.hidden=true});
+  hb.addEventListener('click',()=>{hv.removeAttribute('aria-hidden');if(innerWidth<768)hv.scrollIntoView({block:'nearest'});hv.controls=true;hv.loop=false;hv.currentTime=0;hv.play().catch(()=>{});hb.hidden=true});
   hv.addEventListener('ended',()=>{hb.hidden=false});
   const st=document.getElementById('story'),seg=st.dataset.seg.split(';').map(x=>x.split(',').map(Number));
   st.querySelectorAll('.splay').forEach(btn=>btn.addEventListener('click',()=>{
