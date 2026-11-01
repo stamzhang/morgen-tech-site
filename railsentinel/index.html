@@ -335,15 +335,22 @@ nav,.beats span{transition:none!important}
 @media(max-width:700px){.beats{flex-direction:column;gap:6px}.beats span+span::before{content:none}}
 .hmedia{position:absolute;inset:0}
 .hmedia .concept{z-index:3}
-.hplay[hidden],.splay[hidden]{display:none}
 #story{height:auto;padding:88px 0;background:#081527}
 .scards{display:grid;gap:34px}
 .scard{display:grid;grid-template-columns:1.25fr 1fr;gap:34px;align-items:center}
 .scard .sm{position:relative;border-radius:var(--r2);overflow:hidden;aspect-ratio:16/9;background:#0b1a30;border:1px solid rgba(95,168,248,.18)}
 .scard .sm img,.scard .sm video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
 .scard .concept{right:10px;bottom:10px}
-.splay{position:absolute;left:14px;bottom:14px;z-index:2;display:inline-flex;gap:8px;align-items:center;font:600 14px var(--sans);color:#fff;background:rgba(8,21,39,.75);border:1px solid rgba(255,255,255,.25);border-radius:var(--r);padding:9px 14px;cursor:pointer}
-.splay:hover{background:rgba(26,111,212,.85)}
+/* film story (spec §0): chapters autoplay muted in view, once, hold the last frame; small pause control (O-4) */
+.vctl{position:absolute;left:12px;bottom:12px;z-index:4;width:34px;height:34px;display:grid;place-items:center;padding:0;font:600 13px/1 var(--sans);color:#fff;background:rgba(8,21,39,.6);border:1px solid rgba(255,255,255,.28);border-radius:50%;cursor:pointer;opacity:.8}
+.vctl:hover,.vctl:focus-visible{opacity:1;background:rgba(26,111,212,.85)}
+.vctl:focus-visible{outline:2px solid #fff;outline-offset:2px}
+.hmedia .vctl{left:auto;right:16px;bottom:52px}
+.sm video::cue{font:500 14px/1.3 var(--sans);color:#fff;background:rgba(8,21,39,.72)}
+.alertvis video{z-index:3;transition:opacity .8s var(--ease)}
+.alertvis video.out{opacity:0;pointer-events:none}
+@media(max-width:700px){.scard .alertvis video{object-fit:contain;background:#0b1a30}}
+@media(min-width:701px){#hv{left:30%;width:70%;object-position:0% 50%;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 22%);mask-image:linear-gradient(90deg,transparent 0,#000 22%)}}
 .stext h2{font-family:var(--serif);font-size:clamp(26px,3vw,38px);line-height:1.12;margin:10px 0}
 .stext p{font-size:16px;color:rgba(255,255,255,.75)}
 .stext .tag{display:inline-block;margin-top:12px;font-family:var(--mono);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);border:1px solid rgba(240,192,64,.4);border-radius:5px;padding:4px 8px}
@@ -357,7 +364,7 @@ nav,.beats span{transition:none!important}
   .hmedia{order:2;position:relative;inset:auto;aspect-ratio:16/9}
   .hmedia .shade{display:none}
 }
-@media(prefers-reduced-motion:reduce){.creplay{display:none} #cabbox *{transition:none!important}}
+@media(prefers-reduced-motion:reduce){.creplay{display:none} #cabbox *{transition:none!important} .alertvis video{display:none}}
 /* rework A: specs link, alert card, phone nav offset */
 .nav-specs{color:rgba(255,255,255,.85);font-size:14px;font-weight:500;text-decoration:none;white-space:nowrap}
 .nav-specs:hover{color:#fff;text-decoration:underline;text-underline-offset:4px}
@@ -413,9 +420,7 @@ nav,.beats span{transition:none!important}
 
 <section id="vhero" aria-label="RailSentinel-24 in 5 seconds">
   <div class="hmedia">
-  <video id="hv" muted playsinline preload="none" poster="media/hero_poster.jpg" aria-hidden="true">
-    <source src="media/hero.mp4" type="video/mp4">
-  </video>
+  <video id="hv" class="fv" data-ch="1" muted playsinline preload="none" poster="media/story_ch1_a.jpg" data-hold="media/story_ch1_b.jpg" aria-hidden="true"></video>
   <div class="shade"></div>
   <div class="concept" data-i="concept">Concept rendering · not final</div>
   </div>
@@ -425,30 +430,31 @@ nav,.beats span{transition:none!important}
     <h1 class="reveal d1" data-i="h_h">The charger says<br>"faulted".<br><em>We say why.</em></h1>
     <div class="beats reveal d2" id="beats"><span data-i="b1">Snaps onto the rail</span><span data-i="b2">Catches the disturbance</span><span data-i="b3">Alerts your team</span></div>
     <p class="reveal d2" data-i="h_p">On the DIN rail. An independent, timestamped record of what the 24 V rail did around every reset.</p>
-    <div class="hero-actions reveal d3"><a href="#cta" class="btn btn-primary" data-i="h_b1">Request a pilot</a><a href="#story" class="btn btn-ghost" data-i="h_b2">See what it does</a><button type="button" class="btn btn-ghost hplay" id="hplay"><span aria-hidden="true">▶</span> <span data-i="play">Play</span> <span class="sz" data-mb="0.4">(0.4 MB)</span></button><a href="#variants" class="hspecs"><span data-i="specs_l">Specs &amp; datasheet</span> <span aria-hidden="true">→</span></a></div>
+    <div class="hero-actions reveal d3"><a href="#cta" class="btn btn-primary" data-i="h_b1">Request a pilot</a><a href="#story" class="btn btn-ghost" data-i="h_b2">See what it does</a><a href="#variants" class="hspecs"><span data-i="specs_l">Specs &amp; datasheet</span> <span aria-hidden="true">→</span></a></div>
     <div class="kfig reveal d3"><div><b>µs</b><span data-i="k1">trigger · OEM &amp; lab builds</span></div><div><b>50 ms</b><span data-i="k2">waveform</span></div><div><b data-i="k3n">1,000</b><span data-i="k3">events on board</span></div></div>
     <div class="prelim reveal d3" data-i="prelim">Preliminary</div>
   </div>
   </div>
 </section>
 
-<section id="story" aria-label="How RailSentinel-24 works" data-seg="0.00,5.80;5.80,8.40;8.40,14.10;14.10,19.15"><div class="wrap scards">
+<section id="story" aria-label="How RailSentinel-24 works"><div class="wrap scards">
   <article class="scard io">
-    <div class="sm"><img src="media/story_ch1.jpg" alt="" width="960" height="540" loading="lazy"><div class="concept" data-i="concept">Concept rendering · not final</div><button type="button" class="splay" data-k="0"><span aria-hidden="true">▶</span> <span data-i="play">Play</span> <span class="sz" data-mb="1.6">(1.6 MB)</span></button></div>
+    <div class="sm"><video class="fv" data-ch="1" data-cue="k1_e,k1_h" muted playsinline preload="none" poster="media/story_ch1_a.jpg" data-hold="media/story_ch1_b.jpg" aria-hidden="true"></video><div class="concept" data-i="concept">Concept rendering · not final</div></div>
     <div class="stext"><div class="eyebrow" data-i="k1_e">01 · Mount</div><h2 data-i="k1_h">Snaps onto the rail.</h2><p data-i="k1_p">One host board in a slim coupler housing, clipped onto the 35 mm DIN rail next to the power supply it watches.</p></div>
   </article>
   <article class="scard io">
-    <div class="sm"><img src="media/story_ch2.jpg" alt="" width="960" height="540" loading="lazy"><div class="concept" data-i="concept">Concept rendering · not final</div><button type="button" class="splay" data-k="1"><span aria-hidden="true">▶</span> <span data-i="play">Play</span> <span class="sz" data-mb="1.6">(1.6 MB)</span></button></div>
+    <div class="sm"><video class="fv" data-ch="2" data-cue="k2_e,k2_h" muted playsinline preload="none" poster="media/story_ch2_a.jpg" data-hold="media/story_ch2_b.jpg" aria-hidden="true"></video><div class="concept" data-i="concept">Concept rendering · not final</div></div>
     <div class="stext"><div class="eyebrow" data-i="k2_e">02 · Isolation</div><h2 data-i="k2_h">Isolation built in.</h2><p data-i="k2_p">The sensing side and the communication side are separated on the board by an isolation barrier designed for reinforced insulation.</p></div>
   </article>
   <article class="scard io">
-    <div class="sm"><img src="media/story_ch3.jpg" alt="" width="960" height="540" loading="lazy"><div class="concept" data-i="concept">Concept rendering · not final</div><button type="button" class="splay" data-k="2"><span aria-hidden="true">▶</span> <span data-i="play">Play</span> <span class="sz" data-mb="1.6">(1.6 MB)</span></button></div>
+    <div class="sm"><video class="fv" data-ch="3" data-cue="k3_e,k3_h,k3_t" muted playsinline preload="none" poster="media/story_ch3_a.jpg" data-hold="media/story_ch3_b.jpg" aria-hidden="true"></video><div class="concept" data-i="concept">Concept rendering · not final</div></div>
     <div class="stext"><div class="eyebrow" data-i="k3_e">03 · Modules</div><h2 data-i="k3_h">Grows with the site.</h2><p data-i="k3_p">Add the sensing and communication the site needs, one plug-in module at a time.</p>
       <ul><li data-i="k3_l1">Clamp current</li><li>RS-485 / Modbus</li><li data-i="k3_l3">SD logger</li><li>Ethernet</li><li data-i="k3_l6">Temperature · sound · vibration</li><li data-i="k3_l7">Charger–car signals, observe only</li></ul>
       <span class="tag" data-i="k3_t">Planned · v2</span></div>
   </article>
   <article class="scard io">
     <div class="sm alertvis">
+      <video class="fv" data-ch="4" data-cue="k4_e,b2,k4_t" muted playsinline preload="none" poster="media/story_ch4_a.jpg" aria-hidden="true"></video>
       <div class="phone"><div class="nt">
         <div class="nt-top"><span>RS-24</span><span>14:32:07</span></div>
         <div class="nt-h" data-i="al_h">Transient captured</div>
@@ -706,8 +712,7 @@ const TITLE={"en": "RailSentinel-24 · See why your charger goes down", "de": "R
 function setLang(l){if(!T[l])l='en';document.documentElement.lang=HL[l];try{localStorage.setItem('mt-lang',l)}catch(e){}
   const s=document.getElementById('lang');if(s)s.value=l;
   document.querySelectorAll('[data-i]').forEach(el=>{const k=el.dataset.i,v=k in T[l]?T[l][k]:T.en[k];if(v!==undefined&&el.innerHTML!==v)el.innerHTML=v});
-  document.querySelectorAll('.sz').forEach(e=>{e.textContent='('+(l==='en'?e.dataset.mb:e.dataset.mb.replace('.',','))+' MB)'});
-  document.title=TITLE[l];}
+  document.title=TITLE[l];if(window.fvLang)fvLang();}
 (function(){let l='';try{l=localStorage.getItem('mt-lang')||''}catch(e){}if(!T[l]){const n=((navigator.languages&&navigator.languages[0])||navigator.language||'').slice(0,2).toLowerCase();l=T[n]?n:'en'}setLang(l)})();
 function tab(i){document.querySelectorAll('.tabs button').forEach((b,k)=>b.classList.toggle('on',k===i));document.querySelectorAll('.who').forEach((p,k)=>p.classList.toggle('on',k===i))}
 const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.12});
@@ -740,20 +745,53 @@ document.querySelectorAll('.io').forEach(el=>io.observe(el));
   $('creplay').addEventListener('click',cycle);
 })();
 
-/* hero + story: calm (no autoplay, no loops, no scroll-driven video) */
+/* hero + story film (spec §0, Chen 2026-11-01 "Pace OK, build page"): each chapter clip autoplays muted while in view,
+   plays once and holds its last frame; one clip moves at a time (M-1); small pause / play / replay control (O-4);
+   reduced motion: hold frames only, nothing starts by itself; captions from the page strings (EN / DE / FR / ES) */
 (function(){
-  const nav=document.querySelector('nav'),hero=document.getElementById('vhero'),hv=document.getElementById('hv'),hb=document.getElementById('hplay');
+  const nav=document.querySelector('nav'),hero=document.getElementById('vhero');
   const navTop=()=>nav.classList.toggle('top',scrollY<hero.offsetHeight*.6);
   addEventListener('scroll',navTop,{passive:true});navTop();
-  hb.addEventListener('click',()=>{hv.removeAttribute('aria-hidden');if(innerWidth<768)hv.closest('.hmedia').scrollIntoView({block:'start'});hv.controls=true;hv.loop=false;hv.currentTime=0;hv.play().catch(()=>{});hb.hidden=true});
-  hv.addEventListener('ended',()=>{hb.hidden=false});
-  const st=document.getElementById('story'),seg=st.dataset.seg.split(';').map(x=>x.split(',').map(Number));
-  st.querySelectorAll('.splay').forEach(btn=>btn.addEventListener('click',()=>{
-    const [a,b]=seg[+btn.dataset.k],box=btn.closest('.sm');let v=box.querySelector('video');
-    if(!v){v=document.createElement('video');const img=box.querySelector('img');v.poster=img.src;v.src='media/story.mp4';v.muted=true;v.playsInline=true;v.controls=true;v.preload='auto';img.replaceWith(v);
-      v.addEventListener('timeupdate',()=>{if(v.currentTime>=b-.05){v.pause();btn.hidden=false}});}
-    const go=()=>{v.currentTime=a;v.play().catch(()=>{})};v.readyState>=1?go():v.addEventListener('loadedmetadata',go,{once:true});btn.hidden=true;
-  }));
+  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const small=innerWidth<768||(navigator.connection&&navigator.connection.saveData);
+  const VL={en:{pause:'Pause',play:'Play',replay:'Replay'},de:{pause:'Pause'},fr:{pause:'Pause'},es:{pause:'Pausa'}};
+  const lg=()=>{const l=document.documentElement.lang.slice(0,2);return T[l]?l:'en'};
+  const lab=k=>(VL[lg()]||{})[k]||(T[lg()]||{})[k]||VL.en[k];
+  const txt=k=>{const v=k in T[lg()]?T[lg()][k]:T.en[k];const d=document.createElement('div');d.innerHTML=v||'';return d.textContent};
+  const vids=[...document.querySelectorAll('video.fv')],ratio=new Map();let cur=null;
+  vids.forEach(v=>{
+    v.st='new';  // new | play | paused (by the visitor) | done
+    const b=document.createElement('button');b.type='button';b.className='vctl';v.after(b);v.ctl=b;
+    if(reduce&&v.dataset.hold)v.poster=v.dataset.hold;
+    if(reduce&&v.closest('.alertvis'))b.hidden=true;
+    b.addEventListener('click',()=>{
+      if(v.st==='play'){v.st='paused';v.pause()}
+      else{if(v.st==='done'){v.currentTime=0;v.classList.remove('out')}v.st='play';load(v);vids.forEach(o=>{if(o!==v&&o.st==='play'){o.pause();o.st='new'}});cur=v;v.play().catch(()=>{})}
+      paint(v)});
+    v.addEventListener('ended',()=>{v.st='done';cur=null;if(v.dataset.hold)v.poster=v.dataset.hold;if(v.closest('.alertvis'))v.classList.add('out');paint(v);pick()});
+    v.addEventListener('pause',()=>paint(v));v.addEventListener('play',()=>paint(v));
+    paint(v);
+  });
+  function paint(v){const s=v.st==='play'&&!v.paused?'pause':v.st==='done'?'replay':'play';v.ctl.textContent=s==='pause'?'❚❚':s==='replay'?'↺':'▶';v.ctl.setAttribute('aria-label',lab(s));v.ctl.title=lab(s)}
+  function load(v){if(v.src)return;v.src='media/ch'+v.dataset.ch+(small?'_540':'')+'.mp4';v.preload='auto';
+    if(v.dataset.cue){const tr=v.addTextTrack('captions','captions',lg());tr.mode='showing';v.tr=tr;v.addEventListener('loadedmetadata',()=>cues(v),{once:true})}}
+  function cues(v){const tr=v.tr;if(!tr||!v.duration)return;[...(tr.cues||[])].forEach(c=>tr.removeCue(c));
+    const k=v.dataset.cue.split(','),t=txt(k[0])+' — '+txt(k[1])+(k[2]?' ('+txt(k[2])+')':'');
+    const c=new VTTCue(.3,Math.max(.6,v.duration-.3),t);c.line=small?-4:-3;tr.addCue(c)}  // above the control and the badge
+  window.fvLang=()=>vids.forEach(v=>{paint(v);cues(v)});
+  const IN=.6;
+  function pick(){  // the most visible clip that has not played yet; nothing while one is playing
+    if(reduce||(cur&&cur.st==='play'&&(ratio.get(cur)||0)>=IN))return;
+    const v=vids.filter(o=>o.st==='new'&&(ratio.get(o)||0)>=IN).sort((x,y)=>ratio.get(y)-ratio.get(x))[0];
+    if(v){cur=v;v.st='play';load(v);v.play().catch(()=>{v.st='new';paint(v)})}}
+  let pt=0;const later=()=>{clearTimeout(pt);pt=setTimeout(pick,300)};  // start only once scrolling rests (smooth jumps pass other clips)
+  addEventListener('scroll',later,{passive:true});
+  const vis=new IntersectionObserver(es=>{es.forEach(e=>{ratio.set(e.target,e.intersectionRatio);
+      if(e.intersectionRatio<IN&&e.target.st==='play'){e.target.pause();e.target.st='new';if(cur===e.target)cur=null}});later()},
+    {threshold:[0,.25,.6,.8,1]});
+  const busy=v=>vids.some(o=>o!==v&&o.dataset.ch===v.dataset.ch&&o.src&&o.readyState<4);  // hero and card 1 share ch1: fetch it once
+  const near=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting&&!reduce&&!busy(e.target)){load(e.target);near.unobserve(e.target)}}),{rootMargin:'300px 0px'});
+  vids.forEach(v=>{vis.observe(v);near.observe(v)});
 })();
 </script>
 </body>
