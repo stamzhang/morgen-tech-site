@@ -390,7 +390,8 @@ nav,.beats span{transition:none!important}
 @media(max-width:440px){.nav-r>.nav-specs{font-size:12.5px}.brand>span{display:none}}
 @media(max-width:700px){.scard .sm.alertvis{aspect-ratio:auto;flex-direction:column;align-items:stretch;gap:12px;padding:16px 14px 44px}
  .alertvis .phone{width:auto;aspect-ratio:auto;border:0;background:none;padding:0}.alertvis .phone::before{content:none}
- .nt{font-size:13px;padding:12px 14px}.nt-h{font-size:14px}.alertvis .dash{max-width:none}}
+ .nt{font-size:13px;padding:12px 14px}.nt-h{font-size:14px}.alertvis .dash{max-width:none}
+ .scard .sm>.concept{right:6px;bottom:6px;font-size:9px;letter-spacing:.5px;padding:3px 6px}}  /* clears the film's lower tags */
 </style>
 </head>
 <body>
@@ -777,7 +778,7 @@ document.querySelectorAll('.io').forEach(el=>io.observe(el));
     if(v.dataset.cue){const tr=v.addTextTrack('captions','captions',lg());tr.mode='showing';v.tr=tr;v.addEventListener('loadedmetadata',()=>cues(v),{once:true})}}
   function cues(v){const tr=v.tr;if(!tr||!v.duration)return;[...(tr.cues||[])].forEach(c=>tr.removeCue(c));
     const k=v.dataset.cue.split(','),t=txt(k[0])+' — '+txt(k[1])+(k[2]?' ('+txt(k[2])+')':'');
-    const c=new VTTCue(.3,Math.max(.6,v.duration-.3),t);c.line=small?-4:-3;tr.addCue(c)}  // above the control and the badge
+    const c=new VTTCue(.3,Math.max(.6,v.duration-.3),t);c.line=1;tr.addCue(c)}  // top: the film's own tags sit in the lower half, the control and the badge at the bottom
   window.fvLang=()=>vids.forEach(v=>{paint(v);cues(v)});
   const IN=.6;
   function pick(){  // the most visible clip that has not played yet; nothing while one is playing
