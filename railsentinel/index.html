@@ -384,6 +384,59 @@ nav,.beats span{transition:none!important}
 @media(max-width:700px){.scard .sm.alertvis{aspect-ratio:auto;flex-direction:column;align-items:stretch;gap:12px;padding:16px 14px 44px}
  .alertvis .phone{width:auto;aspect-ratio:auto;border:0;background:none;padding:0}.alertvis .phone::before{content:none}
  .nt{font-size:13px;padding:12px 14px}.nt-h{font-size:14px}.alertvis .dash{max-width:none}}
+/* scroll film (Chen 2026-11-14): one pinned stage, five beats, scroll drives it; no buttons, no video */
+.sf{position:relative;background:#061223;color:#fff}
+.sf .sf-t{font-family:var(--sans)}
+.sf .sf-lb{fill:#cfe0f5;font-size:10px;font-weight:600;letter-spacing:.6px}
+.sf .sf-dim{fill:#7f93b0;font-size:8.5px;letter-spacing:.6px}
+.sf-stage{position:relative;height:100vh;height:100svh;min-height:520px;overflow:hidden}
+.sf-svg{position:absolute;inset:0;width:100%;height:100%;display:block}
+.sf-copy{position:absolute;left:0;right:0;bottom:0;padding:0 max(24px,calc((100vw - 1180px)/2)) clamp(40px,8vh,90px);pointer-events:none;background:linear-gradient(0deg,rgba(6,18,35,.92) 0%,rgba(6,18,35,.55) 60%,rgba(6,18,35,0) 100%)}
+.sf-beat{max-width:620px}
+.sf-beat .eyebrow{color:var(--gold)}
+.sf h1{font-family:var(--serif);font-size:clamp(36px,5vw,68px);line-height:1.04;margin:12px 0 22px}
+.sf h1 em{font-style:italic;color:var(--gold)}
+.sf-l{font-family:var(--serif);font-size:clamp(26px,3.4vw,46px);line-height:1.12;margin:6px 0 0}
+.sf-n{font-family:var(--mono);font-size:12px;letter-spacing:2px;color:var(--gold)}
+.sf-fw{display:inline-block;margin-top:14px;font-family:var(--mono);font-size:10.5px;letter-spacing:1.4px;text-transform:uppercase;color:rgba(255,255,255,.7);border:1px solid rgba(255,255,255,.25);border-radius:5px;padding:4px 8px}
+.sf-act{display:flex;gap:14px;flex-wrap:wrap;align-items:center;margin-top:20px;pointer-events:auto}
+.sf-hint{margin-top:22px;font-family:var(--mono);font-size:11px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.5)}
+.sf-tag{position:absolute;right:16px;top:76px;font-family:var(--mono);font-size:10px;letter-spacing:1.2px;text-transform:uppercase;color:rgba(255,255,255,.6);background:rgba(6,18,35,.6);border:1px solid rgba(255,255,255,.14);border-radius:6px;padding:5px 9px}
+.sf-dots{position:absolute;right:22px;top:50%;transform:translateY(-50%);list-style:none;display:none;flex-direction:column;gap:10px}
+.sf-dots li{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.25)}
+.sf-dots li.on{background:var(--gold)}
+/* live mode (JS): pin the stage, scroll scrubs the film */
+.sf.live{height:560vh}
+.sf.live .sf-stage{position:sticky;top:0}
+.sf.live .sf-dots{display:flex}
+.sf.live .sf-beat{position:absolute;left:max(24px,calc((100vw - 1180px)/2));right:24px;bottom:clamp(40px,8vh,90px);opacity:0;transform:translateY(18px);transition:opacity .45s var(--ease),transform .45s var(--ease)}
+.sf.live .sf-beat.on{opacity:1;transform:none}
+.sf.live .sf-beat:not(.on) .sf-act{pointer-events:none}
+.sf.live .sf-copy{height:clamp(240px,42vh,380px)}
+/* no JS: beat text stacked under the opening picture */
+.sf:not(.live):not(.rm) .sf-copy{position:relative;background:#061223;padding-top:24px}
+.sf:not(.live):not(.rm) .sf-beat{margin-bottom:26px}
+.sf:not(.live):not(.rm) .sf-hint{display:none}
+/* reduced motion: five still pictures, one per beat, no pinning */
+.sf.rm .sf-stage{display:none}
+.sf-still{display:grid;grid-template-columns:1.3fr 1fr;gap:32px;align-items:center;padding:28px max(24px,calc((100vw - 1180px)/2))}
+.sf-still:first-child{padding-top:84px}
+.sf-still svg{position:static;inset:auto;width:100%;height:auto;aspect-ratio:16/10;display:block;border-radius:14px;border:1px solid rgba(95,168,248,.18)}
+.sf-still .sf-beat{position:static;opacity:1;transform:none}
+.sf-still .sf-hint{display:none}
+@media(max-width:760px){
+  .sf-stage{min-height:560px}
+  .sf-svg{height:62%}
+  .sf-copy{padding:0 20px 34px;background:linear-gradient(0deg,#061223 0%,#061223 70%,rgba(6,18,35,0) 100%)}
+  .sf.live .sf-copy{height:44%}
+  .sf.live .sf-beat{left:20px;right:20px;bottom:30px}
+  .sf h1{font-size:clamp(32px,9vw,44px);margin:8px 0 16px}
+  .sf-l{font-size:clamp(24px,7vw,32px)}
+  .sf-tag{top:70px;right:10px;font-size:9px}
+  .sf-dots{right:10px;top:35%}
+  .sf-still{grid-template-columns:1fr;gap:14px}
+}
+.sf-stills .sf-tag{position:static;display:inline-block;margin:0 max(24px,calc((100vw - 1180px)/2)) 34px}
 </style>
 <script data-goatcounter="https://morgentech.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
 </head>
@@ -412,58 +465,114 @@ nav,.beats span{transition:none!important}
   <div class="nav-r"><label class="lang"><select id="lang" aria-label="Language" onchange="setLang(this.value)"><option value="en">EN</option><option value="de">DE</option><option value="fr">FR</option><option value="es">ES</option></select></label><a href="#variants" class="nav-specs" data-i="specs">Specs &amp; datasheet</a><a href="#cta" class="btn btn-primary nav-cta" data-i="cta_nav">Request a pilot</a></div>
 </div></nav>
 
-<section id="vhero" aria-label="RailSentinel-24 in 5 seconds">
-  <div class="hmedia">
-  <video id="hv" muted playsinline preload="none" poster="media/hero_poster.jpg" aria-hidden="true">
-    <source src="media/hero.mp4" type="video/mp4">
-  </video>
-  <div class="shade"></div>
-  <div class="concept" data-i="concept">Concept rendering · not final</div>
-  </div>
-  <div class="wrap">
-  <div class="hero">
-    <div class="eyebrow reveal" style="color:var(--gold)" data-i="h_eye">Control-power monitor for DC fast chargers</div>
-    <h1 class="reveal d1" data-i="h_h">The charger says<br>"faulted".<br><em>We say why.</em></h1>
-    <div class="beats reveal d2" id="beats"><span data-i="b1">Snaps onto the rail</span><span data-i="b2">Catches the disturbance</span><span data-i="b3">Alerts your team</span></div>
-    <p class="reveal d2" data-i="h_p">On the DIN rail. An independent, timestamped record of what the 24 V rail did around every reset.</p>
-    <div class="hero-actions reveal d3"><a href="#cta" class="btn btn-primary" data-i="h_b1">Request a pilot</a><a href="#story" class="btn btn-ghost" data-i="h_b2">See what it does</a><button type="button" class="btn btn-ghost hplay" id="hplay"><span aria-hidden="true">▶</span> <span data-i="play">Play</span> <span class="sz" data-mb="0.4">(0.4 MB)</span></button><a href="#variants" class="hspecs"><span data-i="specs_l">Specs &amp; datasheet</span> <span aria-hidden="true">→</span></a></div>
-    <div class="kfig reveal d3"><div><b>µs</b><span data-i="k1">trigger · OEM &amp; lab builds</span></div><div><b>50 ms</b><span data-i="k2">waveform</span></div><div><b data-i="k3n">1,000</b><span data-i="k3">events on board</span></div></div>
-    <div class="prelim reveal d3" data-i="prelim">Preliminary</div>
-  </div>
+<section id="film" class="sf" aria-label="RailSentinel-24 in five steps">
+  <div class="sf-stage">
+    <svg class="sf-svg" viewBox="0 60 1600 900" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Illustration: a DC charger shows a fault; inside its cabinet a dip runs along the 24 V control rail and resets the controller; RS-24 clips onto the DIN rail and records the dip; the operator's phone shows the cause.">
+      <defs>
+        <filter id="sfg" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        <radialGradient id="sfsky" cx="50%" cy="35%" r="70%"><stop offset="0" stop-color="#12294a"/><stop offset="1" stop-color="#061223"/></radialGradient>
+        <linearGradient id="sfbody" x1="0" x2="1"><stop offset="0" stop-color="#1b2f4d"/><stop offset=".55" stop-color="#14263f"/><stop offset="1" stop-color="#0f1e33"/></linearGradient>
+      </defs>
+      <rect x="-2000" y="-1000" width="5600" height="3000" fill="url(#sfsky)"/>
+      <!-- site: skyline, ground, lamps, cars, neighbour chargers -->
+      <g class="sf-bg">
+        <path d="M-400 760V520h120v-60h90v100h80V430h140v110h70v-80h110v300zM1080 760V470h100v-50h120v90h90V400h130v130h80v-60h200v290z" fill="#0d1f39"/>
+        <rect x="-2000" y="760" width="5600" height="600" fill="#0a182c"/>
+        <path d="M-400 762H2000" stroke="#22406a" stroke-width="2"/>
+        <g stroke="#2b4468" stroke-width="5" fill="none"><path d="M200 760V430M1400 760V430"/></g>
+        <g fill="#f0c040" opacity=".55"><ellipse cx="200" cy="428" rx="22" ry="6"/><ellipse cx="1400" cy="428" rx="22" ry="6"/></g>
+        <g fill="#0f223d" stroke="#203a60" stroke-width="2">
+          <rect x="300" y="300" width="170" height="460" rx="14"/><rect x="1130" y="300" width="170" height="460" rx="14"/>
+        </g>
+        <g fill="#0a1a30" opacity=".9"><rect x="325" y="340" width="120" height="80" rx="5"/><rect x="1155" y="340" width="120" height="80" rx="5"/></g>
+        <g fill="#2fbf71" opacity=".6"><circle cx="385" cy="380" r="9"/><circle cx="1215" cy="380" r="9"/></g>
+        <g fill="#0e1d33" stroke="#1d3558" stroke-width="2">
+          <path d="M-40 760v-60c0-20 30-30 60-36l60-40c20-12 60-16 120-16 70 0 100 10 130 40l40 40c30 6 50 16 50 40v32z"/>
+          <path d="M1500 760v-60c0-20 30-30 60-36l60-40c20-12 60-16 120-16 70 0 100 10 130 40l40 40c30 6 50 16 50 40v32z"/>
+        </g>
+      </g>
+      <!-- the charger -->
+      <g class="sf-ch">
+        <ellipse cx="800" cy="768" rx="210" ry="14" fill="#000" opacity=".35"/>
+        <rect x="650" y="220" width="300" height="545" rx="20" fill="url(#sfbody)" stroke="#33507a" stroke-width="2"/>
+        <rect class="sf-bar" x="680" y="232" width="240" height="7" rx="3" fill="#e0533a"/>
+        <path d="M950 330h30c14 0 22 10 22 24v330c0 40-30 60-70 60" fill="none" stroke="#0b1628" stroke-width="12" stroke-linecap="round"/>
+        <rect x="944" y="300" width="22" height="60" rx="6" fill="#203a60"/>
+        <g class="sf-scr">
+          <rect x="690" y="262" width="220" height="140" rx="8" fill="#050e1c" stroke="#2b4468"/>
+          <g class="sf-scr-bad"><path d="M800 288l24 42h-48z" fill="none" stroke="#ff6b4a" stroke-width="5" stroke-linejoin="round"/><path d="M800 303v13M800 322v1" stroke="#ff6b4a" stroke-width="5" stroke-linecap="round"/><text x="800" y="372" text-anchor="middle" class="sf-t" style="fill:#ff8a6a;font-size:19px;font-weight:600" data-i="fm_scr_bad">Out of order</text></g>
+          <g class="sf-scr-ok" opacity="0"><circle cx="800" cy="310" r="22" fill="none" stroke="#2fbf71" stroke-width="5"/><path d="M789 310l8 8 15-16" fill="none" stroke="#2fbf71" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><text x="800" y="372" text-anchor="middle" class="sf-t" style="fill:#5fd39a;font-size:19px;font-weight:600" data-i="fm_scr_ok">Available</text></g>
+        </g>
+        <!-- cabinet interior (behind the service door) -->
+        <g class="sf-in">
+          <rect x="668" y="425" width="264" height="312" rx="8" fill="#08142a" stroke="#2b4468"/>
+          <text x="680" y="444" class="sf-t sf-dim" data-i="fm_cab">CONTROL CABINET</text>
+          <rect x="676" y="478" width="248" height="8" rx="1.5" fill="#7d8ca3"/>
+          <g class="sf-mods">
+            <rect x="686" y="452" width="62" height="62" rx="3" fill="#1a2c48" stroke="#3a5a86"/><text x="717" y="478" text-anchor="middle" class="sf-t sf-lb">24 V</text><text x="717" y="492" text-anchor="middle" class="sf-t sf-dim">PSU</text>
+            <rect x="754" y="456" width="12" height="54" rx="2" fill="#1a2c48" stroke="#3a5a86"/><rect x="769" y="456" width="12" height="54" rx="2" fill="#1a2c48" stroke="#3a5a86"/><rect x="784" y="456" width="12" height="54" rx="2" fill="#1a2c48" stroke="#3a5a86"/>
+            <rect x="868" y="456" width="44" height="54" rx="2" fill="#1a2c48" stroke="#3a5a86"/>
+            <rect x="684" y="618" width="96" height="64" rx="3" fill="#1a2c48" stroke="#3a5a86"/><text x="732" y="640" text-anchor="middle" class="sf-t sf-lb" data-i="fm_ctl">CONTROLLER</text>
+            <text x="732" y="662" text-anchor="middle" class="sf-t sf-ctl" style="font-size:12px;font-weight:700"><tspan class="sf-ctl-ok" fill="#5fd39a">● OK</tspan><tspan class="sf-ctl-rs" fill="#ff6b4a" x="732" dy="0" opacity="0">● RESET</tspan></text>
+            <rect x="808" y="618" width="104" height="64" rx="3" fill="#1a2c48" stroke="#3a5a86"/><text x="860" y="640" text-anchor="middle" class="sf-t sf-lb" data-i="fm_k1">CONTACTOR</text>
+          </g>
+          <!-- 24 V control rail -->
+          <g class="sf-rail">
+            <path d="M717 514V566H884M732 566V618M860 566V618" fill="none" stroke="#f0c040" stroke-width="3" stroke-linejoin="round"/>
+            <text x="884" y="558" text-anchor="end" class="sf-t" style="fill:#f0c040;font-size:10px;letter-spacing:1px" data-i="fm_rail">24 V CONTROL RAIL</text>
+            <path class="sf-dip" d="M790 566h12l4 0 3 22 4-30 3 14 3-6h12" fill="none" stroke="#ff6b4a" stroke-width="3" stroke-linejoin="round" opacity="0"/>
+            <circle class="sf-p" cx="860" cy="566" r="7" fill="#ff6b4a" filter="url(#sfg)" opacity="0"/>
+          </g>
+          <!-- RS-24 -->
+          <rect class="sf-slot" x="808" y="450" width="50" height="66" rx="3" fill="none" stroke="#f0c040" stroke-width="1.5" stroke-dasharray="4 4" opacity="0"/>
+          <g class="sf-rs" opacity="0">
+            <path d="M833 516V566" stroke="#f0c040" stroke-width="2" stroke-dasharray="3 3"/>
+            <rect x="808" y="450" width="50" height="66" rx="3" fill="#122a20" stroke="#f0c040" stroke-width="2" filter="url(#sfg)"/>
+            <rect x="808" y="450" width="50" height="12" rx="3" fill="#f0c040"/>
+            <text x="833" y="459.5" text-anchor="middle" class="sf-t" style="fill:#0d2340;font-size:7.5px;font-weight:700">RS-24</text>
+            <circle class="sf-led" cx="848" cy="474" r="3.5" fill="#2fbf71"/>
+            <polyline class="sf-mini" points="814,496 822,496 825,496 827,505 830,488 832,500 834,494 836,496 852,496" fill="none" stroke="#f0c040" stroke-width="1.6" opacity="0"/>
+            <g class="sf-rec" opacity="0"><rect x="778" y="410" width="110" height="24" rx="12" fill="#f0c040"/><text x="833" y="426" text-anchor="middle" class="sf-t" style="fill:#0d2340;font-size:10.5px;font-weight:700" data-i="fm_rec">dip recorded</text></g>
+          </g>
+        </g>
+        <!-- service door -->
+        <g class="sf-door">
+          <rect x="668" y="425" width="264" height="312" rx="8" fill="#172a46" stroke="#33507a"/>
+          <rect x="900" y="560" width="10" height="44" rx="4" fill="#2b4468"/>
+          <path d="M690 455h120M690 470h90" stroke="#2b4468" stroke-width="3" stroke-linecap="round"/>
+        </g>
+      </g>
+      <!-- link + phone -->
+      <path class="sf-wifi" d="M858 470C930 400 980 380 1030 390" fill="none" stroke="#5fa8f8" stroke-width="2.5" stroke-dasharray="6 7" opacity="0"/>
+      <g class="sf-ph" opacity="0">
+        <rect x="1030" y="300" width="200" height="380" rx="26" fill="#0b1830" stroke="#4a6a96" stroke-width="3"/>
+        <rect x="1100" y="312" width="60" height="7" rx="3.5" fill="#203a60"/>
+        <rect x="1044" y="372" width="172" height="190" rx="12" fill="#f7f9fc"/>
+        <text x="1056" y="394" class="sf-t" style="fill:#5a6b80;font-size:10px;letter-spacing:.8px">RS-24 · 14:32:07</text>
+        <text x="1056" y="418" class="sf-t" style="fill:#0d2340;font-size:15px;font-weight:700" data-i="fm_c_ch">Charger 04</text>
+        <text x="1056" y="440" class="sf-t" style="fill:#c8452c;font-size:13.5px;font-weight:700" data-i="fm_c_ev">24 V rail dip</text>
+        <polyline points="1056,486 1100,486 1106,486 1111,512 1118,470 1124,496 1129,482 1134,486 1204,486" fill="none" stroke="#c8452c" stroke-width="2.4" stroke-linejoin="round"/>
+        <path d="M1056 486H1204" stroke="#c9d3e0" stroke-width="1" stroke-dasharray="3 3"/>
+        <text x="1056" y="540" class="sf-t" style="fill:#33445c;font-size:11.5px" data-i="fm_c_why">Controller reset right after</text>
+      </g>
+    </svg>
+    <div class="sf-tag" data-i="fm_tag">Illustration · concept, not final</div>
+    <ol class="sf-dots" aria-hidden="true"><li></li><li></li><li></li><li></li><li></li></ol>
+    <div class="sf-copy">
+      <div class="sf-beat" data-b="0">
+        <div class="eyebrow" data-i="h_eye">Control-power monitor for DC fast chargers</div>
+        <h1 data-i="fm1">Your charger stopped.<br><em>Nobody saw why.</em></h1>
+        <div class="sf-act"><a href="#cta" class="btn btn-primary" data-i="h_b1">Request a pilot</a><a href="#variants" class="hspecs"><span data-i="specs_l">Specs &amp; datasheet</span> <span aria-hidden="true">→</span></a></div>
+        <div class="sf-hint" aria-hidden="true"><span data-i="fm_scroll">Scroll</span> ↓</div>
+      </div>
+      <div class="sf-beat" data-b="1"><div class="sf-n">02</div><p class="sf-l" data-i="fm2">A dip on the 24 V control rail resets the controller. No log keeps it.</p></div>
+      <div class="sf-beat" data-b="2"><div class="sf-n">03</div><p class="sf-l" data-i="fm3">RS-24 clips onto that rail and records what it did.</p><span class="sf-fw" data-i="fm_fw">Firmware in development</span></div>
+      <div class="sf-beat" data-b="3"><div class="sf-n">04</div><p class="sf-l" data-i="fm4">Your team gets the cause, not just “faulted”.</p><span class="sf-fw" data-i="fm_fw">Firmware in development</span></div>
+      <div class="sf-beat" data-b="4"><div class="sf-n">05</div><p class="sf-l" data-i="fm5">Find out why your chargers stop.</p>
+        <div class="sf-act"><a href="#cta" class="btn btn-primary" data-i="h_b1">Request a pilot</a><a href="#variants" class="hspecs"><span data-i="specs_l">Specs &amp; datasheet</span> <span aria-hidden="true">→</span></a></div></div>
+    </div>
   </div>
 </section>
-
-<section id="story" aria-label="How RailSentinel-24 works" data-seg="0.00,5.80;5.80,8.40;8.40,14.10;14.10,19.15"><div class="wrap scards">
-  <article class="scard io">
-    <div class="sm"><img src="media/story_ch1.jpg" alt="" width="960" height="540" loading="lazy"><div class="concept" data-i="concept">Concept rendering · not final</div><button type="button" class="splay" data-k="0"><span aria-hidden="true">▶</span> <span data-i="play">Play</span> <span class="sz" data-mb="1.6">(1.6 MB)</span></button></div>
-    <div class="stext"><div class="eyebrow" data-i="k1_e">01 · Mount</div><h2 data-i="k1_h">Snaps onto the rail.</h2><p data-i="k1_p">One host board in a slim coupler housing, clipped onto the 35 mm DIN rail next to the power supply it watches.</p></div>
-  </article>
-  <article class="scard io">
-    <div class="sm"><img src="media/story_ch2.jpg" alt="" width="960" height="540" loading="lazy"><div class="concept" data-i="concept">Concept rendering · not final</div><button type="button" class="splay" data-k="1"><span aria-hidden="true">▶</span> <span data-i="play">Play</span> <span class="sz" data-mb="1.6">(1.6 MB)</span></button></div>
-    <div class="stext"><div class="eyebrow" data-i="k2_e">02 · Isolation</div><h2 data-i="k2_h">Isolation built in.</h2><p data-i="k2_p">The sensing side and the communication side are separated on the board by an isolation barrier designed for reinforced insulation.</p></div>
-  </article>
-  <article class="scard io">
-    <div class="sm"><img src="media/story_ch3.jpg" alt="" width="960" height="540" loading="lazy"><div class="concept" data-i="concept">Concept rendering · not final</div><button type="button" class="splay" data-k="2"><span aria-hidden="true">▶</span> <span data-i="play">Play</span> <span class="sz" data-mb="1.6">(1.6 MB)</span></button></div>
-    <div class="stext"><div class="eyebrow" data-i="k3_e">03 · Modules</div><h2 data-i="k3_h">Grows with the site.</h2><p data-i="k3_p">Add the sensing and communication the site needs, one plug-in module at a time.</p>
-      <ul><li data-i="k3_l1">Clamp current</li><li>RS-485 / Modbus</li><li data-i="k3_l3">SD logger</li><li>Ethernet</li><li data-i="k3_l6">Temperature · sound · vibration</li><li data-i="k3_l7">Charger–car signals, observe only</li></ul>
-      <span class="tag" data-i="k3_t">Planned · v2</span></div>
-  </article>
-  <article class="scard io">
-    <div class="sm alertvis">
-      <div class="phone"><div class="nt">
-        <div class="nt-top"><span>RS-24</span><span>14:32:07</span></div>
-        <div class="nt-h" data-i="al_h">Transient captured</div>
-        <div class="nt-l"><span data-i="al_ch">Charger 04</span> · 24 V</div>
-        <div class="nt-l nt-pk" data-i="al_pk">▲ peak 41.8 V · 50 ms waveform</div>
-        <div class="nt-l" data-i="al_wf">Waveform attached</div>
-        <div class="nt-btn" data-i="al_view">View waveform</div>
-      </div></div>
-      <div class="dash"><div class="dash-k" data-i="al_dash">Dashboard</div><div class="dash-r"><span data-i="al_ch">Charger 04</span><span>14:32:07</span><span class="nt-pk" data-i="al_pk">▲ peak 41.8 V · 50 ms waveform</span><span data-i="al_ev">1 event / 24 h</span></div><div class="dash-note" data-i="al_note">Note (technician): matches K1 switching</div></div>
-      <div class="concept" data-i="al_tag">Illustration · example</div>
-    </div>
-    <div class="stext"><div class="eyebrow" data-i="k4_e">04 · Alert</div><h2 data-i="k4_h">Alerts where your team is.</h2><p data-i="k4_p">A disturbance on the supply is caught and timestamped, then sent over Wi-Fi to your backend — onto the control-room dashboard and the service technician's phone.</p><span class="tag" data-i="k4_t">Illustration</span></div>
-  </article>
-</div></section>
 
 <section class="light" id="why"><div class="wrap">
   <div class="io"><div class="eyebrow" data-i="w_eye">The blind spot</div>
@@ -481,54 +590,6 @@ nav,.beats span{transition:none!important}
 <section id="what"><div class="wrap">
   <div class="io"><div class="eyebrow" data-i="p_eye">What it does</div>
   <h2 class="sec-h" data-i="p_h">Three things. One small module.</h2></div>
-  <div class="cab-wrap">
-  <div class="cab io" id="cabbox">
-    <div class="cab-top"><span data-i="cab_t">DC FAST CHARGER · CONTROL CABINET · 24 V AUX</span><span id="cab-state" data-i="cab_ok">NORMAL</span></div>
-    <svg id="cab" viewBox="0 0 620 340" role="img" aria-label="Animated cabinet schematic: a contactor switches, a transient runs along the 24 V rail, the controller resets and RS-24 captures the event">
-      <defs><filter id="pg"><feGaussianBlur stdDeviation="3"/></filter><filter id="glow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
-      <rect x="6" y="6" width="608" height="328" rx="8" fill="none" stroke="#2b4468" stroke-width="1.5" stroke-dasharray="5 5"/>
-      <!-- top rail -->
-      <rect class="rail" x="30" y="72" width="560" height="10"/>
-      <rect class="mod" x="44" y="40" width="120" height="70"/><text class="lbl" x="104" y="66" text-anchor="middle">PSU</text><text class="dim" x="104" y="82" text-anchor="middle">AC/DC · 24 V · 10 A</text>
-      <rect class="mod" x="182" y="46" width="14" height="58"/><rect class="mod" x="200" y="46" width="14" height="58"/><rect class="mod" x="218" y="46" width="14" height="58"/>
-      <!-- RS-24 -->
-      <g id="rs24">
-        <rect class="halo" x="438" y="28" width="136" height="94" rx="8"/>
-        <rect x="444" y="34" width="124" height="82" rx="4" fill="#1a2b1f" stroke="#f0c040" stroke-width="2" filter="url(#glow)"/>
-        <rect x="444" y="34" width="124" height="10" rx="4" fill="#f0c040"/><text x="506" y="42" text-anchor="middle" style="fill:#0d2340;font-size:8px;font-weight:700;letter-spacing:1px">RAILSENTINEL</text>
-        <text class="lbl" x="496" y="57" text-anchor="middle" style="fill:#f0c040;font-size:13px;font-weight:700">RS-24</text>
-        <rect x="456" y="62" width="80" height="32" rx="3" fill="#050f1f" stroke="#1f3554"/>
-        <polyline class="mini" points="460,78 470,77 480,78 490,77 500,78 510,77 520,78 532,77"/>
-        <polyline class="mini2" id="mini2" points="460,78 486,78 490,64 494,86 498,74 501,80 504,78 532,77"/>
-        <path d="M506 34 V16" stroke="#f0c040" stroke-width="1.2" stroke-dasharray="2 3"/><text x="506" y="12" text-anchor="middle" style="fill:#f0c040;font-size:8px;letter-spacing:1.5px" data-i="cab_up">CLOUD · DASHBOARD</text><circle class="led" id="led" cx="552" cy="66" r="4"/>
-      </g>
-      <!-- bus -->
-      <path class="bus" d="M104 110 V150 H520 V116"/>
-      <path class="drop" d="M115 150 V226"/><path class="drop" d="M270 150 V226"/><path class="drop" d="M410 150 V226"/>
-      <text class="dim" x="330" y="144" text-anchor="middle">+24 V CONTROL RAIL</text>
-      <!-- bottom rail + loads -->
-      <rect class="rail" x="30" y="268" width="560" height="10"/>
-      <rect class="mod" x="60" y="226" width="110" height="72"/><text class="lbl" x="115" y="250" text-anchor="middle" data-i="cab_ctl">CONTROLLER</text><text class="ctl" id="ctl" x="115" y="270" text-anchor="middle">● OK</text><text class="dim" x="115" y="286" text-anchor="middle">OCPP</text>
-      <g class="k1" id="k1"><rect class="mod" x="215" y="226" width="110" height="72"/><text class="lbl" x="270" y="250" text-anchor="middle" data-i="cab_k1">CONTACTOR K1</text>
-        <rect class="coil" x="248" y="258" width="44" height="14" rx="2"/><text class="dim" x="270" y="290" text-anchor="middle" data-i="cab_k1s">DC OUTPUT</text>
-        <path class="spark" d="M296 258 l5-6 M300 265 l7 0 M296 272 l5 6"/></g>
-      <rect class="mod" x="355" y="226" width="110" height="72"/><text class="lbl" x="410" y="250" text-anchor="middle" data-i="cab_rb">RELAY BOARD</text><text class="dim" x="410" y="286" text-anchor="middle">×8</text>
-      <!-- transient -->
-      <path class="bump" id="bump" d="M250 150 L262 150 L266 128 L272 164 L277 142 L281 154 L285 150 L300 150"/>
-      <circle class="pulse" id="p1" r="6" cx="270" cy="150"/><circle class="pulse" id="p2" r="6" cx="270" cy="150"/>
-      <!-- badge -->
-      <g class="badge" id="badge"><rect x="386" y="176" width="212" height="30" rx="5" fill="#e06a3a"/><text x="492" y="195" text-anchor="middle" style="fill:#fff;font-size:11px;font-weight:500" id="badge-t">▲ 41.8 V · 50 ms · captured</text></g>
-    </svg>
-    <div class="cab-bot"><span data-i="cb1">rail <b id="cb-rail">24.1 V</b></span><span data-i="cb2">last peak <b id="cb-peak">—</b></span><span data-i="cb3">events 24 h <b id="cb-ev">0</b></span><span class="prelim" data-i="prelim_ex">Example · preliminary</span></div>
-  </div>
-  <button type="button" class="btn btn-ghost creplay" id="creplay"><span aria-hidden="true">↻</span> <span data-i="replay">Replay</span></button>
-  </div>
-  <div class="flow io" role="list">
-    <div class="fnode" role="listitem"><div class="ring"><svg class="ico" aria-hidden="true"><use href="#i-rail"/></svg></div><div class="t"><b data-i="fl1">24 V rail</b><span data-i="fl1s">rings · sags · spikes</span></div></div>
-    <div class="fnode" role="listitem"><div class="ring"><svg class="ico" aria-hidden="true"><use href="#i-chip"/></svg></div><div class="t"><b>RS-24</b><span data-i="fl2s">measures in hardware</span></div></div>
-    <div class="fnode" role="listitem"><div class="ring"><svg class="ico" aria-hidden="true"><use href="#i-record"/></svg></div><div class="t"><b data-i="fl3">Timestamped record</b><span data-i="fl3s">peak · 50 ms waveform</span></div></div>
-    <div class="fnode end" role="listitem"><div class="ring"><svg class="ico" aria-hidden="true"><use href="#i-why"/></svg></div><div class="t"><b data-i="fl4">Why it reset</b><span data-i="fl4s">on your phone or dashboard</span></div></div>
-  </div>
   <div class="pillars">
     <div class="pillar io"><div class="ic"><svg class="ico" aria-hidden="true"><use href="#i-wave"/></svg></div><h3 data-i="p1_h">Catches the event</h3><p data-i="p1_p">Transients timestamped — the record survives a power loss.</p><div class="spec" data-i="p1_s">µs trigger (OEM &amp; lab builds) · peak + 50 ms waveform · 1,000 events</div></div>
     <div class="pillar io"><div class="ic"><svg class="ico" aria-hidden="true"><use href="#i-phone"/></svg></div><h3 data-i="p2_h">Alerts where your team is</h3><p data-i="p2_p">The event reaches the dashboard and the service technician's phone — over Wi-Fi via the site network.</p><div class="spec" data-i="p2_s">Wi-Fi · dashboard · phone alert</div></div>
@@ -660,7 +721,7 @@ nav,.beats span{transition:none!important}
 </div></footer>
 
 <script>
-const T={en:{},de:{"specs_l":"Technische Daten &amp; Datenblatt","al_note":"Notiz (Techniker): passt zu K1-Schaltung","al_view":"Wellenform ansehen","al_wf":"Wellenform angehängt","specs":"Daten &amp; Datenblatt","al_h":"Transiente erfasst","al_ch":"Ladesäule 04","al_pk":"▲ Peak 41,8 V · 50 ms Wellenform","al_dash":"Dashboard","al_ev":"1 Ereignis / 24 h","al_tag":"Illustration · Beispiel","play":"Abspielen","replay":"Wiederholen","d_eye":"Downloads","d_h":"Dokumente.","d1_h":"Produktbrief","d1_p":"Eine Seite: das Problem, was RS-24 tut, für wen, Varianten, Pilotprogramm.","d2_h":"Vorläufiges Datenblatt","d2_p":"Elektrik, Transientenerfassung, Isolation, Alarmkontakt, Konnektivität, Umgebung, Varianten, Roadmap.","d_n":"Design-Unterlagen für Pilotpartner unter NDA: info@morgen-tech.com","rm_v":"Stimmen Sie ab, was Sie brauchen","rm_bl":"Backlog","rm2":"Mobilfunk-Feldvariante","rm1":"NFC-Auslesen am Schrank","rm_e":"Auf der Roadmap · ohne Zusage","r_p":"Für 12-, 24- und 48-V-DC-Steuerschienen · misst 0–62 V.","prelim_ex":"Beispiel · vorläufig","prelim":"Vorläufig","b1":"Rastet auf die Schiene","b2":"Erkennt die Störung","b3":"Alarmiert Ihr Team","concept":"Konzept-Rendering · nicht final","k1_e":"01 · Montage","k1_h":"Rastet auf die Schiene.","k1_p":"Eine Host-Platine im schlanken Koppelgehäuse, aufgerastet auf die 35-mm-DIN-Schiene neben dem Netzteil, das sie überwacht.","k2_e":"02 · Isolation","k2_h":"Isolation eingebaut.","k2_p":"Mess- und Kommunikationsseite sind auf der Platine durch eine für verstärkte Isolierung ausgelegte Isolationsbarriere getrennt.","k3_e":"03 · Module","k3_h":"Wächst mit dem Standort.","k3_p":"Ergänzen Sie die Sensorik und Kommunikation, die der Standort braucht — ein Steckmodul nach dem anderen.","k3_l1":"Stromzange","k3_l3":"SD-Logger","k3_l6":"Temperatur · Schall · Vibration","k3_l7":"Lader–Fahrzeug-Signale, nur beobachtend","k3_t":"Geplant · v2","k4_e":"04 · Alarm","k4_h":"Alarmiert, wo Ihr Team ist.","k4_p":"Eine Störung auf der Versorgung wird erfasst, mit Zeitstempel versehen und per WLAN an Ihr Backend gesendet — auf das Dashboard der Leitwarte und das Telefon des Servicetechnikers.","k4_t":"Illustration",o0:"DC-Schnelllader — hier starten wir",fl4s:"auf Handy oder Dashboard",fl4:"Warum der Reset kam",fl3s:"Peak · 50-ms-Wellenform",fl3:"Zeitgestempelte Aufzeichnung",fl2s:"misst in Hardware",fl1s:"Schwingen · Einbrüche · Spikes","fl1":"24-V-Versorgung",k3n:"1.000",k3:"Ereignisse an Bord",k2:"Wellenform","k1":"Trigger · OEM- &amp; Laborversion",r1_l4:"Für kleine CPOs",r1_l1:"WLAN",st_src:"Quelle: ChargerHelp-Daten via Kelley Blue Book, Sept. 2026 · US-Netze",st2:"der Ausfalltage entfallen auf diese Mehrfacheinsätze",st1:"der Ausfälle brauchen mehr als einen Einsatz","ch0":"Ein typischer Feldfall",sf_c2:"zu = OK",sf_c:"ALARM","sf_w2":"Heartbeat",sf_iso:"Isolation",sf_b2:"Cloud · Alarm",sf_b:"MELDEN","sf_a2":"Versorgung · Spikes",sf_a:"MESSEN",ch4:"„Fehler“ · kein Log",ch3:"Controller resettet","ch2":"24-V-Versorgung schwingt",ch1:"Schütz öffnet",sf_eye:"Selbstüberwachend","sf_h":"Der Mess-Controller überwacht den Kommunikations-Controller. Bleibt dessen Heartbeat aus, öffnet der Alarmkontakt.",sf_n:"Sicherheitsfunktion für OEMs: in Prüfung — sprechen Sie uns an. Heute keine zertifizierte Sicherheitskomponente.",sf1:"getrennte Takte & Versorgungen",sf2:"Fehler → Neustart → protokolliert",sf3:"Alarmkontakt öffnet",
+const T={en:{},de:{"fm1":"Ihr Lader steht still.<br><em>Niemand sah, warum.</em>","fm2":"Ein Einbruch auf der 24-V-Steuerspannung setzt die Steuerung zurück. Kein Log hält ihn fest.","fm3":"RS-24 sitzt auf dieser Schiene und zeichnet auf, was sie tat.","fm4":"Ihr Team erfährt die Ursache, nicht nur „Fehler“.","fm5":"Finden Sie heraus, warum Ihre Lader ausfallen.","fm_fw":"Firmware in Entwicklung","fm_tag":"Illustration · Konzept, nicht final","fm_scroll":"Scrollen","fm_scr_bad":"Außer Betrieb","fm_scr_ok":"Verfügbar","fm_cab":"SCHALTSCHRANK","fm_ctl":"STEUERUNG","fm_k1":"SCHÜTZ","fm_rail":"24-V-STEUERSPANNUNG","fm_rec":"Einbruch erfasst","fm_c_ch":"Ladesäule 04","fm_c_ev":"Einbruch auf 24 V","fm_c_why":"Steuerung danach neu gestartet","specs_l":"Technische Daten &amp; Datenblatt","al_note":"Notiz (Techniker): passt zu K1-Schaltung","al_view":"Wellenform ansehen","al_wf":"Wellenform angehängt","specs":"Daten &amp; Datenblatt","al_h":"Transiente erfasst","al_ch":"Ladesäule 04","al_pk":"▲ Peak 41,8 V · 50 ms Wellenform","al_dash":"Dashboard","al_ev":"1 Ereignis / 24 h","al_tag":"Illustration · Beispiel","play":"Abspielen","replay":"Wiederholen","d_eye":"Downloads","d_h":"Dokumente.","d1_h":"Produktbrief","d1_p":"Eine Seite: das Problem, was RS-24 tut, für wen, Varianten, Pilotprogramm.","d2_h":"Vorläufiges Datenblatt","d2_p":"Elektrik, Transientenerfassung, Isolation, Alarmkontakt, Konnektivität, Umgebung, Varianten, Roadmap.","d_n":"Design-Unterlagen für Pilotpartner unter NDA: info@morgen-tech.com","rm_v":"Stimmen Sie ab, was Sie brauchen","rm_bl":"Backlog","rm2":"Mobilfunk-Feldvariante","rm1":"NFC-Auslesen am Schrank","rm_e":"Auf der Roadmap · ohne Zusage","r_p":"Für 12-, 24- und 48-V-DC-Steuerschienen · misst 0–62 V.","prelim_ex":"Beispiel · vorläufig","prelim":"Vorläufig","b1":"Rastet auf die Schiene","b2":"Erkennt die Störung","b3":"Alarmiert Ihr Team","concept":"Konzept-Rendering · nicht final","k1_e":"01 · Montage","k1_h":"Rastet auf die Schiene.","k1_p":"Eine Host-Platine im schlanken Koppelgehäuse, aufgerastet auf die 35-mm-DIN-Schiene neben dem Netzteil, das sie überwacht.","k2_e":"02 · Isolation","k2_h":"Isolation eingebaut.","k2_p":"Mess- und Kommunikationsseite sind auf der Platine durch eine für verstärkte Isolierung ausgelegte Isolationsbarriere getrennt.","k3_e":"03 · Module","k3_h":"Wächst mit dem Standort.","k3_p":"Ergänzen Sie die Sensorik und Kommunikation, die der Standort braucht — ein Steckmodul nach dem anderen.","k3_l1":"Stromzange","k3_l3":"SD-Logger","k3_l6":"Temperatur · Schall · Vibration","k3_l7":"Lader–Fahrzeug-Signale, nur beobachtend","k3_t":"Geplant · v2","k4_e":"04 · Alarm","k4_h":"Alarmiert, wo Ihr Team ist.","k4_p":"Eine Störung auf der Versorgung wird erfasst, mit Zeitstempel versehen und per WLAN an Ihr Backend gesendet — auf das Dashboard der Leitwarte und das Telefon des Servicetechnikers.","k4_t":"Illustration",o0:"DC-Schnelllader — hier starten wir",fl4s:"auf Handy oder Dashboard",fl4:"Warum der Reset kam",fl3s:"Peak · 50-ms-Wellenform",fl3:"Zeitgestempelte Aufzeichnung",fl2s:"misst in Hardware",fl1s:"Schwingen · Einbrüche · Spikes","fl1":"24-V-Versorgung",k3n:"1.000",k3:"Ereignisse an Bord",k2:"Wellenform","k1":"Trigger · OEM- &amp; Laborversion",r1_l4:"Für kleine CPOs",r1_l1:"WLAN",st_src:"Quelle: ChargerHelp-Daten via Kelley Blue Book, Sept. 2026 · US-Netze",st2:"der Ausfalltage entfallen auf diese Mehrfacheinsätze",st1:"der Ausfälle brauchen mehr als einen Einsatz","ch0":"Ein typischer Feldfall",sf_c2:"zu = OK",sf_c:"ALARM","sf_w2":"Heartbeat",sf_iso:"Isolation",sf_b2:"Cloud · Alarm",sf_b:"MELDEN","sf_a2":"Versorgung · Spikes",sf_a:"MESSEN",ch4:"„Fehler“ · kein Log",ch3:"Controller resettet","ch2":"24-V-Versorgung schwingt",ch1:"Schütz öffnet",sf_eye:"Selbstüberwachend","sf_h":"Der Mess-Controller überwacht den Kommunikations-Controller. Bleibt dessen Heartbeat aus, öffnet der Alarmkontakt.",sf_n:"Sicherheitsfunktion für OEMs: in Prüfung — sprechen Sie uns an. Heute keine zertifizierte Sicherheitskomponente.",sf1:"getrennte Takte & Versorgungen",sf2:"Fehler → Neustart → protokolliert",sf3:"Alarmkontakt öffnet",
 
 cta_nav:"Pilot anfragen",
 h_eye:"Steuerspannungs-Monitor für DC-Schnelllader",
@@ -700,8 +761,8 @@ c3_s:"Ingenieure",c3_h:"Technische Dokumentation",c3_p:"Design, Analyse, Kalibri
 f_why:"Warum",f_what:"Was",f_var:"Varianten",f_contact:"Kontakt",
 "f_legal":"Produkt in Entwicklung. Noch keine CE-Kennzeichnung; nicht kommerziell verfügbar."
 },
-fr:{"specs_l":"Caractéristiques et fiche technique","al_note":"Note (technicien) : correspond à la commutation de K1","al_view":"Voir la forme d’onde","al_wf":"Forme d’onde jointe","specs":"Fiche technique","al_h":"Transitoire capté","al_ch":"Borne 04","al_pk":"▲ pic 41,8 V · forme d’onde 50 ms","al_dash":"Tableau de bord","al_ev":"1 événement / 24 h","al_tag":"Illustration · exemple","play":"Lire","replay":"Rejouer","d_eye":"Téléchargements","d_h":"Documents.","d1_h":"Fiche produit","d1_p":"Une page : le problème, ce que fait RS-24, pour qui, variantes, programme pilote.","d2_h":"Fiche technique préliminaire","d2_p":"Électrique, capture des transitoires, isolation, contact d’alarme, connectivité, environnement, variantes, feuille de route.","d_n":"Documents de conception pour partenaires pilotes sous NDA : info@morgen-tech.com","rm_v":"Votez pour ce dont vous avez besoin","rm_bl":"En attente","rm2":"Variante terrain cellulaire","rm1":"Lecture NFC devant l’armoire","rm_e":"Sur la feuille de route · sans engagement","r_p":"Pour rails de commande DC 12, 24 et 48 V · mesure 0–62 V.","prelim_ex":"Exemple · préliminaire","prelim":"Préliminaire","b1":"Se clipse sur le rail","b2":"Détecte la perturbation","b3":"Alerte votre équipe","concept":"Rendu de concept · non définitif","k1_e":"01 · Montage","k1_h":"Se clipse sur le rail.","k1_p":"Une carte hôte dans un boîtier coupleur étroit, clipsée sur le rail DIN de 35 mm à côté de l’alimentation qu’elle surveille.","k2_e":"02 · Isolation","k2_h":"Isolation intégrée.","k2_p":"Le côté mesure et le côté communication sont séparés sur la carte par une barrière d’isolation conçue pour une isolation renforcée.","k3_e":"03 · Modules","k3_h":"Évolue avec le site.","k3_p":"Ajoutez les capteurs et la communication dont le site a besoin, un module enfichable à la fois.","k3_l1":"Pince de courant","k3_l3":"Enregistreur SD","k3_l6":"Température · son · vibration","k3_l7":"Signaux borne–véhicule, en observation seule","k3_t":"Prévu · v2","k4_e":"04 · Alerte","k4_h":"Alerte là où est votre équipe.","k4_p":"Une perturbation de l’alimentation est détectée et horodatée, puis envoyée par Wi-Fi à votre backend — sur le tableau de bord du centre de contrôle et le téléphone du technicien.","k4_t":"Illustration","o0":"Bornes rapides DC — notre point de départ","fl4s":"sur mobile ou tableau de bord","fl4":"Pourquoi il a redémarré","fl3s":"pic · forme d’onde 50 ms","fl3":"Enregistrement horodaté","fl2s":"mesure en matériel","fl1s":"oscillations · creux · pics","fl1":"Rail 24 V","k3n":"1 000","k3":"événements en mémoire","k2":"forme d’onde","k1":"déclenchement · versions OEM &amp; labo","r1_l4":"Pour petits CPO","r1_l1":"Wi-Fi","st_src":"Source : données ChargerHelp via Kelley Blue Book, sept. 2026 · réseaux US","st2":"des jours d’arrêt viennent de ces visites répétées","st1":"des pannes demandent plus d’une intervention","ch0":"Un cas terrain typique","cta_nav":"Demander un pilote","h_eye":"Moniteur de tension de commande pour bornes rapides DC","h_h":"La borne dit<br>« en défaut ».<br><em>Nous disons pourquoi.</em>","h_p":"Sur le rail DIN. Un enregistrement indépendant et horodaté de ce que le rail 24 V a fait à chaque redémarrage.","h_b1":"Demander un pilote","h_b2":"Ce qu’il fait","cab_t":"BORNE RAPIDE DC · ARMOIRE DE COMMANDE · 24 V AUX","cab_ok":"NORMAL","cab_up":"CLOUD · TABLEAU DE BORD","cab_ctl":"CONTRÔLEUR","cab_k1":"CONTACTEUR K1","cab_k1s":"SORTIE DC","cab_rb":"CARTE RELAIS","cb1":"rail <b id=\"cb-rail\">24,1 V</b>","cb2":"dernier pic <b id=\"cb-peak\">—</b>","cb3":"événements 24 h <b id=\"cb-ev\">0</b>","w_eye":"L’angle mort","w_h":"Votre supervision s’arrête une couche au-dessus de la panne.","ch1":"Le contacteur s’ouvre","ch2":"Le rail 24 V oscille","ch3":"Le contrôleur redémarre","ch4":"« En défaut » · aucun journal","g1_k":"Ce que vous voyez aujourd’hui","g1_h":"« En défaut. » Puis une intervention.","g1_p":"Reset à distance. Aucune cause. Recommencer.","g2_k":"Ce que voit RS-24","g2_h":"Le pic, l’heure, la tendance.","g2_p":"Capté en matériel. Stocké sur la carte. Envoyé chez vous.","p_eye":"Ce qu’il fait","p_h":"Trois choses. Un petit module.","p1_h":"Capte l’événement","p1_p":"Transitoires horodatés — l’enregistrement survit à une coupure.","p1_s":"déclenchement en µs (versions OEM &amp; labo) · pic + forme d’onde 50 ms · 1 000 événements","p2_h":"Alerte là où est votre équipe","p2_p":"L’événement arrive sur le tableau de bord et le téléphone du technicien — par Wi-Fi via le réseau du site.","p2_s":"Wi-Fi · tableau de bord · alerte mobile","p3_h":"Le voit venir","p3_p":"Tension du rail et température, en tendance par site et flotte. Courant : avec le module pince.","p3_s":"12 / 24 / 48 V · plage 0–62 V · ±0,5 % après étalonnage","shot_c":"Tableau de bord RS-24 v1.4 · données de banc","s_eye":"Pour qui","s_h":"Un appareil. Trois façons d’arrêter de payer les redémarrages.","s_t1":"Flotte CPO","s_t2":"Société de maintenance","s_t3":"Fabricant de bornes","s1_h":"Sachez quelle borne dérive avant qu’elle ne décroche.","s1_p":"Une intervention évitée peut payer un an de supervision.","v_no":"Sans","v_yes":"Avec RS-24","s1_b":"Six urgences, aucune cause.","s1_g":"Alerte au jour 4, une visite planifiée, la bonne pièce dans le camion.","s1_gb":"1 × planifiée","s2_h":"Arrivez avec la réponse, pas la question.","s2_p":"Voir. Planifier. Réparer du premier coup.","s2_b":"Trois déplacements, un oscilloscope au troisième.","s2_bb":"3 × intervention","s2_g":"Trois événements sur le téléphone avant de partir.","s2_gb":"1 × réglé","s3_h":"Transformez « aucun défaut trouvé » en données terrain.","s3_p":"Données terrain de chaque unité. Les litiges de garantie disposent de preuves.","s3_b":"400 h de banc, la carte revient encore.","s3_bb":"Litige ouvert","s3_g":"Les journaux montrent des commutations réseau sur ce site.","s3_gb":"Preuves au dossier","r_eye":"Variantes et montage","r_h":"Même carte. Choisissez le boîtier.","r1_h":"Slim","r1_p":"Module DIN étroit. Wi-Fi. Posé, oublié.","r2_h":"Standard","r2_p":"Coupleur DIN. Ethernet, USB, emplacements d’extension.","r2_l2":"Module pince pour le courant du rail","r2_l3":"Flottes CPO · maintenance · évaluation OEM","r3_h":"Module OEM","r3_p":"Carte nue pour intégration en usine.","r3_l3":"Mises à jour OTA signées","o_eye":"Au-delà des bornes","o_h":"Même carte, autres armoires.","o_p":"Systèmes DC 12, 24 ou 48 V. Les bornes d’abord.","o_n":"DC uniquement.","o1":"Automates, variateurs, CVC, ascenseurs","o2":"Télécom, batteries, solaire","o3":"Onduleurs et secours serveurs","sf_eye":"Autosurveillance","sf_h":"Le contrôleur de mesure surveille le contrôleur de communication. Si son signal de vie s’arrête, le contact d’alarme s’ouvre.","sf1":"horloges et alimentations séparées","sf2":"défaut → redémarrage → journalisé","sf3":"le contact d’alarme s’ouvre","sf_n":"Fonction de sécurité pour OEM : en évaluation — parlons-en. Pas un composant de sécurité certifié à ce jour.","sf_a":"MESURER","sf_a2":"rail · pics","sf_b":"SIGNALER","sf_b2":"cloud · alarme","sf_iso":"isolation","sf_w2":"signal de vie","sf_c":"ALARME","sf_c2":"fermé = OK","c_h":"Prêt à voir dans l’armoire ?","c_p":"Places pilotes limitées dès le T2 2027 · unités de test prêtées sous accord de test · sans engagement.","c1_s":"CPO et sociétés de maintenance","c1_h":"Demander une unité pilote","c1_p":"Taille de flotte + les bornes qui lâchent sans cesse.","c2_s":"Fabricants de bornes","c2_h":"Dossier d’intégration OEM","c2_p":"RS-24-M · Modbus TCP · MQTT · chaîne de données · 12 / 24 / 48 V.","c3_s":"Ingénieurs","c3_h":"Documentation technique","c3_p":"Conception, analyse, étalonnage — sur demande.","f_why":"Pourquoi","f_what":"Quoi","f_var":"Variantes","f_contact":"Contact","f_legal":"Produit en développement. Pas encore de marquage CE ; non disponible commercialement."},
-es:{"specs_l":"Especificaciones y ficha técnica","al_note":"Nota (técnico): coincide con la conmutación de K1","al_view":"Ver forma de onda","al_wf":"Forma de onda adjunta","specs":"Ficha técnica","al_h":"Transitorio captado","al_ch":"Cargador 04","al_pk":"▲ pico 41,8 V · forma de onda de 50 ms","al_dash":"Panel","al_ev":"1 evento / 24 h","al_tag":"Ilustración · ejemplo","play":"Reproducir","replay":"Repetir","d_eye":"Descargas","d_h":"Documentos.","d1_h":"Ficha de producto","d1_p":"Una página: el problema, qué hace RS-24, para quién, variantes, programa piloto.","d2_h":"Hoja de datos preliminar","d2_p":"Eléctrico, captura de transitorios, aislamiento, contacto de alarma, conectividad, entorno, variantes, hoja de ruta.","d_n":"Documentos de diseño para socios piloto bajo NDA: info@morgen-tech.com","rm_v":"Vote lo que necesita","rm_bl":"Pendiente","rm2":"Variante de campo celular","rm1":"Lectura NFC en el armario","rm_e":"En la hoja de ruta · sin compromiso","r_p":"Para líneas de control DC de 12, 24 y 48 V · mide 0–62 V.","prelim_ex":"Ejemplo · preliminar","prelim":"Preliminar","b1":"Se encaja en el carril","b2":"Detecta la perturbación","b3":"Avisa a su equipo","concept":"Render conceptual · no definitivo","k1_e":"01 · Montaje","k1_h":"Se encaja en el carril.","k1_p":"Una placa base en una carcasa acopladora estrecha, encajada en el carril DIN de 35 mm junto a la fuente que vigila.","k2_e":"02 · Aislamiento","k2_h":"Aislamiento integrado.","k2_p":"El lado de medida y el lado de comunicación están separados en la placa por una barrera de aislamiento diseñada para aislamiento reforzado.","k3_e":"03 · Módulos","k3_h":"Crece con la instalación.","k3_p":"Añada los sensores y la comunicación que necesita la instalación, un módulo enchufable cada vez.","k3_l1":"Pinza de corriente","k3_l3":"Registrador SD","k3_l6":"Temperatura · sonido · vibración","k3_l7":"Señales cargador–vehículo, solo observación","k3_t":"Previsto · v2","k4_e":"04 · Alerta","k4_h":"Avisa donde esté su equipo.","k4_p":"Una perturbación en la alimentación se detecta y se marca con hora, y se envía por Wi-Fi a su backend: al panel de la sala de control y al teléfono del técnico de servicio.","k4_t":"Ilustración","o0":"Cargadores rápidos DC — donde empezamos","fl4s":"en el móvil o el panel","fl4":"Por qué se reinició","fl3s":"pico · forma de onda 50 ms","fl3":"Registro con marca de tiempo","fl2s":"mide en hardware","fl1s":"oscilaciones · huecos · picos","fl1":"Línea de 24 V","k3n":"1.000","k3":"eventos en memoria","k2":"forma de onda","k1":"disparo · versiones OEM y laboratorio","r1_l4":"Para CPO pequeños","r1_l1":"Wi-Fi","st_src":"Fuente: datos de ChargerHelp vía Kelley Blue Book, sept. 2026 · redes de EE. UU.","st2":"de los días de parada vienen de esas visitas repetidas","st1":"de las averías requieren más de una visita","ch0":"Un caso de campo típico","cta_nav":"Pedir un piloto","h_eye":"Monitor de tensión de control para cargadores rápidos DC","h_h":"El cargador dice<br>“en fallo”.<br><em>Nosotros decimos por qué.</em>","h_p":"En el carril DIN. Un registro independiente y con marca de tiempo de lo que hizo la línea de 24 V en cada reinicio.","h_b1":"Pedir un piloto","h_b2":"Qué hace","cab_t":"CARGADOR RÁPIDO DC · ARMARIO DE CONTROL · 24 V AUX","cab_ok":"NORMAL","cab_up":"NUBE · PANEL","cab_ctl":"CONTROLADOR","cab_k1":"CONTACTOR K1","cab_k1s":"SALIDA DC","cab_rb":"PLACA DE RELÉS","cb1":"línea <b id=\"cb-rail\">24,1 V</b>","cb2":"último pico <b id=\"cb-peak\">—</b>","cb3":"eventos 24 h <b id=\"cb-ev\">0</b>","w_eye":"El punto ciego","w_h":"Su monitorización se queda una capa por encima del fallo.","ch1":"El contactor se abre","ch2":"La línea de 24 V oscila","ch3":"El controlador se reinicia","ch4":"“En fallo” · sin registro","g1_k":"Lo que ve hoy","g1_h":"“En fallo.” Y luego una salida.","g1_p":"Reinicio remoto. Sin causa. Repetir.","g2_k":"Lo que ve RS-24","g2_h":"El pico, la hora, la tendencia.","g2_p":"Capturado en hardware. Guardado en la placa. Enviado a usted.","p_eye":"Qué hace","p_h":"Tres cosas. Un módulo pequeño.","p1_h":"Captura el evento","p1_p":"Transitorios con marca de tiempo: el registro sobrevive a un corte.","p1_s":"disparo en µs (versiones OEM y laboratorio) · pico + forma de onda de 50 ms · 1.000 eventos","p2_h":"Avisa donde esté su equipo","p2_p":"El evento llega al panel y al teléfono del técnico de servicio, por Wi-Fi a través de la red del sitio.","p2_s":"Wi-Fi · panel · alerta en el móvil","p3_h":"Lo ve venir","p3_p":"Tensión de la línea y temperatura, en tendencia por sitio y flota. Corriente: con el módulo de pinza.","p3_s":"12 / 24 / 48 V · rango 0–62 V · ±0,5 % tras calibración","shot_c":"Panel RS-24 v1.4 · datos de banco","s_eye":"Para quién","s_h":"Un dispositivo. Tres formas de dejar de pagar reinicios.","s_t1":"Flota CPO","s_t2":"Empresa de servicio","s_t3":"Fabricante de cargadores","s1_h":"Sepa qué cargador deriva antes de que se desconecte.","s1_p":"Una salida evitada puede pagar un año de monitorización.","v_no":"Sin","v_yes":"Con RS-24","s1_b":"Seis urgencias, ninguna causa.","s1_g":"Alerta el día 4, una visita planificada, la pieza correcta en la furgoneta.","s1_gb":"1 × planificada","s2_h":"Llegue con la respuesta, no con la pregunta.","s2_p":"Ver. Planificar. Reparar a la primera.","s2_b":"Tres viajes, un osciloscopio en el tercero.","s2_bb":"3 × salida","s2_g":"Tres eventos en el móvil antes de salir.","s2_gb":"1 × resuelto","s3_h":"Convierta “sin fallo encontrado” en datos de campo.","s3_p":"Datos de campo de cada unidad. Las disputas de garantía cuentan con pruebas.","s3_b":"400 h de banco, la placa vuelve otra vez.","s3_bb":"Reclamación abierta","s3_g":"Los registros muestran conmutaciones de red en ese sitio.","s3_gb":"Pruebas archivadas","r_eye":"Variantes y montaje","r_h":"La misma placa. Elija la caja.","r1_h":"Slim","r1_p":"Módulo DIN estrecho. Wi-Fi. Instalar y olvidar.","r2_h":"Estándar","r2_p":"Acoplador DIN. Ethernet, USB, ranuras de expansión.","r2_l2":"Módulo de pinza para la corriente de la línea","r2_l3":"Flotas CPO · servicio · evaluación OEM","r3_h":"Módulo OEM","r3_p":"Placa desnuda para integración en fábrica.","r3_l3":"Actualizaciones OTA firmadas","o_eye":"Más allá de los cargadores","o_h":"La misma placa, otros armarios.","o_p":"Sistemas DC de 12, 24 o 48 V. Primero, cargadores.","o_n":"Solo DC.","o1":"PLC, variadores, HVAC, ascensores","o2":"Telecom, baterías, solar","o3":"SAI y respaldo de servidores","sf_eye":"Autosupervisión","sf_h":"El controlador de medida supervisa al controlador de comunicación. Si su señal de vida se detiene, se abre el contacto de alarma.","sf1":"relojes y fuentes separados","sf2":"fallo → reinicio → registrado","sf3":"se abre el contacto de alarma","sf_n":"Función de seguridad para OEM: en evaluación — hablemos. Hoy no es un componente de seguridad certificado.","sf_a":"MEDIR","sf_a2":"línea · picos","sf_b":"INFORMAR","sf_b2":"nube · alarma","sf_iso":"aislamiento","sf_w2":"señal de vida","sf_c":"ALARMA","sf_c2":"cerrado = OK","c_h":"¿Listo para ver dentro del armario?","c_p":"Plazas piloto limitadas desde el T2 de 2027 · unidades de prueba en préstamo bajo acuerdo de prueba · sin permanencia.","c1_s":"CPO y empresas de servicio","c1_h":"Pedir una unidad piloto","c1_p":"Tamaño de flota + los cargadores que siempre fallan.","c2_s":"Fabricantes de cargadores","c2_h":"Dossier de integración OEM","c2_p":"RS-24-M · Modbus TCP · MQTT · canal de datos · 12 / 24 / 48 V.","c3_s":"Ingenieros","c3_h":"Documentación técnica","c3_p":"Diseño, análisis, calibración — bajo petición.","f_why":"Por qué","f_what":"Qué","f_var":"Variantes","f_contact":"Contacto","f_legal":"Producto en desarrollo. Aún sin marcado CE; no disponible comercialmente."}};
+fr:{"fm1":"Votre borne s’est arrêtée.<br><em>Personne n’a vu pourquoi.</em>","fm2":"Un creux sur l’alimentation de commande 24 V réinitialise le contrôleur. Aucun journal ne le garde.","fm3":"RS-24 se clipse sur ce rail et enregistre ce qu’il a fait.","fm4":"Votre équipe reçoit la cause, pas seulement « en défaut ».","fm5":"Découvrez pourquoi vos bornes s’arrêtent.","fm_fw":"Firmware en développement","fm_tag":"Illustration · concept, non définitif","fm_scroll":"Défiler","fm_scr_bad":"Hors service","fm_scr_ok":"Disponible","fm_cab":"ARMOIRE DE COMMANDE","fm_ctl":"CONTRÔLEUR","fm_k1":"CONTACTEUR","fm_rail":"ALIMENTATION 24 V","fm_rec":"creux enregistré","fm_c_ch":"Borne 04","fm_c_ev":"Creux sur le 24 V","fm_c_why":"Contrôleur redémarré juste après","specs_l":"Caractéristiques et fiche technique","al_note":"Note (technicien) : correspond à la commutation de K1","al_view":"Voir la forme d’onde","al_wf":"Forme d’onde jointe","specs":"Fiche technique","al_h":"Transitoire capté","al_ch":"Borne 04","al_pk":"▲ pic 41,8 V · forme d’onde 50 ms","al_dash":"Tableau de bord","al_ev":"1 événement / 24 h","al_tag":"Illustration · exemple","play":"Lire","replay":"Rejouer","d_eye":"Téléchargements","d_h":"Documents.","d1_h":"Fiche produit","d1_p":"Une page : le problème, ce que fait RS-24, pour qui, variantes, programme pilote.","d2_h":"Fiche technique préliminaire","d2_p":"Électrique, capture des transitoires, isolation, contact d’alarme, connectivité, environnement, variantes, feuille de route.","d_n":"Documents de conception pour partenaires pilotes sous NDA : info@morgen-tech.com","rm_v":"Votez pour ce dont vous avez besoin","rm_bl":"En attente","rm2":"Variante terrain cellulaire","rm1":"Lecture NFC devant l’armoire","rm_e":"Sur la feuille de route · sans engagement","r_p":"Pour rails de commande DC 12, 24 et 48 V · mesure 0–62 V.","prelim_ex":"Exemple · préliminaire","prelim":"Préliminaire","b1":"Se clipse sur le rail","b2":"Détecte la perturbation","b3":"Alerte votre équipe","concept":"Rendu de concept · non définitif","k1_e":"01 · Montage","k1_h":"Se clipse sur le rail.","k1_p":"Une carte hôte dans un boîtier coupleur étroit, clipsée sur le rail DIN de 35 mm à côté de l’alimentation qu’elle surveille.","k2_e":"02 · Isolation","k2_h":"Isolation intégrée.","k2_p":"Le côté mesure et le côté communication sont séparés sur la carte par une barrière d’isolation conçue pour une isolation renforcée.","k3_e":"03 · Modules","k3_h":"Évolue avec le site.","k3_p":"Ajoutez les capteurs et la communication dont le site a besoin, un module enfichable à la fois.","k3_l1":"Pince de courant","k3_l3":"Enregistreur SD","k3_l6":"Température · son · vibration","k3_l7":"Signaux borne–véhicule, en observation seule","k3_t":"Prévu · v2","k4_e":"04 · Alerte","k4_h":"Alerte là où est votre équipe.","k4_p":"Une perturbation de l’alimentation est détectée et horodatée, puis envoyée par Wi-Fi à votre backend — sur le tableau de bord du centre de contrôle et le téléphone du technicien.","k4_t":"Illustration","o0":"Bornes rapides DC — notre point de départ","fl4s":"sur mobile ou tableau de bord","fl4":"Pourquoi il a redémarré","fl3s":"pic · forme d’onde 50 ms","fl3":"Enregistrement horodaté","fl2s":"mesure en matériel","fl1s":"oscillations · creux · pics","fl1":"Rail 24 V","k3n":"1 000","k3":"événements en mémoire","k2":"forme d’onde","k1":"déclenchement · versions OEM &amp; labo","r1_l4":"Pour petits CPO","r1_l1":"Wi-Fi","st_src":"Source : données ChargerHelp via Kelley Blue Book, sept. 2026 · réseaux US","st2":"des jours d’arrêt viennent de ces visites répétées","st1":"des pannes demandent plus d’une intervention","ch0":"Un cas terrain typique","cta_nav":"Demander un pilote","h_eye":"Moniteur de tension de commande pour bornes rapides DC","h_h":"La borne dit<br>« en défaut ».<br><em>Nous disons pourquoi.</em>","h_p":"Sur le rail DIN. Un enregistrement indépendant et horodaté de ce que le rail 24 V a fait à chaque redémarrage.","h_b1":"Demander un pilote","h_b2":"Ce qu’il fait","cab_t":"BORNE RAPIDE DC · ARMOIRE DE COMMANDE · 24 V AUX","cab_ok":"NORMAL","cab_up":"CLOUD · TABLEAU DE BORD","cab_ctl":"CONTRÔLEUR","cab_k1":"CONTACTEUR K1","cab_k1s":"SORTIE DC","cab_rb":"CARTE RELAIS","cb1":"rail <b id=\"cb-rail\">24,1 V</b>","cb2":"dernier pic <b id=\"cb-peak\">—</b>","cb3":"événements 24 h <b id=\"cb-ev\">0</b>","w_eye":"L’angle mort","w_h":"Votre supervision s’arrête une couche au-dessus de la panne.","ch1":"Le contacteur s’ouvre","ch2":"Le rail 24 V oscille","ch3":"Le contrôleur redémarre","ch4":"« En défaut » · aucun journal","g1_k":"Ce que vous voyez aujourd’hui","g1_h":"« En défaut. » Puis une intervention.","g1_p":"Reset à distance. Aucune cause. Recommencer.","g2_k":"Ce que voit RS-24","g2_h":"Le pic, l’heure, la tendance.","g2_p":"Capté en matériel. Stocké sur la carte. Envoyé chez vous.","p_eye":"Ce qu’il fait","p_h":"Trois choses. Un petit module.","p1_h":"Capte l’événement","p1_p":"Transitoires horodatés — l’enregistrement survit à une coupure.","p1_s":"déclenchement en µs (versions OEM &amp; labo) · pic + forme d’onde 50 ms · 1 000 événements","p2_h":"Alerte là où est votre équipe","p2_p":"L’événement arrive sur le tableau de bord et le téléphone du technicien — par Wi-Fi via le réseau du site.","p2_s":"Wi-Fi · tableau de bord · alerte mobile","p3_h":"Le voit venir","p3_p":"Tension du rail et température, en tendance par site et flotte. Courant : avec le module pince.","p3_s":"12 / 24 / 48 V · plage 0–62 V · ±0,5 % après étalonnage","shot_c":"Tableau de bord RS-24 v1.4 · données de banc","s_eye":"Pour qui","s_h":"Un appareil. Trois façons d’arrêter de payer les redémarrages.","s_t1":"Flotte CPO","s_t2":"Société de maintenance","s_t3":"Fabricant de bornes","s1_h":"Sachez quelle borne dérive avant qu’elle ne décroche.","s1_p":"Une intervention évitée peut payer un an de supervision.","v_no":"Sans","v_yes":"Avec RS-24","s1_b":"Six urgences, aucune cause.","s1_g":"Alerte au jour 4, une visite planifiée, la bonne pièce dans le camion.","s1_gb":"1 × planifiée","s2_h":"Arrivez avec la réponse, pas la question.","s2_p":"Voir. Planifier. Réparer du premier coup.","s2_b":"Trois déplacements, un oscilloscope au troisième.","s2_bb":"3 × intervention","s2_g":"Trois événements sur le téléphone avant de partir.","s2_gb":"1 × réglé","s3_h":"Transformez « aucun défaut trouvé » en données terrain.","s3_p":"Données terrain de chaque unité. Les litiges de garantie disposent de preuves.","s3_b":"400 h de banc, la carte revient encore.","s3_bb":"Litige ouvert","s3_g":"Les journaux montrent des commutations réseau sur ce site.","s3_gb":"Preuves au dossier","r_eye":"Variantes et montage","r_h":"Même carte. Choisissez le boîtier.","r1_h":"Slim","r1_p":"Module DIN étroit. Wi-Fi. Posé, oublié.","r2_h":"Standard","r2_p":"Coupleur DIN. Ethernet, USB, emplacements d’extension.","r2_l2":"Module pince pour le courant du rail","r2_l3":"Flottes CPO · maintenance · évaluation OEM","r3_h":"Module OEM","r3_p":"Carte nue pour intégration en usine.","r3_l3":"Mises à jour OTA signées","o_eye":"Au-delà des bornes","o_h":"Même carte, autres armoires.","o_p":"Systèmes DC 12, 24 ou 48 V. Les bornes d’abord.","o_n":"DC uniquement.","o1":"Automates, variateurs, CVC, ascenseurs","o2":"Télécom, batteries, solaire","o3":"Onduleurs et secours serveurs","sf_eye":"Autosurveillance","sf_h":"Le contrôleur de mesure surveille le contrôleur de communication. Si son signal de vie s’arrête, le contact d’alarme s’ouvre.","sf1":"horloges et alimentations séparées","sf2":"défaut → redémarrage → journalisé","sf3":"le contact d’alarme s’ouvre","sf_n":"Fonction de sécurité pour OEM : en évaluation — parlons-en. Pas un composant de sécurité certifié à ce jour.","sf_a":"MESURER","sf_a2":"rail · pics","sf_b":"SIGNALER","sf_b2":"cloud · alarme","sf_iso":"isolation","sf_w2":"signal de vie","sf_c":"ALARME","sf_c2":"fermé = OK","c_h":"Prêt à voir dans l’armoire ?","c_p":"Places pilotes limitées dès le T2 2027 · unités de test prêtées sous accord de test · sans engagement.","c1_s":"CPO et sociétés de maintenance","c1_h":"Demander une unité pilote","c1_p":"Taille de flotte + les bornes qui lâchent sans cesse.","c2_s":"Fabricants de bornes","c2_h":"Dossier d’intégration OEM","c2_p":"RS-24-M · Modbus TCP · MQTT · chaîne de données · 12 / 24 / 48 V.","c3_s":"Ingénieurs","c3_h":"Documentation technique","c3_p":"Conception, analyse, étalonnage — sur demande.","f_why":"Pourquoi","f_what":"Quoi","f_var":"Variantes","f_contact":"Contact","f_legal":"Produit en développement. Pas encore de marquage CE ; non disponible commercialement."},
+es:{"fm1":"Su cargador se detuvo.<br><em>Nadie vio por qué.</em>","fm2":"Una caída en la tensión de control de 24 V reinicia el controlador. Ningún registro la guarda.","fm3":"RS-24 se encaja en ese carril y registra lo que hizo.","fm4":"Su equipo recibe la causa, no solo «en fallo».","fm5":"Descubra por qué se detienen sus cargadores.","fm_fw":"Firmware en desarrollo","fm_tag":"Ilustración · concepto, no definitivo","fm_scroll":"Desplazar","fm_scr_bad":"Fuera de servicio","fm_scr_ok":"Disponible","fm_cab":"ARMARIO DE CONTROL","fm_ctl":"CONTROLADOR","fm_k1":"CONTACTOR","fm_rail":"TENSIÓN DE CONTROL 24 V","fm_rec":"caída registrada","fm_c_ch":"Cargador 04","fm_c_ev":"Caída en 24 V","fm_c_why":"Controlador reiniciado justo después","specs_l":"Especificaciones y ficha técnica","al_note":"Nota (técnico): coincide con la conmutación de K1","al_view":"Ver forma de onda","al_wf":"Forma de onda adjunta","specs":"Ficha técnica","al_h":"Transitorio captado","al_ch":"Cargador 04","al_pk":"▲ pico 41,8 V · forma de onda de 50 ms","al_dash":"Panel","al_ev":"1 evento / 24 h","al_tag":"Ilustración · ejemplo","play":"Reproducir","replay":"Repetir","d_eye":"Descargas","d_h":"Documentos.","d1_h":"Ficha de producto","d1_p":"Una página: el problema, qué hace RS-24, para quién, variantes, programa piloto.","d2_h":"Hoja de datos preliminar","d2_p":"Eléctrico, captura de transitorios, aislamiento, contacto de alarma, conectividad, entorno, variantes, hoja de ruta.","d_n":"Documentos de diseño para socios piloto bajo NDA: info@morgen-tech.com","rm_v":"Vote lo que necesita","rm_bl":"Pendiente","rm2":"Variante de campo celular","rm1":"Lectura NFC en el armario","rm_e":"En la hoja de ruta · sin compromiso","r_p":"Para líneas de control DC de 12, 24 y 48 V · mide 0–62 V.","prelim_ex":"Ejemplo · preliminar","prelim":"Preliminar","b1":"Se encaja en el carril","b2":"Detecta la perturbación","b3":"Avisa a su equipo","concept":"Render conceptual · no definitivo","k1_e":"01 · Montaje","k1_h":"Se encaja en el carril.","k1_p":"Una placa base en una carcasa acopladora estrecha, encajada en el carril DIN de 35 mm junto a la fuente que vigila.","k2_e":"02 · Aislamiento","k2_h":"Aislamiento integrado.","k2_p":"El lado de medida y el lado de comunicación están separados en la placa por una barrera de aislamiento diseñada para aislamiento reforzado.","k3_e":"03 · Módulos","k3_h":"Crece con la instalación.","k3_p":"Añada los sensores y la comunicación que necesita la instalación, un módulo enchufable cada vez.","k3_l1":"Pinza de corriente","k3_l3":"Registrador SD","k3_l6":"Temperatura · sonido · vibración","k3_l7":"Señales cargador–vehículo, solo observación","k3_t":"Previsto · v2","k4_e":"04 · Alerta","k4_h":"Avisa donde esté su equipo.","k4_p":"Una perturbación en la alimentación se detecta y se marca con hora, y se envía por Wi-Fi a su backend: al panel de la sala de control y al teléfono del técnico de servicio.","k4_t":"Ilustración","o0":"Cargadores rápidos DC — donde empezamos","fl4s":"en el móvil o el panel","fl4":"Por qué se reinició","fl3s":"pico · forma de onda 50 ms","fl3":"Registro con marca de tiempo","fl2s":"mide en hardware","fl1s":"oscilaciones · huecos · picos","fl1":"Línea de 24 V","k3n":"1.000","k3":"eventos en memoria","k2":"forma de onda","k1":"disparo · versiones OEM y laboratorio","r1_l4":"Para CPO pequeños","r1_l1":"Wi-Fi","st_src":"Fuente: datos de ChargerHelp vía Kelley Blue Book, sept. 2026 · redes de EE. UU.","st2":"de los días de parada vienen de esas visitas repetidas","st1":"de las averías requieren más de una visita","ch0":"Un caso de campo típico","cta_nav":"Pedir un piloto","h_eye":"Monitor de tensión de control para cargadores rápidos DC","h_h":"El cargador dice<br>“en fallo”.<br><em>Nosotros decimos por qué.</em>","h_p":"En el carril DIN. Un registro independiente y con marca de tiempo de lo que hizo la línea de 24 V en cada reinicio.","h_b1":"Pedir un piloto","h_b2":"Qué hace","cab_t":"CARGADOR RÁPIDO DC · ARMARIO DE CONTROL · 24 V AUX","cab_ok":"NORMAL","cab_up":"NUBE · PANEL","cab_ctl":"CONTROLADOR","cab_k1":"CONTACTOR K1","cab_k1s":"SALIDA DC","cab_rb":"PLACA DE RELÉS","cb1":"línea <b id=\"cb-rail\">24,1 V</b>","cb2":"último pico <b id=\"cb-peak\">—</b>","cb3":"eventos 24 h <b id=\"cb-ev\">0</b>","w_eye":"El punto ciego","w_h":"Su monitorización se queda una capa por encima del fallo.","ch1":"El contactor se abre","ch2":"La línea de 24 V oscila","ch3":"El controlador se reinicia","ch4":"“En fallo” · sin registro","g1_k":"Lo que ve hoy","g1_h":"“En fallo.” Y luego una salida.","g1_p":"Reinicio remoto. Sin causa. Repetir.","g2_k":"Lo que ve RS-24","g2_h":"El pico, la hora, la tendencia.","g2_p":"Capturado en hardware. Guardado en la placa. Enviado a usted.","p_eye":"Qué hace","p_h":"Tres cosas. Un módulo pequeño.","p1_h":"Captura el evento","p1_p":"Transitorios con marca de tiempo: el registro sobrevive a un corte.","p1_s":"disparo en µs (versiones OEM y laboratorio) · pico + forma de onda de 50 ms · 1.000 eventos","p2_h":"Avisa donde esté su equipo","p2_p":"El evento llega al panel y al teléfono del técnico de servicio, por Wi-Fi a través de la red del sitio.","p2_s":"Wi-Fi · panel · alerta en el móvil","p3_h":"Lo ve venir","p3_p":"Tensión de la línea y temperatura, en tendencia por sitio y flota. Corriente: con el módulo de pinza.","p3_s":"12 / 24 / 48 V · rango 0–62 V · ±0,5 % tras calibración","shot_c":"Panel RS-24 v1.4 · datos de banco","s_eye":"Para quién","s_h":"Un dispositivo. Tres formas de dejar de pagar reinicios.","s_t1":"Flota CPO","s_t2":"Empresa de servicio","s_t3":"Fabricante de cargadores","s1_h":"Sepa qué cargador deriva antes de que se desconecte.","s1_p":"Una salida evitada puede pagar un año de monitorización.","v_no":"Sin","v_yes":"Con RS-24","s1_b":"Seis urgencias, ninguna causa.","s1_g":"Alerta el día 4, una visita planificada, la pieza correcta en la furgoneta.","s1_gb":"1 × planificada","s2_h":"Llegue con la respuesta, no con la pregunta.","s2_p":"Ver. Planificar. Reparar a la primera.","s2_b":"Tres viajes, un osciloscopio en el tercero.","s2_bb":"3 × salida","s2_g":"Tres eventos en el móvil antes de salir.","s2_gb":"1 × resuelto","s3_h":"Convierta “sin fallo encontrado” en datos de campo.","s3_p":"Datos de campo de cada unidad. Las disputas de garantía cuentan con pruebas.","s3_b":"400 h de banco, la placa vuelve otra vez.","s3_bb":"Reclamación abierta","s3_g":"Los registros muestran conmutaciones de red en ese sitio.","s3_gb":"Pruebas archivadas","r_eye":"Variantes y montaje","r_h":"La misma placa. Elija la caja.","r1_h":"Slim","r1_p":"Módulo DIN estrecho. Wi-Fi. Instalar y olvidar.","r2_h":"Estándar","r2_p":"Acoplador DIN. Ethernet, USB, ranuras de expansión.","r2_l2":"Módulo de pinza para la corriente de la línea","r2_l3":"Flotas CPO · servicio · evaluación OEM","r3_h":"Módulo OEM","r3_p":"Placa desnuda para integración en fábrica.","r3_l3":"Actualizaciones OTA firmadas","o_eye":"Más allá de los cargadores","o_h":"La misma placa, otros armarios.","o_p":"Sistemas DC de 12, 24 o 48 V. Primero, cargadores.","o_n":"Solo DC.","o1":"PLC, variadores, HVAC, ascensores","o2":"Telecom, baterías, solar","o3":"SAI y respaldo de servidores","sf_eye":"Autosupervisión","sf_h":"El controlador de medida supervisa al controlador de comunicación. Si su señal de vida se detiene, se abre el contacto de alarma.","sf1":"relojes y fuentes separados","sf2":"fallo → reinicio → registrado","sf3":"se abre el contacto de alarma","sf_n":"Función de seguridad para OEM: en evaluación — hablemos. Hoy no es un componente de seguridad certificado.","sf_a":"MEDIR","sf_a2":"línea · picos","sf_b":"INFORMAR","sf_b2":"nube · alarma","sf_iso":"aislamiento","sf_w2":"señal de vida","sf_c":"ALARMA","sf_c2":"cerrado = OK","c_h":"¿Listo para ver dentro del armario?","c_p":"Plazas piloto limitadas desde el T2 de 2027 · unidades de prueba en préstamo bajo acuerdo de prueba · sin permanencia.","c1_s":"CPO y empresas de servicio","c1_h":"Pedir una unidad piloto","c1_p":"Tamaño de flota + los cargadores que siempre fallan.","c2_s":"Fabricantes de cargadores","c2_h":"Dossier de integración OEM","c2_p":"RS-24-M · Modbus TCP · MQTT · canal de datos · 12 / 24 / 48 V.","c3_s":"Ingenieros","c3_h":"Documentación técnica","c3_p":"Diseño, análisis, calibración — bajo petición.","f_why":"Por qué","f_what":"Qué","f_var":"Variantes","f_contact":"Contacto","f_legal":"Producto en desarrollo. Aún sin marcado CE; no disponible comercialmente."}};
 const EN={};document.querySelectorAll('[data-i]').forEach(el=>EN[el.dataset.i]=el.innerHTML);T.en=EN;
 const TITLE={"en": "RailSentinel-24 · See why your charger goes down", "de": "RailSentinel-24 · Warum Ihr Lader ausfällt", "fr": "RailSentinel-24 · Pourquoi votre borne tombe en panne", "es": "RailSentinel-24 · Por qué falla su cargador"},HL={en:'en',de:'de',fr:'fr',es:'es'};
 function setLang(l){if(!T[l])l='en';document.documentElement.lang=HL[l];try{localStorage.setItem('mt-lang',l)}catch(e){}
@@ -714,47 +775,64 @@ function tab(i){document.querySelectorAll('.tabs button').forEach((b,k)=>b.class
 const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.12});
 document.querySelectorAll('.io').forEach(el=>io.observe(el));
 
-/* cabinet animation */
+/* scroll film: progress p (0..1) through #film drives camera + scene; reduced motion -> five stills */
 (function(){
-  const $=id=>document.getElementById(id);
-  const k1=$('k1'),p1=$('p1'),p2=$('p2'),bump=$('bump'),led=$('led'),ctl=$('ctl'),badge=$('badge'),bt=$('badge-t'),m2=$('mini2'),st=$('cab-state');
-  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;let ev=0;
-  const AS={en:['K1 SWITCHING','TRANSIENT CAPTURED','captured'],de:['K1 SCHALTET','TRANSIENT ERFASST','gespeichert'],fr:['K1 COMMUTE','TRANSITOIRE CAPTÉ','capté'],es:['K1 CONMUTA','TRANSITORIO CAPTADO','capturado']};
-  const lg=()=>{const l=document.documentElement.lang.slice(0,2);return AS[l]?l:'en'},tx=i=>AS[lg()][i],num=v=>/^(de|fr|es)$/.test(lg())?v.replace('.',','):v;
-  function slide(el,from,to,ms,cb){const t0=performance.now();el.classList.add('go');(function f(t){const k=Math.min(1,(t-t0)/ms);el.setAttribute('cx',from+(to-from)*k);if(k<1)requestAnimationFrame(f);else{el.classList.remove('go');cb&&cb()}})(t0)}
-  let busy=false;
-  function cycle(){
-    if(busy)return;busy=true;led.classList.remove('hit');m2.classList.remove('show');badge.classList.remove('show');
-    const pk='41.8';  // fixed example value (spec M-8: no random numbers)
-    k1.classList.add('on');bump.classList.add('go');st.textContent=tx(0);st.style.color='#ffb35c';
-    setTimeout(()=>{slide(p1,270,115,420);slide(p2,270,520,520,()=>{
-      led.classList.add('hit');m2.classList.add('show');bt.textContent='▲ '+num(pk)+' V · 50 ms · '+tx(2);badge.classList.add('show');
-      $('cb-ev').textContent='1';$('cb-peak').textContent=num(pk)+' V';st.textContent=tx(1);st.style.color='#ff8a5c';
-    })},120);
-    setTimeout(()=>{ctl.textContent='● RESET';ctl.classList.add('reset')},520);
-    setTimeout(()=>{k1.classList.remove('on');bump.classList.remove('go')},700);
-    setTimeout(()=>{ctl.textContent='● OK';ctl.classList.remove('reset')},2300);
-    setTimeout(()=>{busy=false},2400);  // holds the captured state (no auto-clear, no loop)
+  const sec=document.getElementById('film');if(!sec)return;
+  const svg=sec.querySelector('.sf-svg'),beats=[...sec.querySelectorAll('.sf-beat')],dots=[...sec.querySelectorAll('.sf-dots li')];
+  const cl=(x,a,b)=>Math.min(b,Math.max(a,x)),ss=t=>t*t*(3-2*t);
+  const r=(p,a,b)=>ss(cl((p-a)/(b-a),0,1));            // eased ramp 0->1 between a and b
+  const B=[0,.19,.40,.60,.80,1];                         // beat boundaries
+  const CAM=[[0,[0,80,1600,880]],[.12,[0,80,1600,880]],[.19,[470,190,660,600]],[.27,[640,400,320,350]],[.40,[640,400,320,350]],[.45,[680,385,250,310]],[.60,[680,385,250,310]],[.67,[650,280,620,460]],[.80,[650,280,620,460]],[.88,[180,150,1240,720]],[1,[180,150,1240,720]]];
+  const CAMM=[[0,[540,210,520,580]],[.12,[540,210,520,580]],[.19,[600,230,400,540]],[.27,[650,400,300,350]],[.40,[650,400,300,350]],[.45,[690,400,230,300]],[.60,[690,400,230,300]],[.67,[790,290,450,420]],[.80,[790,290,450,420]],[.88,[540,200,520,600]],[1,[540,200,520,600]]];
+  function cam(p,C){let i=0;while(i<C.length-2&&p>C[i+1][0])i++;const [p0,a]=C[i],[p1,b]=C[i+1],k=ss(cl((p-p0)/(p1-p0),0,1));return a.map((v,j)=>v+(b[j]-v)*k)}
+  const op=(el,v)=>{if(el)el.setAttribute('opacity',v.toFixed(3))};
+  function render(root,p,box){
+    const q=s=>root.querySelector(s);
+    if(box){ // fit the focal rect into the free band: below the nav and tag, above the text
+      const nar=box.width<=760,[fx,fy,fw,fh]=cam(p,nar?CAMM:CAM),top=nar?96:84,bot=box.height*(nar?.98:.64),s=Math.min(box.width/fw,(bot-top)/fh);
+      const W=box.width/s,H=box.height/s,x=fx+fw/2-W/2,y=fy+fh/2-((top+bot)/2)/s;
+      root.setAttribute('viewBox',[x,y,W,H].map(v=>v.toFixed(1)).join(' '))}
+    // beat 1: fault screen; beat 5: back in service
+    const ok=r(p,.84,.88);op(q('.sf-scr-bad'),1-ok);op(q('.sf-scr-ok'),ok);
+    q('.sf-bar').setAttribute('fill',ok>.5?'#2fbf71':'#e0533a');
+    // door opens in beat 2, closes in beat 5
+    const door=1-r(p,.21,.27)+r(p,.82,.87);op(q('.sf-door'),cl(door,0,1));
+    // site and charger body step back once we are inside
+    op(q('.sf-bg'),1-.6*r(p,.19,.26));
+    // beat 2: the dip runs from the contactor to the controller
+    const pt=q('.sf-p');
+    if(p<.40){pt.setAttribute('cx',(860-128*r(p,.29,.35)).toFixed(1));pt.setAttribute('cy',(566+52*r(p,.35,.37)).toFixed(1));op(pt,p>.29&&p<.37?1:0)}
+    else{pt.setAttribute('cx',(860-27*r(p,.50,.555)).toFixed(1));pt.setAttribute('cy',(566-50*r(p,.555,.57)).toFixed(1));op(pt,p>.50&&p<.57?1:0)}
+    op(q('.sf-dip'),r(p,.29,.31)*(1-r(p,.40,.43))+r(p,.50,.52)*(1-r(p,.60,.63)));
+    const rs=r(p,.355,.365)*(1-r(p,.84,.86));op(q('.sf-ctl-ok'),1-rs);op(q('.sf-ctl-rs'),rs);
+    // beat 3: RS-24 clips on, then records the dip
+    const on=r(p,.42,.48);op(q('.sf-slot'),r(p,.40,.42)*(1-on));
+    const g=q('.sf-rs');op(g,on);g.setAttribute('transform',`translate(0 ${(-70*(1-on)).toFixed(1)})`);
+    const hit=r(p,.565,.58);op(q('.sf-mini'),hit);op(q('.sf-rec'),hit*(1-r(p,.80,.83)));
+    q('.sf-led').setAttribute('fill',hit>.5&&p<.8?'#f0c040':'#2fbf71');
+    // focus: dim what is not the point of the beat
+    op(q('.sf-mods'),1-.5*r(p,.41,.45)+.5*r(p,.82,.86));
+    // beat 4: the phone shows the cause
+    const ph=r(p,.61,.67)*(1-r(p,.82,.86));op(q('.sf-ph'),ph);q('.sf-ph').setAttribute('transform',`translate(${(60*(1-r(p,.61,.67))).toFixed(1)} 0)`);
+    op(q('.sf-wifi'),r(p,.63,.67)*(1-r(p,.80,.84)));
   }
-  if(reduce){k1.classList.add('on');bump.classList.add('go');led.classList.add('hit');m2.classList.add('show');badge.classList.add('show');ctl.textContent='● RESET';ctl.classList.add('reset');$('cb-peak').textContent=num('41.8')+' V';$('cb-ev').textContent='1';return}
-  const seen=new IntersectionObserver(es=>{if(es.some(e=>e.isIntersecting)){seen.disconnect();cycle()}},{threshold:.4});seen.observe($('cabbox'));
-  $('creplay').addEventListener('click',cycle);
-})();
-
-/* hero + story: calm (no autoplay, no loops, no scroll-driven video) */
-(function(){
-  const nav=document.querySelector('nav'),hero=document.getElementById('vhero'),hv=document.getElementById('hv'),hb=document.getElementById('hplay');
-  const navTop=()=>nav.classList.toggle('top',scrollY<hero.offsetHeight*.6);
-  addEventListener('scroll',navTop,{passive:true});navTop();
-  hb.addEventListener('click',()=>{hv.removeAttribute('aria-hidden');if(innerWidth<768)hv.closest('.hmedia').scrollIntoView({block:'start'});hv.controls=true;hv.loop=false;hv.currentTime=0;hv.play().catch(()=>{});hb.hidden=true});
-  hv.addEventListener('ended',()=>{hb.hidden=false});
-  const st=document.getElementById('story'),seg=st.dataset.seg.split(';').map(x=>x.split(',').map(Number));
-  st.querySelectorAll('.splay').forEach(btn=>btn.addEventListener('click',()=>{
-    const [a,b]=seg[+btn.dataset.k],box=btn.closest('.sm');let v=box.querySelector('video');
-    if(!v){v=document.createElement('video');const img=box.querySelector('img');v.poster=img.src;v.src='media/story.mp4';v.muted=true;v.playsInline=true;v.controls=true;v.preload='auto';img.replaceWith(v);
-      v.addEventListener('timeupdate',()=>{if(v.currentTime>=b-.05){v.pause();btn.hidden=false}});}
-    const go=()=>{v.currentTime=a;v.play().catch(()=>{})};v.readyState>=1?go():v.addEventListener('loadedmetadata',go,{once:true});btn.hidden=true;
-  }));
+  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(reduce){ // five stills, each in its own frame
+    const at=[.12,.38,.59,.78,.95],cams=[[0,80,1600,880],[640,400,320,350],[680,385,250,310],[650,280,620,460],[180,150,1240,720]];
+    const wrap=document.createElement('div');wrap.className='sf-stills';
+    beats.forEach((b,i)=>{const row=document.createElement('div');row.className='sf-still';const s=svg.cloneNode(true);
+      render(s,at[i],null);let [x,y,w,h]=cams[i];const A=1.6;if(w/h<A){const n=h*A;x-=(n-w)/2;w=n}else{const n=w/A;y-=(n-h)/2;h=n}
+      s.setAttribute('viewBox',[x,y,w,h].join(' '));if(i)s.setAttribute('aria-hidden','true');row.append(s,b);wrap.append(row)});
+    wrap.append(sec.querySelector('.sf-tag').cloneNode(true));sec.querySelector('.sf-stage').after(wrap);sec.classList.add('rm');return}
+  sec.classList.add('live');
+  let box=svg.getBoundingClientRect(),last=-1,raf=0;
+  function frame(){raf=0;const h=sec.offsetHeight-innerHeight,p=cl(-sec.getBoundingClientRect().top/Math.max(1,h),0,1);
+    if(Math.abs(p-last)<1e-4)return;last=p;render(svg,p,box);
+    let b=0;while(b<4&&p>=B[b+1])b++;beats.forEach((e,i)=>e.classList.toggle('on',i===b));dots.forEach((e,i)=>e.classList.toggle('on',i===b))}
+  const ask=()=>{if(!raf)raf=requestAnimationFrame(frame)};
+  addEventListener('scroll',ask,{passive:true});
+  addEventListener('resize',()=>{box=svg.getBoundingClientRect();last=-1;ask()});
+  frame();
 })();
 </script>
 </body>
