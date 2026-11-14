@@ -7,12 +7,12 @@
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>RailSentinel-24 · Was it the power? Rule it in or out.</title>
-<meta name="description" content="RailSentinel-24 is a small DIN-rail module for DC fast-charger cabinets. It is built to record what the 24 V control supply does, so you can see what the supply did before a charger went down.">
+<meta name="description" content="RailSentinel-24 is a small DIN-rail module for DC fast-charger cabinets. It is built to record what the DC control supply does (12 V or 24 V), so you can see what the supply did before a charger went down.">
 <link rel="canonical" href="https://morgen-tech.com/railsentinel/">
 <meta property="og:type" content="product">
 <meta property="og:site_name" content="Morgen Tech">
 <meta property="og:title" content="RailSentinel-24 · Was it the power? Rule it in or out.">
-<meta property="og:description" content="RailSentinel-24 is a small DIN-rail module for DC fast-charger cabinets. It is built to record what the 24 V control supply does, so you can see what the supply did before a charger went down.">
+<meta property="og:description" content="RailSentinel-24 is a small DIN-rail module for DC fast-charger cabinets. It is built to record what the DC control supply does (12 V or 24 V), so you can see what the supply did before a charger went down.">
 <meta property="og:url" content="https://morgen-tech.com/railsentinel/">
 <meta property="og:image" content="https://morgen-tech.com/og.png">
 <meta property="og:image:width" content="1200">
@@ -24,7 +24,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="robots" content="index,follow,max-image-preview:large">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"Product","name":"RailSentinel-24","alternateName":"RS-24","brand":{"@type":"Brand","name":"Morgen Tech"},"manufacturer":{"@type":"Organization","name":"Morgen Technologie UG (haftungsbeschränkt)","url":"https://morgen-tech.com/"},"url":"https://morgen-tech.com/railsentinel/","image":"https://morgen-tech.com/railsentinel/dashboard.png","description":"Small DIN-rail module for DC fast-charger cabinets, built to record what the 24 V control supply does (target; firmware in development). Variants RS-24-S Slim (DIN, Wi-Fi), RS-24-S Standard (DIN coupler with expansion slots), RS-24-M (OEM module). Pilot units from Q2 2027 under a test agreement.","category":"Industrial monitoring / EV charging infrastructure","additionalProperty":[{"@type":"PropertyValue","name":"Supply systems","value":"12 / 24 V DC control supplies (preliminary)"},{"@type":"PropertyValue","name":"Isolation","value":"isolated sensing and communication sides (preliminary)"}]}
+{"@context":"https://schema.org","@type":"Product","name":"RailSentinel-24","alternateName":"RS-24","brand":{"@type":"Brand","name":"Morgen Tech"},"manufacturer":{"@type":"Organization","name":"Morgen Technologie UG (haftungsbeschränkt)","url":"https://morgen-tech.com/"},"url":"https://morgen-tech.com/railsentinel/","image":"https://morgen-tech.com/railsentinel/dashboard.png","description":"Small DIN-rail module for DC fast-charger cabinets, built to record what the DC control supply does (12 V or 24 V). In development; pilot units from Q2 2027 under a test agreement. Variants RS-24-S Slim (DIN, Wi-Fi), RS-24-S Standard (DIN coupler with expansion slots), RS-24-M (OEM module).","category":"Industrial monitoring / EV charging infrastructure","additionalProperty":[{"@type":"PropertyValue","name":"Supply systems","value":"12 / 24 V DC control supplies (preliminary)"},{"@type":"PropertyValue","name":"Isolation","value":"isolated sensing and communication sides (preliminary)"}]}
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -78,13 +78,10 @@ section{padding:88px 0}
 .pillar:nth-child(2) .ic{background:rgba(19,160,160,.15)}.pillar:nth-child(3) .ic{background:rgba(34,168,96,.15)}
 .pillar h3{font-size:21px;margin-bottom:8px;line-height:1.25}
 .pillar p{color:rgba(255,255,255,.55);font-size:15px}
-.pillar .spec{margin-top:18px;font-family:var(--mono);font-size:11px;color:rgba(255,255,255,.35)}
 .shot{margin-top:28px;border-radius:var(--r2);overflow:hidden;border:1px solid rgba(95,168,248,.2);box-shadow:0 30px 70px rgba(0,0,0,.4);position:relative}
 .shot img{width:100%;display:block}
 .shot figcaption{position:absolute;left:14px;bottom:12px;background:rgba(8,21,39,.85);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.1);border-radius:6px;padding:6px 10px;font-family:var(--mono);font-size:11px;color:rgba(255,255,255,.7)}
 [id]{scroll-margin-top:72px}
-.vt{display:inline-block;margin-left:4px;font-family:var(--mono);font-size:9.5px;letter-spacing:1px;text-transform:uppercase;color:var(--gold);white-space:nowrap}
-.who-tg{display:inline-block;margin-top:6px;font-family:var(--mono);font-size:10.5px;letter-spacing:1.2px;text-transform:uppercase;color:var(--ink3);border:1px solid var(--rule);border-radius:5px;padding:4px 8px}
 .who1{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:32px}
 .who1>div{border-top:2px solid var(--gold);padding-top:14px}
 .who1 small{display:block;font-family:var(--mono);font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink4);margin-bottom:8px}
@@ -156,7 +153,12 @@ nav{transition:background .35s,border-color .35s,backdrop-filter .35s}
 .roadmap .eyebrow{flex-basis:100%}
 .roadmap ul{list-style:none;display:flex;flex-wrap:wrap;gap:8px;flex:1}
 .roadmap li{display:flex;gap:10px;align-items:center;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:8px 12px;font-size:14px}
-.roadmap li span{font-family:var(--mono);font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--gold)}
+.roadmap li.rm-cp{flex-direction:column;align-items:flex-start;gap:6px;flex-basis:100%}
+.roadmap .rm-b{font-size:15px;font-weight:700;color:var(--gold)}
+.roadmap .rm-d{font-size:13.5px;line-height:1.45;color:#c4d2e6}
+.rs-st{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:11px;letter-spacing:.8px;text-transform:uppercase;color:var(--gold);border:1px solid rgba(240,192,64,.45);border-radius:999px;padding:5px 11px;margin:0 0 14px}
+.rs-st::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--gold);flex:none}
+.rs-st2{margin-top:4px}
 #downloads{padding:64px 0}
 #downloads .dl{margin-top:22px}
 @media(max-width:700px){#downloads .dl a{grid-template-columns:44px 1fr;gap:12px}#downloads .dl .m{grid-column:2}}
@@ -190,8 +192,10 @@ section[id]{scroll-margin-top:72px}
 .sf-pilot{font-size:14px;line-height:1.45;color:rgba(255,255,255,.7);margin:12px 0 0}
 .sf-l{font-family:var(--serif);font-size:clamp(28px,3.2vw,44px);line-height:1.14;margin:6px 0 0}
 .sf-sub{font-size:18px;color:rgba(255,255,255,.82);margin:12px 0 0}
+.sf-gold{color:var(--gold);margin-top:6px}
+.sf.live .sf-beat[data-b="4"] .sf-sub{opacity:0;transition:opacity .4s var(--ease)}
+.sf.live.b5b .sf-beat[data-b="4"] .sf-sub{opacity:1}
 .sf-n{font-family:var(--mono);font-size:12px;letter-spacing:2px;color:var(--gold)}
-.sf-fw{display:inline-block;margin-top:16px;font-family:var(--mono);font-size:11px;letter-spacing:1.2px;text-transform:uppercase;color:rgba(255,255,255,.82);border:1px solid rgba(255,255,255,.35);border-radius:5px;padding:5px 9px}
 .sf-act{display:flex;gap:14px;flex-wrap:wrap;align-items:center;margin-top:22px;pointer-events:auto}
 .sf-hint{margin-top:24px;font-family:var(--mono);font-size:11px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.5)}
 .sf-tag{position:absolute;right:16px;top:76px;font-family:var(--mono);font-size:10px;letter-spacing:1.2px;text-transform:uppercase;color:rgba(255,255,255,.7);background:rgba(6,18,35,.6);border:1px solid rgba(255,255,255,.14);border-radius:6px;padding:5px 9px}
@@ -199,7 +203,7 @@ section[id]{scroll-margin-top:72px}
 .sf-dots li{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.25)}
 .sf-dots li.on{background:var(--gold)}
 /* live mode (JS): pin the stage, scroll scrubs the story */
-.sf.live{height:600vh}
+.sf.live{height:690vh}
 .sf.live .sf-stage{position:sticky;top:0}
 .sf.live .sf-dots{display:flex}
 .sf.live .sf-beat{position:absolute;left:max(24px,calc((100vw - 1180px)/2));right:24px;top:50%;width:min(540px,calc(47vw - 48px));opacity:0;transform:translateY(calc(-50% + 16px));transition:opacity .4s var(--ease),transform .4s var(--ease)}
@@ -234,6 +238,7 @@ section[id]{scroll-margin-top:72px}
   .sf-beat .eyebrow{display:none}
   .sf-sub{font-size:16px}
   .sf-tag{top:68px;right:10px;font-size:9px}
+  .rs-st{font-size:10px;letter-spacing:.6px;padding:5px 10px;margin-bottom:12px}
   .sf-dots{right:8px;top:26%}
   .sf-still{grid-template-columns:1fr;gap:14px}
 }
@@ -268,7 +273,7 @@ section[id]{scroll-margin-top:72px}
 <section id="film" class="sf" aria-label="RailSentinel-24 in six steps">
   <a class="sf-skip" href="#why" data-i="fm_skip">Skip the story</a>
   <div class="sf-stage">
-    <svg class="sf-svg" viewBox="520 380 560 420" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Illustration: a small module on the DIN rail of a DC charger's control cabinet; the charger is out of order; a dip runs along the 24 V control rail and the controller resets; the module clips on next to it and records the dip; a phone shows that the 24 V supply dipped.">
+    <svg class="sf-svg" viewBox="520 380 560 420" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Illustration: a small module on the DIN rail of a DC charger's control cabinet; the charger is out of order; a dip runs along the control supply and the controller resets; the module clips on next to it and records the dip; a phone shows that the control supply dipped, and the alarm also reaches your own system over Modbus TCP or MQTT.">
       <defs>
         <filter id="sfg" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
         <radialGradient id="sfsky" cx="50%" cy="35%" r="70%"><stop offset="0" stop-color="#12294a"/><stop offset="1" stop-color="#061223"/></radialGradient>
@@ -310,17 +315,17 @@ section[id]{scroll-margin-top:72px}
           <text x="680" y="444" class="sf-t sf-dim" data-i="fm_cab">CONTROL CABINET</text>
           <rect x="676" y="478" width="248" height="8" rx="1.5" fill="#7d8ca3"/>
           <g class="sf-mods">
-            <rect x="686" y="452" width="62" height="62" rx="3" fill="#1a2c48" stroke="#3a5a86"/><text x="717" y="478" text-anchor="middle" class="sf-t sf-lb">24 V</text><text x="717" y="492" text-anchor="middle" class="sf-t sf-dim">PSU</text>
+            <rect x="686" y="452" width="62" height="62" rx="3" fill="#1a2c48" stroke="#3a5a86"/><text x="717" y="478" text-anchor="middle" class="sf-t sf-lb">DC</text><text x="717" y="492" text-anchor="middle" class="sf-t sf-dim" data-i="fm_psu">PSU</text>
             <rect x="754" y="456" width="12" height="54" rx="2" fill="#1a2c48" stroke="#3a5a86"/><rect x="769" y="456" width="12" height="54" rx="2" fill="#1a2c48" stroke="#3a5a86"/><rect x="784" y="456" width="12" height="54" rx="2" fill="#1a2c48" stroke="#3a5a86"/>
             <rect x="868" y="456" width="44" height="54" rx="2" fill="#1a2c48" stroke="#3a5a86"/>
             <rect x="684" y="618" width="96" height="64" rx="3" fill="#1a2c48" stroke="#3a5a86"/><text x="732" y="640" text-anchor="middle" class="sf-t sf-lb" data-i="fm_ctl">CONTROLLER</text>
             <text x="732" y="662" text-anchor="middle" class="sf-t sf-ctl" style="font-size:12px;font-weight:700"><tspan class="sf-ctl-ok" fill="#5fd39a">● OK</tspan><tspan class="sf-ctl-rs" fill="#ff6b4a" x="732" dy="0" opacity="0">● RESET</tspan></text>
             <rect x="808" y="618" width="104" height="64" rx="3" fill="#1a2c48" stroke="#3a5a86"/><text x="860" y="640" text-anchor="middle" class="sf-t sf-lb" data-i="fm_k1">CONTACTOR</text>
           </g>
-          <!-- 24 V control rail: a partial sag, never dark -->
+          <!-- control supply rail: a partial sag, never dark -->
           <g class="sf-rail">
             <path class="sf-wire" d="M717 514V566H884M732 566V618M860 566V618" fill="none" stroke="#f0c040" stroke-width="3" stroke-linejoin="round"/>
-            <text x="884" y="558" text-anchor="end" class="sf-t" style="fill:#f0c040;font-size:10px;letter-spacing:1px" data-i="fm_rail">24&nbsp;V CONTROL RAIL</text>
+            <text x="796" y="600" text-anchor="middle" class="sf-t" style="fill:#f0c040;font-size:10px;letter-spacing:1px" data-i="fm_rail">CONTROL SUPPLY</text>
             <path class="sf-dip" d="M770 566h14c5 0 7 13 13 13h14c6 0 8-13 13-13h14" fill="none" stroke="#ff9a5a" stroke-width="3" stroke-linejoin="round" opacity="0"/>
             <circle class="sf-p" cx="860" cy="566" r="7" fill="#ff9a5a" filter="url(#sfg)" opacity="0"/>
           </g>
@@ -345,12 +350,13 @@ section[id]{scroll-margin-top:72px}
       </g>
       <!-- link, phone card, your own system -->
       <path class="sf-wifi" d="M858 470C930 400 980 380 1030 390M858 490C960 560 990 690 1030 720" fill="none" stroke="#5fa8f8" stroke-width="2.5" stroke-dasharray="6 7" opacity="0"/>
+      <rect class="sf-net-bg" x="950" y="296" width="322" height="396" rx="16" fill="#061223" fill-opacity=".94" stroke="#3b5274" stroke-dasharray="5 4" opacity="0"/>
       <g class="sf-ph" opacity="0">
         <rect x="1030" y="300" width="200" height="380" rx="26" fill="#0b1830" stroke="#4a6a96" stroke-width="3"/>
         <rect x="1100" y="312" width="60" height="7" rx="3.5" fill="#203a60"/>
         <rect x="1044" y="372" width="172" height="118" rx="12" fill="#f7f9fc"/>
         <text x="1058" y="400" class="sf-t" style="fill:#0d2340;font-size:15px;font-weight:700" data-i="fm_c_ch">Charger 04</text>
-        <text x="1058" y="426" class="sf-t" style="fill:#c8452c;font-size:12.5px;font-weight:700" data-i="fm_c_ev">24&nbsp;V supply dipped</text>
+        <text x="1058" y="426" class="sf-t" style="fill:#c8452c;font-size:12.5px;font-weight:700" data-i="fm_c_ev">Control supply dipped</text>
         <text x="1058" y="452" class="sf-t" style="fill:#33445c;font-size:12.5px">14:32</text>
         <text x="1058" y="476" class="sf-t" style="fill:#7a889c;font-size:9px;letter-spacing:.6px" data-i="fm_ex">Illustration · example</text>
       </g>
@@ -358,25 +364,46 @@ section[id]{scroll-margin-top:72px}
         <rect x="1030" y="698" width="200" height="44" rx="10" fill="none" stroke="#5f7da6" stroke-width="1.5" stroke-dasharray="5 4"/>
         <text x="1130" y="725" text-anchor="middle" class="sf-t" style="fill:#a9bdd8;font-size:13px" data-i="fm_sys">or your own system</text>
       </g>
+      <!-- beat 5b: the alarm reaches your own system (Modbus TCP / MQTT -> EMS); W-2: EMS -> phone, unlabelled -->
+      <g class="sf-net" opacity="0">
+        <rect x="968" y="314" width="40" height="54" rx="3" fill="#122a20" stroke="#f0c040" stroke-width="1.6"/><rect x="968" y="314" width="40" height="10" rx="3" fill="#f0c040"/>
+        <text x="988" y="322" text-anchor="middle" class="sf-t" style="fill:#0d2340;font-size:6.5px;font-weight:700">RS-24</text><circle cx="999" cy="336" r="2.6" fill="#2fbf71"/>
+        <path d="M1008 341H1022M1138 341H1178M1052 353V420H1037V470M1108 353V420H1183V470" fill="none" stroke="#5fa8f8" stroke-width="2" stroke-dasharray="5 5"/>
+        <rect x="1022" y="329" width="116" height="24" rx="12" fill="#0d2340" stroke="#5fa8f8" stroke-width="1.6"/>
+        <text x="1080" y="345" text-anchor="middle" class="sf-t" style="fill:#cfe0f5;font-size:9px;letter-spacing:1px;font-weight:600" data-i="fm_wifi">SITE WI-FI</text>
+        <rect x="970" y="470" width="134" height="66" rx="8" fill="#13294a" stroke="#4a6a96" stroke-width="1.6"/>
+        <text x="1037" y="497" text-anchor="middle" class="sf-t" style="fill:#fff;font-size:14px;font-weight:700">Modbus TCP</text>
+        <text x="1037" y="518" text-anchor="middle" class="sf-t" style="fill:#a9bdd8;font-size:10.5px" data-i="fm_mtcp">over site Wi-Fi</text>
+        <rect x="1116" y="470" width="134" height="66" rx="8" fill="#13294a" stroke="#4a6a96" stroke-width="1.6"/>
+        <text x="1183" y="497" text-anchor="middle" class="sf-t" style="fill:#fff;font-size:14px;font-weight:700">MQTT</text>
+        <text x="1183" y="518" text-anchor="middle" class="sf-t" style="fill:#a9bdd8;font-size:10.5px" data-i="fm_mqtt">local broker</text>
+        <path d="M1037 536V560H1183V536M1110 560V588" fill="none" stroke="#5fa8f8" stroke-width="2"/><path d="M1104 583l6 7 6-7" fill="none" stroke="#5fa8f8" stroke-width="2"/>
+        <rect x="970" y="596" width="280" height="80" rx="10" fill="#f7f9fc"/>
+        <text x="1110" y="625" text-anchor="middle" class="sf-t" style="fill:#0d2340;font-size:15px;font-weight:700" data-i="fm_ems">Your EMS · PLC · SCADA</text>
+        <text x="1110" y="647" text-anchor="middle" class="sf-t" style="fill:#33445c;font-size:12px" data-i="fm_via">via Modbus TCP / MQTT</text>
+        <text x="1110" y="667" text-anchor="middle" class="sf-t" style="fill:#7a889c;font-size:8.5px;letter-spacing:.6px" data-i="fm_ex">Illustration · example</text>
+        <path d="M1250 636H1259V420H1254" fill="none" stroke="#5fa8f8" stroke-width="2" stroke-dasharray="5 5"/><path d="M1258 415l-5 5 5 5" fill="none" stroke="#5fa8f8" stroke-width="2"/>
+      </g>
     </svg>
     <div class="sf-tag" data-i="fm_tag">Illustration · concept, not final</div>
     <ol class="sf-dots" aria-hidden="true"><li></li><li></li><li></li><li></li><li></li><li></li></ol>
     <div class="sf-copy">
       <div class="sf-beat" data-b="0">
+        <div class="rs-st" data-i="rs_st">In development · pilot units from Q2 2027</div>
         <div class="eyebrow" data-i="h_eye">Control-power monitor for DC fast chargers</div>
-        <h1 data-i="fm1">Rule the 24&nbsp;V power <em>in or out.</em></h1>
-        <p class="sf-what" data-i="fm_what">RailSentinel-24 is a small DIN-rail module for DC fast-charger cabinets. It is built to record what the 24&nbsp;V control supply does, so you can see what the supply did before a charger went down.</p>
+        <h1 data-i="fm1">Was it the control power? <em>Rule it in or out.</em></h1>
+        <p class="sf-what" data-i="fm_what">RailSentinel-24 is a small DIN-rail module for DC fast-charger cabinets. It is built to record what the DC control supply does (12&nbsp;V or 24&nbsp;V), so you can see what the supply did before a charger went down.</p>
         <div class="sf-act"><a href="#cta" class="btn btn-primary" data-i="h_b1">Request a pilot</a><a href="#variants" class="hspecs"><span data-i="specs_l">Specs &amp; datasheet</span> <span aria-hidden="true">→</span></a></div>
-        <p class="sf-pilot" data-i="fm_pilot">Pilot units from Q2 2027, on loan under a test agreement, no lock-in.</p>
+        <p class="sf-pilot" data-i="fm_pilot">Pilot units on loan under a test agreement, no lock-in.</p>
         <div class="sf-hint" aria-hidden="true"><span data-i="fm_scroll">Scroll</span> ↓</div>
       </div>
       <div class="sf-beat" data-b="1"><div class="sf-n">02</div><p class="sf-l" data-i="fm2">Your charger is down. Nobody saw why.</p></div>
-      <div class="sf-beat" data-b="2"><div class="sf-n">03</div><p class="sf-l" data-i="fm3">Sometimes it’s the 24&nbsp;V supply. The charger logs the reset; usually nothing logs the supply.</p></div>
-      <div class="sf-beat" data-b="3"><div class="sf-n">04</div><p class="sf-l" data-i="fm4">RS-24 clips on next to it and records what it did.</p><p class="sf-sub" data-i="fm4s">No change to the charger.</p><span class="sf-fw" data-i="fm_t4">Target · firmware in development</span></div>
-      <div class="sf-beat" data-b="4"><div class="sf-n">05</div><p class="sf-l" data-i="fm5">Your team sees what the 24&nbsp;V supply did, not just “faulted”.</p><span class="sf-fw" data-i="fm_t5">Target · firmware and app in development</span></div>
-      <div class="sf-beat" data-b="5"><div class="sf-n">06</div><p class="sf-l" data-i="fm6">Rule the power in or out, before you drive out.</p>
+      <div class="sf-beat" data-b="2"><div class="sf-n">03</div><p class="sf-l" data-i="fm3">Sometimes it’s the control supply. The charger logs the reset; usually nothing logs the supply.</p></div>
+      <div class="sf-beat" data-b="3"><div class="sf-n">04</div><p class="sf-l" data-i="fm4">RS-24 clips on next to it and records what it did.</p><p class="sf-sub" data-i="fm4s">No change to the charger.</p></div>
+      <div class="sf-beat" data-b="4"><div class="sf-n">05</div><p class="sf-l" data-i="fm5">Your team sees what the control supply did, not just “faulted”.</p><p class="sf-sub" data-i="fm5s">So the alarm reaches whoever fixes it: on the technician’s phone, or in your own system (Modbus TCP, local MQTT).</p></div>
+      <div class="sf-beat" data-b="5"><div class="sf-n">06</div><p class="sf-l" data-i="fm6">Rule the power in or out, before you drive out.</p><p class="sf-l sf-gold" data-i="fm6b">Know what to bring.</p><p class="sf-sub" data-i="fm6s">If it was the supply: check the power supply and its wiring, and bring a spare power supply. If it wasn’t: look elsewhere.</p>
         <div class="sf-act"><a href="#cta" class="btn btn-primary" data-i="h_b1">Request a pilot</a><a href="#variants" class="hspecs"><span data-i="specs_l">Specs &amp; datasheet</span> <span aria-hidden="true">→</span></a></div>
-        <p class="sf-pilot" data-i="fm_pilot">Pilot units from Q2 2027, on loan under a test agreement, no lock-in.</p></div>
+        <p class="sf-pilot" data-i="fm_pilot">Pilot units on loan under a test agreement, no lock-in.</p></div>
     </div>
   </div>
 </section>
@@ -391,11 +418,11 @@ section[id]{scroll-margin-top:72px}
 
 <section id="what"><div class="wrap">
   <div class="io"><div class="eyebrow" data-i="p_eye">What it does</div>
-  <h2 class="sec-h" data-i="p_h">Three things. One small module.</h2></div>
+  <h2 class="sec-h" data-i="p_h">The alarm, the answer, the pattern. One small module.</h2></div>
   <div class="pillars">
-    <div class="pillar io"><div class="ic"><svg class="ico" aria-hidden="true"><use href="#i-wave"/></svg></div><h3 data-i="p1_h">Records the 24 V supply</h3><p data-i="p1_p">Dips on the 24 V supply, timestamped and kept on the module.</p><div class="spec" data-i="p1_s">Target · firmware in development</div></div>
-    <div class="pillar io"><div class="ic"><svg class="ico" aria-hidden="true"><use href="#i-phone"/></svg></div><h3 data-i="p2_h">Alerts where your team is</h3><p data-i="p2_p">In your own system (Modbus, MQTT), or on the technician's phone over the site Wi-Fi.</p><div class="spec" data-i="p2_s">Target · firmware and app in development</div></div>
-    <div class="pillar io"><div class="ic"><svg class="ico" aria-hidden="true"><use href="#i-trend"/></svg></div><h3 data-i="p3_h">Shows where it repeats</h3><p data-i="p3_p">Supply voltage trended per site and fleet. For 12 V and 24 V supplies.</p><div class="spec" data-i="p3_s">Target · firmware and app in development</div></div>
+    <div class="pillar io"><div class="ic"><svg class="ico" aria-hidden="true"><use href="#i-phone"/></svg></div><h3 data-i="p2_h">Alerts when the supply dips</h3><p data-i="p2_p">In your own system (Modbus, MQTT), or on the technician's phone over the site Wi-Fi.</p></div>
+    <div class="pillar io"><div class="ic"><svg class="ico" aria-hidden="true"><use href="#i-wave"/></svg></div><h3 data-i="p1_h">Shows if the supply was the cause</h3><p data-i="p1_p">Dips on the 12&nbsp;V or 24&nbsp;V DC control supply, timestamped and kept on the module.</p></div>
+    <div class="pillar io"><div class="ic"><svg class="ico" aria-hidden="true"><use href="#i-trend"/></svg></div><h3 data-i="p3_h">Shows where it repeats</h3><p data-i="p3_p">Supply voltage trended per site and fleet. For 12 V and 24 V supplies.</p></div>
   </div>
   <p class="safe1 io" data-i="safe1">Isolated sensing and communication sides. Monitoring only: it does not switch the charger’s power. Its one output contact is wired in only if you choose to. Not a certified safety component today.</p>
   <p class="prelim io" data-i="prelim">Preliminary</p>
@@ -404,17 +431,17 @@ section[id]{scroll-margin-top:72px}
 
 <section class="light" id="who"><div class="wrap">
   <div class="io"><div class="eyebrow" data-i="s_eye">Who it's for</div>
-  <h2 class="sec-h" data-i="s_h">One question for three teams: was it the power?</h2><p class="who-tg" data-i="tg_app">Target · firmware and app in development</p></div>
+  <h2 class="sec-h" data-i="s_h">One question for three teams: was it the power?</h2></div>
   <div class="who1 io">
-    <div><small data-i="s_t1">CPO fleet</small><p data-i="s1_l">See which chargers’ 24 V supply keeps dipping, site by site.</p></div>
-    <div><small data-i="s_t2">Service company</small><p data-i="s2_l">Know what the 24 V supply did before you drive out.</p></div>
-    <div><small data-i="s_t3">Charger OEM</small><p data-i="s3_l">Records of the 24 V supply from field units, to settle “no fault found” returns.</p></div>
+    <div><small data-i="s_t1">CPO fleet</small><p data-i="s1_l">See which chargers’ control supply keeps dipping, site by site.</p></div>
+    <div><small data-i="s_t2">Service company</small><p data-i="s2_l">Know what the control supply did before you drive out.</p></div>
+    <div><small data-i="s_t3">Charger OEM</small><p data-i="s3_l">Records of the control supply from field units, to settle “no fault found” returns.</p></div>
   </div>
 </div></section>
 
 <section id="variants"><div class="wrap">
   <div class="io"><div class="eyebrow" data-i="r_eye">Variants &amp; mounting</div>
-  <h2 class="sec-h" data-i="r_h">Same board. Pick the enclosure.</h2><p class="lead" data-i="r_p">For 12 V and 24 V DC control supplies.</p><p class="prelim" data-i="prelim">Preliminary</p></div>
+  <h2 class="sec-h" data-i="r_h">Same board. Pick the enclosure.</h2><p class="prelim rs-st2" data-i="rs_st">In development · pilot units from Q2 2027</p><p class="lead" data-i="r_p">For 12 V and 24 V DC control supplies.</p><p class="prelim" data-i="prelim">Preliminary</p></div>
   <div class="vars io">
     <div class="var">
       <svg viewBox="0 0 300 170" aria-label="RS-24-S Slim: a narrow module snapped onto a DIN rail between other modules">
@@ -440,7 +467,7 @@ section[id]{scroll-margin-top:72px}
         <rect x="236" y="34" width="34" height="84" rx="3" fill="#122238" stroke="#2b4468"/>
         <text x="150" y="150" text-anchor="middle">DIN COUPLER · SLOTS</text>
       </svg>
-      <div class="tag">RS-24-S · COUPLER</div><h3 data-i="r2_h">Standard</h3><p data-i="r2_p">DIN coupler with expansion slots.</p><ul><li>Wi-Fi · Modbus TCP · MQTT <span class="vt" data-i="tg_fw">Target · firmware in development</span></li><li><span data-i="r2_l2">Clamp module for rail current</span> <span class="vt" data-i="tg_v2">Planned · v2</span></li><li data-i="r2_l3">CPO fleets · service · OEM evaluation</li></ul>
+      <div class="tag">RS-24-S · COUPLER</div><h3 data-i="r2_h">Standard</h3><p data-i="r2_p">DIN coupler with expansion slots.</p><ul><li>Wi-Fi · Modbus TCP · MQTT</li><li data-i="r2_l3">CPO fleets · service · OEM evaluation</li></ul>
     </div>
     <div class="var">
       <svg viewBox="0 0 300 170" aria-label="RS-24-M bare module on standoffs above a host board">
@@ -451,10 +478,10 @@ section[id]{scroll-margin-top:72px}
         <rect x="132" y="70" width="18" height="8" fill="#0a1830" stroke="#1f3554" transform="skewY(14)"/><circle cx="168" cy="72" r="2.5" fill="#22a860"/>
         <path d="M150 88 v10" stroke="#ffb35c" stroke-width="1.5"/><text x="205" y="128" text-anchor="start">HOST PCB</text><text x="150" y="40" text-anchor="middle">99 × 69 mm · BARE BOARD</text>
       </svg>
-      <div class="tag">RS-24-M</div><h3 data-i="r3_h">OEM module</h3><p data-i="r3_p">Bare PCB for factory integration.</p><ul><li>99 × 69 mm</li><li>Modbus TCP · MQTT · <span data-i="r3_l3">Signed OTA updates</span> <span class="vt" data-i="tg_fw">Target · firmware in development</span></li></ul>
+      <div class="tag">RS-24-M</div><h3 data-i="r3_h">OEM module</h3><p data-i="r3_p">Bare PCB for factory integration.</p><ul><li>99 × 69 mm</li><li>Modbus TCP · MQTT · <span data-i="r3_l3">Signed OTA updates</span></li></ul>
     </div>
   </div>
-  <div class="roadmap io"><div class="eyebrow" data-i="rm_e">On the roadmap · no commitment</div><ul><li><b data-i="rm1">NFC tap-to-read at the cabinet</b><span data-i="rm_bl">Backlog</span></li><li><b data-i="rm2">Cellular field variant</b><span data-i="rm_bl">Backlog</span></li></ul><a class="btn btn-ghost" href="mailto:hello@morgen-tech.com?subject=RS-24%20roadmap%20vote&amp;body=I%20would%20use%3A%20" data-i="rm_v">Vote for what you need</a></div>
+  <div class="roadmap io"><div class="eyebrow" data-i="rm_e">Upcoming · no commitment</div><ul><li class="rm-cp"><b data-i="up_cp">Control Pilot (CP) signal monitoring · plug-in module</b><span class="rm-b" data-i="up_cp_b">More failures covered.</span><span class="rm-d" data-i="up_cp_d">Charger and car signal their state to each other on the CP line in every session. Its states show when a session stopped, and whether the car had become ready to charge.</span></li><li><b data-i="up_rtu">Modbus RTU (RS-485) · plug-in module</b></li><li><b data-i="up_eth">Ethernet · plug-in module</b></li><li><b data-i="r2_l2">Clamp module for rail current</b></li><li><b data-i="up_2c">Two controllers that watch each other</b></li><li><b data-i="rm1">NFC tap-to-read at the cabinet</b></li><li><b data-i="rm2">Cellular field variant</b></li></ul></div>
   <p class="v-dl"><a href="#downloads"><span data-i="d2_h">Preliminary datasheet</span> · <span data-i="d1_h">Product brief</span> (PDF) <span aria-hidden="true">→</span></a></p>
 </div></section>
 
@@ -472,7 +499,7 @@ section[id]{scroll-margin-top:72px}
   <p class="cta-sub io" data-i="c_p">Limited pilot slots from Q2 2027 · test units on loan under a test agreement · no lock-in.</p>
   <div class="cta-grid io">
     <div class="cta-card p"><small data-i="c1_s">CPOs &amp; service companies</small><h4 data-i="c1_h">Request a pilot unit</h4><p data-i="c1_p">Fleet size + the chargers that keep failing.</p><a href="mailto:hello@morgen-tech.com?subject=RS-24 Pilot">hello@morgen-tech.com</a></div>
-    <div class="cta-card"><small data-i="c2_s">Charger OEMs</small><h4 data-i="c2_h">OEM integration brief</h4><p data-i="c2_p">RS-24-M · 12 / 24 V · Modbus TCP · MQTT · data pipeline: target, firmware in development.</p><a href="mailto:sales@morgen-tech.com?subject=RS-24 OEM">sales@morgen-tech.com</a></div>
+    <div class="cta-card"><small data-i="c2_s">Charger OEMs</small><h4 data-i="c2_h">OEM integration brief</h4><p data-i="c2_p">RS-24-M · 12 / 24 V · Modbus TCP · MQTT · data pipeline.</p><a href="mailto:sales@morgen-tech.com?subject=RS-24 OEM">sales@morgen-tech.com</a></div>
     <div class="cta-card"><small data-i="c3_s">Engineers</small><h4 data-i="c3_h">Technical documentation</h4><p data-i="c3_p">Design, analysis, calibration — on request.</p><a href="mailto:info@morgen-tech.com?subject=RS-24 Docs">info@morgen-tech.com</a></div>
   </div>
   <p class="dl-cta io" data-i="d_n">Design documents for pilot partners under NDA: info@morgen-tech.com</p>
@@ -484,7 +511,7 @@ section[id]{scroll-margin-top:72px}
 </div></footer>
 
 <script>
-const T={en:{},de:{"tg_v2":"Geplant · v2","tg_app":"Ziel · Firmware und App in Entwicklung","tg_fw":"Ziel · Firmware in Entwicklung","specs_s":"Daten","cta_s":"Pilot","fm_skip":"Geschichte überspringen","fm1":"24-V-Versorgung als Ursache: <em>bestätigen oder ausschließen.</em>","fm_what":"RailSentinel-24 ist ein kleines Hutschienenmodul für Schaltschränke von DC-Schnellladern. Es ist dafür gebaut, aufzuzeichnen, was die 24-V-Steuerversorgung tut – damit Sie sehen, was die Versorgung tat, bevor ein Lader ausfiel.","fm_pilot":"Pilotgeräte ab Q2 2027, als Leihgabe unter einer Testvereinbarung, ohne Bindung.","fm2":"Ihr Lader ist ausgefallen. Niemand sah, warum.","fm3":"Manchmal ist es die 24-V-Versorgung. Der Lader loggt den Reset, sie selbst meist niemand.","fm4":"RS-24 sitzt daneben auf der Hutschiene und zeichnet auf, was sie tat.","fm4s":"Keine Änderung am Lader.","fm_t4":"Ziel · Firmware in Entwicklung","fm5":"Ihr Team sieht, was die 24-V-Versorgung tat, nicht nur „Fehler“.","fm_t5":"Ziel · Firmware und App in Entwicklung","fm6":"Ursache bestätigen oder ausschließen, bevor Sie hinausfahren.","fm_tag":"Illustration · Konzept, nicht final","fm_scroll":"Scrollen","fm_scr_bad":"Außer Betrieb","fm_scr_ok":"Verfügbar","fm_cab":"SCHALTSCHRANK","fm_ctl":"STEUERUNG","fm_k1":"SCHÜTZ","fm_rail":"24-V-STEUERSPANNUNG","fm_rec":"Spannungseinbruch erfasst","fm_c_ch":"Ladesäule 04","fm_c_ev":"Spannungseinbruch 24 V","fm_ex":"Illustration · Beispiel","fm_sys":"oder Ihr eigenes System","s3_l":"Aufzeichnungen der 24‑V‑Versorgung aus dem Feld, um Rückläufer ohne Befund zu klären.","s2_l":"Wissen, was die 24‑V‑Versorgung getan hat, bevor Sie losfahren.","s1_l":"Sehen, bei welchen Ladern die 24‑V‑Versorgung immer wieder einbricht, Standort für Standort.","safe1":"Mess- und Kommunikationsseite galvanisch getrennt. Nur Überwachung: schaltet nicht die Leistung des Laders. Sein einziger Ausgangskontakt wird nur eingebunden, wenn Sie es wollen. Heute kein zertifiziertes Sicherheitsbauteil.","specs_l":"Technische Daten &amp; Datenblatt","specs":"Daten &amp; Datenblatt","d_eye":"Downloads","d_h":"Dokumente.","d1_h":"Produktbrief","d1_p":"Eine Seite: das Problem, was RS-24 tut, für wen, Varianten, Pilotprogramm.","d2_h":"Vorläufiges Datenblatt","d2_p":"Elektrik, Transientenerfassung, Isolation, Alarmkontakt, Konnektivität, Umgebung, Varianten, Roadmap.","d_n":"Design-Unterlagen für Pilotpartner unter NDA: info@morgen-tech.com","rm_v":"Stimmen Sie ab, was Sie brauchen","rm_bl":"Backlog","rm2":"Mobilfunk-Feldvariante","rm1":"NFC-Auslesen am Schrank","rm_e":"Auf der Roadmap · ohne Zusage","r_p":"Für 12‑V‑ und 24‑V‑DC-Steuerversorgungen.","prelim":"Vorläufig",r1_l4:"Für kleine CPOs",r1_l1:"WLAN",st_src:"Quelle: ChargerHelp-Daten via Kelley Blue Book, Sept. 2026 · US-Netze",st2:"der Ausfalltage entfallen auf diese Mehrfacheinsätze",st1:"der Ausfälle brauchen mehr als einen Einsatz",
+const T={en:{},de:{"specs_s":"Daten","cta_s":"Pilot","fm_skip":"Geschichte überspringen","fm1":"Lag es an der Steuerspannung? <em>Bestätigen oder ausschließen.</em>","fm_what":"RailSentinel-24 ist ein kleines Hutschienenmodul für Schaltschränke von DC-Schnellladern. Es ist dafür gebaut aufzuzeichnen, was die DC-Steuerspannung tut (12&nbsp;V oder 24&nbsp;V), damit Sie sehen, was sie tat, bevor ein Lader ausfiel.","fm_pilot":"Pilotgeräte als Leihgabe unter einer Testvereinbarung, ohne Bindung.","fm2":"Ihr Lader ist ausgefallen. Niemand sah, warum.","fm3":"Manchmal ist es die Steuerspannung. Der Lader protokolliert den Reset; die Versorgung protokolliert meist niemand.","fm4":"RS-24 sitzt daneben auf der Hutschiene und zeichnet auf, was sie tat.","fm4s":"Keine Änderung am Lader.","fm5":"Ihr Team sieht, was die Steuerspannung getan hat, nicht nur „gestört“.","fm6":"Ursache bestätigen oder ausschließen, bevor Sie hinausfahren.","fm_tag":"Illustration · Konzept, nicht final","fm_scroll":"Scrollen","fm_scr_bad":"Außer Betrieb","fm_scr_ok":"Verfügbar","fm_cab":"SCHALTSCHRANK","fm_ctl":"STEUERUNG","fm_k1":"SCHÜTZ","fm_rail":"STEUERSPANNUNG","fm_rec":"Spannungseinbruch erfasst","fm_c_ch":"Ladesäule 04","fm_c_ev":"Spannungseinbruch","fm_ex":"Illustration · Beispiel","fm_sys":"oder Ihr eigenes System","s3_l":"Aufzeichnungen der Steuerspannung aus dem Feld, um Rückläufer ohne Befund zu klären.","s2_l":"Wissen, was die Steuerspannung getan hat, bevor Sie losfahren.","s1_l":"Sehen, bei welchen Ladern die Steuerspannung immer wieder einbricht, Standort für Standort.","safe1":"Mess- und Kommunikationsseite galvanisch getrennt. Nur Überwachung: schaltet nicht die Leistung des Laders. Sein einziger Ausgangskontakt wird nur eingebunden, wenn Sie es wollen. Heute kein zertifiziertes Sicherheitsbauteil.","specs_l":"Technische Daten &amp; Datenblatt","specs":"Daten &amp; Datenblatt","d_eye":"Downloads","d_h":"Dokumente.","d1_h":"Produktbrief","d1_p":"Eine Seite: das Problem, was RS-24 tut, für wen, Varianten, Pilotprogramm.","d2_h":"Vorläufiges Datenblatt","d2_p":"Elektrik, Transientenerfassung, Isolation, Alarmkontakt, Konnektivität, Umgebung, Varianten, Roadmap.","d_n":"Design-Unterlagen für Pilotpartner unter NDA: info@morgen-tech.com","rm2":"Mobilfunk-Feldvariante","rm1":"NFC-Auslesen am Schrank","rm_e":"Demnächst · ohne Zusage","r_p":"Für 12‑V‑ und 24‑V‑DC-Steuerversorgungen.","prelim":"Vorläufig",r1_l4:"Für kleine CPOs",r1_l1:"WLAN",st_src:"Quelle: ChargerHelp-Daten via Kelley Blue Book, Sept. 2026 · US-Netze",st2:"der Ausfalltage entfallen auf diese Mehrfacheinsätze",st1:"der Ausfälle brauchen mehr als einen Einsatz",
 cta_nav:"Pilot anfragen",
 h_eye:"Steuerspannungs-Monitor für DC-Schnelllader",
 
@@ -492,10 +519,10 @@ h_b1:"Pilot anfragen",
 
 w_eye:"Der blinde Fleck",w_h:"Ihr Monitoring endet eine Ebene über dem Fehler.",
 
-p_eye:"Was es tut",p_h:"Drei Dinge. Ein kleines Modul.",
-"p1_h":"Zeichnet die 24‑V‑Versorgung auf","p1_p":"Spannungseinbrüche der 24‑V‑Versorgung, mit Zeitstempel im Modul gespeichert.","p1_s":"Ziel · Firmware in Entwicklung",
-"p2_h":"Alarmiert, wo Ihr Team ist","p2_p":"In Ihrem eigenen System (Modbus, MQTT) oder auf dem Handy des Technikers über das WLAN vor Ort.","p2_s":"Ziel · Firmware und App in Entwicklung",
-"p3_h":"Zeigt, wo es sich wiederholt","p3_p":"Versorgungsspannung als Trend je Standort und Flotte. Für 12‑V‑ und 24‑V‑Versorgungen.","p3_s":"Ziel · Firmware und App in Entwicklung",
+p_eye:"Was es tut","p_h":"Der Alarm, die Antwort, das Muster. Ein kleines Modul.",
+"p1_h":"Zeigt, ob es die Steuerspannung war","p1_p":"Einbrüche der 12‑V- oder 24‑V-Steuerspannung, mit Zeitstempel, im Modul gespeichert.",
+"p2_h":"Alarm, wenn die Steuerspannung einbricht","p2_p":"In Ihrem eigenen System (Modbus, MQTT) oder auf dem Handy des Technikers über das WLAN vor Ort.",
+"p3_h":"Zeigt, wo es sich wiederholt","p3_p":"Versorgungsspannung als Trend je Standort und Flotte. Für 12‑V‑ und 24‑V‑Versorgungen.",
 "shot_c":"RS-24 Dashboard · Illustration",
 s_eye:"Für wen","s_h":"Eine Frage für drei Teams: Lag es an der Steuerspannung?",
 s_t1:"CPO-Flotte",s_t2:"Serviceunternehmen",s_t3:"Lader-OEM",
@@ -509,13 +536,13 @@ r3_h:"OEM-Modul",r3_p:"Nackte Platine zur Werksintegration.",r3_l3:"Signierte OT
 
 "c_h":"Lag es an der Steuerspannung? Bestätigen oder ausschließen.","c_p":"Begrenzte Pilotplätze ab Q2 2027 · Testgeräte als Leihgabe unter Testvereinbarung · keine Bindung.",
 c1_s:"CPOs & Serviceunternehmen",c1_h:"Pilotgerät anfragen",c1_p:"Flottengröße + die Lader, die immer wieder ausfallen.",
-c2_s:"Lader-OEMs",c2_h:"OEM-Integrationsbrief","c2_p":"RS-24-M · 12 / 24 V · Modbus TCP · MQTT · Datenpipeline: Ziel, Firmware in Entwicklung.",
+c2_s:"Lader-OEMs",c2_h:"OEM-Integrationsbrief","c2_p":"RS-24-M · 12 / 24 V · Modbus TCP · MQTT · Datenpipeline.",
 c3_s:"Ingenieure",c3_h:"Technische Dokumentation",c3_p:"Design, Analyse, Kalibrierung — auf Anfrage.",
 f_why:"Warum",f_what:"Was",f_var:"Varianten",f_contact:"Kontakt",
-"f_legal":"Produkt in Entwicklung. Noch keine CE-Kennzeichnung; nicht kommerziell verfügbar."
+"f_legal":"Produkt in Entwicklung. Noch keine CE-Kennzeichnung; nicht kommerziell verfügbar.","rs_st":"In Entwicklung · Pilotgeräte ab Q2 2027","fm5s":"Damit der Alarm bei dem ankommt, der repariert: auf dem Handy des Technikers oder in Ihrem eigenen System (Modbus TCP, lokales MQTT).","fm6b":"Wissen, was mit muss.","fm6s":"War es die Steuerspannung: Netzteil und Verdrahtung prüfen, Ersatz-Netzteil mitnehmen. War sie es nicht: anderswo suchen.","fm_psu":"NT","fm_wifi":"WLAN VOR ORT","fm_mtcp":"über WLAN vor Ort","fm_mqtt":"lokaler Broker","fm_ems":"Ihr EMS · SPS · SCADA","fm_via":"über Modbus TCP / MQTT","up_cp":"Überwachung des CP-Signals (Control Pilot) · Steckmodul","up_cp_b":"Mehr Fehler im Blick.","up_cp_d":"Über die CP-Leitung zeigen sich Ladesäule und Fahrzeug in jeder Ladung ihren Zustand. Seine Zustände zeigen, wann eine Ladung endete und ob das Fahrzeug schon ladebereit war.","up_rtu":"Modbus RTU (RS-485) · Steckmodul","up_eth":"Ethernet · Steckmodul","up_2c":"Zwei Controller, die sich gegenseitig überwachen"
 },
-fr:{"tg_v2":"Prévu · v2","tg_app":"Objectif · firmware et appli en développement","tg_fw":"Objectif · firmware en développement","specs_s":"Fiche","cta_s":"Pilote","fm_skip":"Passer l’histoire","fm1":"L’alimentation 24 V en cause ? <em>Confirmez-le ou écartez-le.</em>","fm_what":"RailSentinel-24 est un petit module sur rail DIN pour les armoires de bornes de recharge rapide DC. Il est conçu pour enregistrer ce que fait l’alimentation de commande 24 V, afin que vous voyiez ce qu’elle a fait avant l’arrêt d’une borne.","fm_pilot":"Unités pilotes à partir du T2 2027, prêtées sous accord de test, sans engagement.","fm2":"Votre borne est en panne. Personne n’a vu pourquoi.","fm3":"Parfois, c’est l’alimentation 24 V. La borne note le redémarrage ; l’alimentation, presque jamais.","fm4":"RS-24 se clipse juste à côté et enregistre ce qu’elle a fait.","fm4s":"Aucune modification de la borne.","fm_t4":"Objectif · firmware en développement","fm5":"Votre équipe voit ce qu’a fait l’alimentation 24 V, pas seulement « en défaut ».","fm_t5":"Objectif · firmware et appli en développement","fm6":"Confirmez ou écartez l’alimentation avant de vous déplacer.","fm_tag":"Illustration · concept, non définitif","fm_scroll":"Défiler","fm_scr_bad":"Hors service","fm_scr_ok":"Disponible","fm_cab":"ARMOIRE DE COMMANDE","fm_ctl":"CONTRÔLEUR","fm_k1":"CONTACTEUR","fm_rail":"ALIMENTATION 24 V","fm_rec":"creux de tension enregistré","fm_c_ch":"Borne 04","fm_c_ev":"Creux de tension 24 V","fm_ex":"Illustration · exemple","fm_sys":"ou votre propre système","s3_l":"Des enregistrements de l’alimentation 24 V sur le terrain, pour trancher les retours « aucun défaut constaté ».","s2_l":"Sachez ce qu’a fait l’alimentation 24 V avant de prendre la route.","s1_l":"Voyez quelles bornes ont des creux répétés sur l’alimentation 24 V, site par site.","safe1":"Côtés mesure et communication isolés. Surveillance uniquement : ne commute pas la puissance de la borne. Son unique contact de sortie n’est câblé que si vous le choisissez. Pas un composant de sécurité certifié à ce jour.","specs_l":"Caractéristiques et fiche technique","specs":"Fiche technique","d_eye":"Téléchargements","d_h":"Documents.","d1_h":"Fiche produit","d1_p":"Une page : le problème, ce que fait RS-24, pour qui, variantes, programme pilote.","d2_h":"Fiche technique préliminaire","d2_p":"Électrique, capture des transitoires, isolation, contact d’alarme, connectivité, environnement, variantes, feuille de route.","d_n":"Documents de conception pour partenaires pilotes sous NDA : info@morgen-tech.com","rm_v":"Votez pour ce dont vous avez besoin","rm_bl":"En attente","rm2":"Variante terrain cellulaire","rm1":"Lecture NFC devant l’armoire","rm_e":"Sur la feuille de route · sans engagement","r_p":"Pour alimentations de commande 12 V et 24 V DC.","prelim":"Préliminaire","r1_l4":"Pour petits CPO","r1_l1":"Wi-Fi","st_src":"Source : données ChargerHelp via Kelley Blue Book, sept. 2026 · réseaux US","st2":"des jours d’arrêt viennent de ces visites répétées","st1":"des pannes demandent plus d’une intervention","cta_nav":"Demander un pilote","h_eye":"Moniteur de tension de commande pour bornes rapides DC","h_b1":"Demander un pilote","w_eye":"L’angle mort","w_h":"Votre supervision s’arrête une couche au-dessus de la panne.","p_eye":"Ce qu’il fait","p_h":"Trois choses. Un petit module.","p1_h":"Enregistre l’alimentation 24 V","p1_p":"Les creux de tension de l’alimentation 24 V, horodatés et gardés dans le module.","p1_s":"Objectif · firmware en développement","p2_h":"Alerte là où est votre équipe","p2_p":"Dans votre propre système (Modbus, MQTT), ou sur le téléphone du technicien via le Wi-Fi du site.","p2_s":"Objectif · firmware et appli en développement","p3_h":"Montre où ça se répète","p3_p":"Tension d’alimentation en tendance par site et par flotte. Pour alimentations 12 V et 24 V.","p3_s":"Objectif · firmware et appli en développement","shot_c":"Tableau de bord RS-24 · illustration","s_eye":"Pour qui","s_h":"Une question pour trois équipes : était-ce l’alimentation ?","s_t1":"Flotte CPO","s_t2":"Société de maintenance","s_t3":"Fabricant de bornes","r_eye":"Variantes et montage","r_h":"Même carte. Choisissez le boîtier.","r1_h":"Slim","r1_p":"Module DIN étroit. Wi-Fi. Posé, oublié.","r2_h":"Standard","r2_p":"Coupleur DIN avec emplacements d’extension.","r2_l2":"Module pince pour le courant du rail","r2_l3":"Flottes CPO · maintenance · évaluation OEM","r3_h":"Module OEM","r3_p":"Carte nue pour intégration en usine.","r3_l3":"Mises à jour OTA signées","c_h":"Était-ce l’alimentation ? Confirmez-le ou écartez-le.","c_p":"Places pilotes limitées dès le T2 2027 · unités de test prêtées sous accord de test · sans engagement.","c1_s":"CPO et sociétés de maintenance","c1_h":"Demander une unité pilote","c1_p":"Taille de flotte + les bornes qui lâchent sans cesse.","c2_s":"Fabricants de bornes","c2_h":"Dossier d’intégration OEM","c2_p":"RS-24-M · 12 / 24 V · Modbus TCP · MQTT · chaîne de données : objectif, firmware en développement.","c3_s":"Ingénieurs","c3_h":"Documentation technique","c3_p":"Conception, analyse, étalonnage — sur demande.","f_why":"Pourquoi","f_what":"Quoi","f_var":"Variantes","f_contact":"Contact","f_legal":"Produit en développement. Pas encore de marquage CE ; non disponible commercialement."},
-es:{"tg_v2":"Previsto · v2","tg_app":"Objetivo · firmware y app en desarrollo","tg_fw":"Objetivo · firmware en desarrollo","specs_s":"Ficha","cta_s":"Piloto","fm_skip":"Saltar la historia","fm1":"¿Fue la alimentación de 24 V? <em>Confírmelo o descártelo.</em>","fm_what":"RailSentinel-24 es un pequeño módulo para carril DIN destinado a armarios de cargadores rápidos DC. Está diseñado para registrar lo que hace la alimentación de control de 24 V, para que vea qué hizo antes de que un cargador se detuviera.","fm_pilot":"Unidades piloto desde el T2 de 2027, en préstamo con un acuerdo de prueba, sin permanencia.","fm2":"Su cargador está parado. Nadie vio por qué.","fm3":"A veces es la alimentación de 24 V. El cargador registra el reinicio; la alimentación, normalmente nadie.","fm4":"RS-24 se encaja justo al lado y registra lo que hizo.","fm4s":"Sin cambios en el cargador.","fm_t4":"Objetivo · firmware en desarrollo","fm5":"Su equipo ve qué hizo la alimentación de 24 V, no solo «en fallo».","fm_t5":"Objetivo · firmware y app en desarrollo","fm6":"Confirme o descarte la alimentación antes de salir.","fm_tag":"Ilustración · concepto, no definitivo","fm_scroll":"Desplazar","fm_scr_bad":"Fuera de servicio","fm_scr_ok":"Disponible","fm_cab":"ARMARIO DE CONTROL","fm_ctl":"CONTROLADOR","fm_k1":"CONTACTOR","fm_rail":"TENSIÓN DE CONTROL 24 V","fm_rec":"hueco de tensión registrado","fm_c_ch":"Cargador 04","fm_c_ev":"Hueco de tensión 24 V","fm_ex":"Ilustración · ejemplo","fm_sys":"o su propio sistema","s3_l":"Registros de la alimentación de 24 V en campo, para resolver las devoluciones «sin fallo encontrado».","s2_l":"Sepa qué hizo la alimentación de 24 V antes de salir.","s1_l":"Vea qué cargadores tienen huecos repetidos en la alimentación de 24 V, sitio por sitio.","safe1":"Lados de medida y comunicación aislados. Solo supervisión: no conmuta la potencia del cargador. Su único contacto de salida se conecta solo si usted lo decide. Hoy no es un componente de seguridad certificado.","specs_l":"Especificaciones y ficha técnica","specs":"Ficha técnica","d_eye":"Descargas","d_h":"Documentos.","d1_h":"Ficha de producto","d1_p":"Una página: el problema, qué hace RS-24, para quién, variantes, programa piloto.","d2_h":"Hoja de datos preliminar","d2_p":"Eléctrico, captura de transitorios, aislamiento, contacto de alarma, conectividad, entorno, variantes, hoja de ruta.","d_n":"Documentos de diseño para socios piloto bajo NDA: info@morgen-tech.com","rm_v":"Vote lo que necesita","rm_bl":"Pendiente","rm2":"Variante de campo celular","rm1":"Lectura NFC en el armario","rm_e":"En la hoja de ruta · sin compromiso","r_p":"Para alimentaciones de control de 12 V y 24 V DC.","prelim":"Preliminar","r1_l4":"Para CPO pequeños","r1_l1":"Wi-Fi","st_src":"Fuente: datos de ChargerHelp vía Kelley Blue Book, sept. 2026 · redes de EE. UU.","st2":"de los días de parada vienen de esas visitas repetidas","st1":"de las averías requieren más de una visita","cta_nav":"Pedir un piloto","h_eye":"Monitor de tensión de control para cargadores rápidos DC","h_b1":"Pedir un piloto","w_eye":"El punto ciego","w_h":"Su monitorización se queda una capa por encima del fallo.","p_eye":"Qué hace","p_h":"Tres cosas. Un módulo pequeño.","p1_h":"Registra la alimentación de 24 V","p1_p":"Los huecos de tensión de la alimentación de 24 V, con marca de tiempo y guardados en el módulo.","p1_s":"Objetivo · firmware en desarrollo","p2_h":"Avisa donde esté su equipo","p2_p":"En su propio sistema (Modbus, MQTT), o en el móvil del técnico por el Wi-Fi del sitio.","p2_s":"Objetivo · firmware y app en desarrollo","p3_h":"Muestra dónde se repite","p3_p":"Tensión de alimentación en tendencia por sitio y flota. Para alimentaciones de 12 V y 24 V.","p3_s":"Objetivo · firmware y app en desarrollo","shot_c":"Panel RS-24 · ilustración","s_eye":"Para quién","s_h":"Una pregunta para tres equipos: ¿fue la alimentación?","s_t1":"Flota CPO","s_t2":"Empresa de servicio","s_t3":"Fabricante de cargadores","r_eye":"Variantes y montaje","r_h":"La misma placa. Elija la caja.","r1_h":"Slim","r1_p":"Módulo DIN estrecho. Wi-Fi. Instalar y olvidar.","r2_h":"Estándar","r2_p":"Acoplador DIN con ranuras de expansión.","r2_l2":"Módulo de pinza para la corriente de la línea","r2_l3":"Flotas CPO · servicio · evaluación OEM","r3_h":"Módulo OEM","r3_p":"Placa desnuda para integración en fábrica.","r3_l3":"Actualizaciones OTA firmadas","c_h":"¿Fue la alimentación? Confírmelo o descártelo.","c_p":"Plazas piloto limitadas desde el T2 de 2027 · unidades de prueba en préstamo bajo acuerdo de prueba · sin permanencia.","c1_s":"CPO y empresas de servicio","c1_h":"Pedir una unidad piloto","c1_p":"Tamaño de flota + los cargadores que siempre fallan.","c2_s":"Fabricantes de cargadores","c2_h":"Dossier de integración OEM","c2_p":"RS-24-M · 12 / 24 V · Modbus TCP · MQTT · canal de datos: objetivo, firmware en desarrollo.","c3_s":"Ingenieros","c3_h":"Documentación técnica","c3_p":"Diseño, análisis, calibración — bajo petición.","f_why":"Por qué","f_what":"Qué","f_var":"Variantes","f_contact":"Contacto","f_legal":"Producto en desarrollo. Aún sin marcado CE; no disponible comercialmente."}};
+fr:{"specs_s":"Fiche","cta_s":"Pilote","fm_skip":"Passer l’histoire","fm1":"Était-ce l’alimentation de commande&nbsp;? <em>Confirmez-le ou écartez-le.</em>","fm_what":"RailSentinel-24 est un petit module sur rail DIN pour les armoires de bornes de recharge rapide DC. Il est conçu pour enregistrer ce que fait l’alimentation de commande DC (12&nbsp;V ou 24&nbsp;V), afin que vous voyiez ce qu’elle a fait avant l’arrêt d’une borne.","fm_pilot":"Unités pilotes prêtées sous accord de test, sans engagement.","fm2":"Votre borne est en panne. Personne n’a vu pourquoi.","fm3":"Parfois, c’est l’alimentation de commande. La borne note le redémarrage&nbsp;; l’alimentation, presque jamais.","fm4":"RS-24 se clipse juste à côté et enregistre ce qu’elle a fait.","fm4s":"Aucune modification de la borne.","fm5":"Votre équipe voit ce qu’a fait l’alimentation de commande, pas seulement «&nbsp;en défaut&nbsp;».","fm6":"Confirmez ou écartez l’alimentation avant de vous déplacer.","fm_tag":"Illustration · concept, non définitif","fm_scroll":"Défiler","fm_scr_bad":"Hors service","fm_scr_ok":"Disponible","fm_cab":"ARMOIRE DE COMMANDE","fm_ctl":"CONTRÔLEUR","fm_k1":"CONTACTEUR","fm_rail":"ALIM. DE COMMANDE","fm_rec":"creux de tension enregistré","fm_c_ch":"Borne 04","fm_c_ev":"Creux d’alimentation","fm_ex":"Illustration · exemple","fm_sys":"ou votre propre système","s3_l":"Des enregistrements de l’alimentation de commande sur le terrain, pour trancher les retours «&nbsp;aucun défaut constaté&nbsp;».","s2_l":"Sachez ce qu’a fait l’alimentation de commande avant de prendre la route.","s1_l":"Voyez quelles bornes ont des creux répétés sur l’alimentation de commande, site par site.","safe1":"Côtés mesure et communication isolés. Surveillance uniquement&nbsp;: ne commute pas la puissance de la borne. Son unique contact de sortie n’est câblé que si vous le choisissez. Pas un composant de sécurité certifié à ce jour.","specs_l":"Caractéristiques et fiche technique","specs":"Fiche technique","d_eye":"Téléchargements","d_h":"Documents.","d1_h":"Fiche produit","d1_p":"Une page&nbsp;: le problème, ce que fait RS-24, pour qui, variantes, programme pilote.","d2_h":"Fiche technique préliminaire","d2_p":"Électrique, capture des transitoires, isolation, contact d’alarme, connectivité, environnement, variantes, feuille de route.","d_n":"Documents de conception pour partenaires pilotes sous NDA&nbsp;: info@morgen-tech.com","rm2":"Variante terrain cellulaire","rm1":"Lecture NFC devant l’armoire","rm_e":"À venir · sans engagement","r_p":"Pour alimentations de commande 12 V et 24 V DC.","prelim":"Préliminaire","r1_l4":"Pour petits CPO","r1_l1":"Wi-Fi","st_src":"Source&nbsp;: données ChargerHelp via Kelley Blue Book, sept. 2026 · réseaux US","st2":"des jours d’arrêt viennent de ces visites répétées","st1":"des pannes demandent plus d’une intervention","cta_nav":"Demander un pilote","h_eye":"Moniteur de tension de commande pour bornes rapides DC","h_b1":"Demander un pilote","w_eye":"L’angle mort","w_h":"Votre supervision s’arrête une couche au-dessus de la panne.","p_eye":"Ce qu’il fait","p_h":"L’alarme, la réponse, la récurrence. Un petit module.","p1_h":"Montre si l’alimentation était en cause","p1_p":"Les creux de l’alimentation de commande DC 12&nbsp;V ou 24&nbsp;V, horodatés et gardés dans le module.","p2_h":"Alerte quand l’alimentation chute","p2_p":"Dans votre propre système (Modbus, MQTT), ou sur le téléphone du technicien via le Wi-Fi du site.","p3_h":"Montre où ça se répète","p3_p":"Tension d’alimentation en tendance par site et par flotte. Pour alimentations 12 V et 24 V.","shot_c":"Tableau de bord RS-24 · illustration","s_eye":"Pour qui","s_h":"Une question pour trois équipes&nbsp;: était-ce l’alimentation&nbsp;?","s_t1":"Flotte CPO","s_t2":"Société de maintenance","s_t3":"Fabricant de bornes","r_eye":"Variantes et montage","r_h":"Même carte. Choisissez le boîtier.","r1_h":"Slim","r1_p":"Module DIN étroit. Wi-Fi. Posé, oublié.","r2_h":"Standard","r2_p":"Coupleur DIN avec emplacements d’extension.","r2_l2":"Module pince pour le courant du rail","r2_l3":"Flottes CPO · maintenance · évaluation OEM","r3_h":"Module OEM","r3_p":"Carte nue pour intégration en usine.","r3_l3":"Mises à jour OTA signées","c_h":"Était-ce l’alimentation&nbsp;? Confirmez-le ou écartez-le.","c_p":"Places pilotes limitées dès le T2 2027 · unités de test prêtées sous accord de test · sans engagement.","c1_s":"CPO et sociétés de maintenance","c1_h":"Demander une unité pilote","c1_p":"Taille de flotte + les bornes qui lâchent sans cesse.","c2_s":"Fabricants de bornes","c2_h":"Dossier d’intégration OEM","c2_p":"RS-24-M · 12 / 24 V · Modbus TCP · MQTT · chaîne de données.","c3_s":"Ingénieurs","c3_h":"Documentation technique","c3_p":"Conception, analyse, étalonnage — sur demande.","f_why":"Pourquoi","f_what":"Quoi","f_var":"Variantes","f_contact":"Contact","f_legal":"Produit en développement. Pas encore de marquage CE&nbsp;; non disponible commercialement.","rs_st":"En développement · unités pilotes dès le T2 2027","fm5s":"Pour que l’alarme arrive à celui qui répare&nbsp;: sur le téléphone du technicien, ou dans votre propre système (Modbus TCP, MQTT local).","fm6b":"Sachez quoi apporter.","fm6s":"Si c’était l’alimentation&nbsp;: vérifiez l’alimentation et son câblage, apportez une alimentation de rechange. Sinon&nbsp;: cherchez ailleurs.","fm_psu":"ALIM.","fm_wifi":"WI-FI DU SITE","fm_mtcp":"via le Wi-Fi du site","fm_mqtt":"broker local","fm_ems":"Votre EMS · automate · SCADA","fm_via":"via Modbus TCP / MQTT","up_cp":"Surveillance du signal Control Pilot (CP) · module enfichable","up_cp_b":"Plus de pannes couvertes.","up_cp_d":"Sur la ligne CP, la borne et le véhicule se signalent leur état à chaque session. Ses états montrent quand une session s’est arrêtée, et si le véhicule était déjà prêt à charger.","up_rtu":"Modbus RTU (RS-485) · module enfichable","up_eth":"Ethernet · module enfichable","up_2c":"Deux contrôleurs qui se surveillent"},
+es:{"specs_s":"Ficha","cta_s":"Piloto","fm_skip":"Saltar la historia","fm1":"¿Fue la alimentación de control? <em>Confírmelo o descártelo.</em>","fm_what":"RailSentinel-24 es un pequeño módulo para carril DIN destinado a armarios de cargadores rápidos DC. Está diseñado para registrar lo que hace la alimentación de control DC (12&nbsp;V o 24&nbsp;V), para que vea qué hizo antes de que un cargador se detuviera.","fm_pilot":"Unidades piloto en préstamo con un acuerdo de prueba, sin permanencia.","fm2":"Su cargador está parado. Nadie vio por qué.","fm3":"A veces es la alimentación de control. El cargador registra el reinicio; la alimentación, normalmente nadie.","fm4":"RS-24 se encaja justo al lado y registra lo que hizo.","fm4s":"Sin cambios en el cargador.","fm5":"Su equipo ve qué hizo la alimentación de control, no solo «en fallo».","fm6":"Confirme o descarte la alimentación antes de salir.","fm_tag":"Ilustración · concepto, no definitivo","fm_scroll":"Desplazar","fm_scr_bad":"Fuera de servicio","fm_scr_ok":"Disponible","fm_cab":"ARMARIO DE CONTROL","fm_ctl":"CONTROLADOR","fm_k1":"CONTACTOR","fm_rail":"ALIM. DE CONTROL","fm_rec":"hueco de tensión registrado","fm_c_ch":"Cargador 04","fm_c_ev":"Caída de alimentación","fm_ex":"Ilustración · ejemplo","fm_sys":"o su propio sistema","s3_l":"Registros de la alimentación de control en campo, para resolver las devoluciones «sin fallo encontrado».","s2_l":"Sepa qué hizo la alimentación de control antes de salir.","s1_l":"Vea qué cargadores tienen huecos repetidos en la alimentación de control, sitio por sitio.","safe1":"Lados de medida y comunicación aislados. Solo supervisión: no conmuta la potencia del cargador. Su único contacto de salida se conecta solo si usted lo decide. Hoy no es un componente de seguridad certificado.","specs_l":"Especificaciones y ficha técnica","specs":"Ficha técnica","d_eye":"Descargas","d_h":"Documentos.","d1_h":"Ficha de producto","d1_p":"Una página: el problema, qué hace RS-24, para quién, variantes, programa piloto.","d2_h":"Hoja de datos preliminar","d2_p":"Eléctrico, captura de transitorios, aislamiento, contacto de alarma, conectividad, entorno, variantes, hoja de ruta.","d_n":"Documentos de diseño para socios piloto bajo NDA: info@morgen-tech.com","rm2":"Variante de campo celular","rm1":"Lectura NFC en el armario","rm_e":"Próximamente · sin compromiso","r_p":"Para alimentaciones de control de 12 V y 24 V DC.","prelim":"Preliminar","r1_l4":"Para CPO pequeños","r1_l1":"Wi-Fi","st_src":"Fuente: datos de ChargerHelp vía Kelley Blue Book, sept. 2026 · redes de EE. UU.","st2":"de los días de parada vienen de esas visitas repetidas","st1":"de las averías requieren más de una visita","cta_nav":"Pedir un piloto","h_eye":"Monitor de tensión de control para cargadores rápidos DC","h_b1":"Pedir un piloto","w_eye":"El punto ciego","w_h":"Su monitorización se queda una capa por encima del fallo.","p_eye":"Qué hace","p_h":"La alarma, la respuesta, el patrón. Un pequeño módulo.","p1_h":"Muestra si la alimentación fue la causa","p1_p":"Los huecos de la alimentación de control DC de 12&nbsp;V o 24&nbsp;V, con marca de tiempo y guardados en el módulo.","p2_h":"Avisa cuando cae la alimentación","p2_p":"En su propio sistema (Modbus, MQTT), o en el móvil del técnico por el Wi-Fi del sitio.","p3_h":"Muestra dónde se repite","p3_p":"Tensión de alimentación en tendencia por sitio y flota. Para alimentaciones de 12 V y 24 V.","shot_c":"Panel RS-24 · ilustración","s_eye":"Para quién","s_h":"Una pregunta para tres equipos: ¿fue la alimentación?","s_t1":"Flota CPO","s_t2":"Empresa de servicio","s_t3":"Fabricante de cargadores","r_eye":"Variantes y montaje","r_h":"La misma placa. Elija la caja.","r1_h":"Slim","r1_p":"Módulo DIN estrecho. Wi-Fi. Instalar y olvidar.","r2_h":"Estándar","r2_p":"Acoplador DIN con ranuras de expansión.","r2_l2":"Módulo de pinza para la corriente de la línea","r2_l3":"Flotas CPO · servicio · evaluación OEM","r3_h":"Módulo OEM","r3_p":"Placa desnuda para integración en fábrica.","r3_l3":"Actualizaciones OTA firmadas","c_h":"¿Fue la alimentación? Confírmelo o descártelo.","c_p":"Plazas piloto limitadas desde el T2 de 2027 · unidades de prueba en préstamo bajo acuerdo de prueba · sin permanencia.","c1_s":"CPO y empresas de servicio","c1_h":"Pedir una unidad piloto","c1_p":"Tamaño de flota + los cargadores que siempre fallan.","c2_s":"Fabricantes de cargadores","c2_h":"Dossier de integración OEM","c2_p":"RS-24-M · 12 / 24 V · Modbus TCP · MQTT · canal de datos.","c3_s":"Ingenieros","c3_h":"Documentación técnica","c3_p":"Diseño, análisis, calibración — bajo petición.","f_why":"Por qué","f_what":"Qué","f_var":"Variantes","f_contact":"Contacto","f_legal":"Producto en desarrollo. Aún sin marcado CE; no disponible comercialmente.","rs_st":"En desarrollo · unidades piloto desde el T2 de 2027","fm5s":"Para que la alarma llegue a quien lo repara: en el móvil del técnico, o en su propio sistema (Modbus TCP, MQTT local).","fm6b":"Sepa qué llevar.","fm6s":"Si fue la alimentación: revise la fuente y su cableado, lleve una fuente de repuesto. Si no: busque en otro lado.","fm_psu":"FUENTE","fm_wifi":"WI-FI DEL SITIO","fm_mtcp":"por el Wi-Fi del sitio","fm_mqtt":"broker local","fm_ems":"Su EMS · PLC · SCADA","fm_via":"vía Modbus TCP / MQTT","up_cp":"Monitorización de la señal Control Pilot (CP) · módulo enchufable","up_cp_b":"Más fallos cubiertos.","up_cp_d":"Por la línea CP, cargador y vehículo se señalan su estado en cada sesión. Sus estados muestran cuándo se detuvo una sesión y si el vehículo ya estaba listo para cargar.","up_rtu":"Modbus RTU (RS-485) · módulo enchufable","up_eth":"Ethernet · módulo enchufable","up_2c":"Dos controladores que se vigilan entre sí"}};
 const EN={};document.querySelectorAll('[data-i]').forEach(el=>EN[el.dataset.i]=el.innerHTML);T.en=EN;
 const TITLE={"en": "RailSentinel-24 · Was it the power? Rule it in or out.", "de": "RailSentinel-24 · Lag es an der Steuerspannung? Bestätigen oder ausschließen.", "fr": "RailSentinel-24 · Était-ce l’alimentation ? Confirmez-le ou écartez-le.", "es": "RailSentinel-24 · ¿Fue la alimentación? Confírmelo o descártelo."},HL={en:'en',de:'de',fr:'fr',es:'es'};
 function setLang(l){if(!T[l])l='en';document.documentElement.lang=HL[l];try{localStorage.setItem('mt-lang',l)}catch(e){}
@@ -537,9 +564,9 @@ document.querySelectorAll('.io').forEach(el=>io.observe(el));
   const r=(p,a,b)=>ss(cl((p-a)/(b-a),0,1));            // eased ramp 0->1 between a and b
   const B=[0,.15,.32,.50,.68,.85,1];                     // beat boundaries (concept §2)
   // focal rects [x,y,w,h]: 1 module in cabinet, 2 charger, 3 rail, 4 RS-24, 5 phone + own system, 6 wide
-  const F={in:[664,400,272,342],ch:[600,210,400,570],rl:[672,470,256,220],rs:[690,385,300,270],ph:[650,280,600,470],wd:[180,150,1240,640]};
-  const M={in:[664,420,272,320],ch:[640,215,320,420],rl:[676,500,250,200],rs:[748,400,170,170],ph:[1020,290,220,460],wd:[560,200,480,600]};
-  const keys=(K)=>[[0,K.in],[.10,K.in],[.19,K.ch],[.30,K.ch],[.37,K.rl],[.50,K.rl],[.55,K.rs],[.68,K.rs],[.75,K.ph],[.85,K.ph],[.93,K.wd],[1,K.wd]];
+  const F={in:[664,400,272,342],ch:[600,210,400,570],rl:[672,470,256,220],rs:[690,385,300,270],ph:[650,280,600,470],nb:[900,290,370,400],wd:[180,150,1240,640]};
+  const M={in:[664,420,272,320],ch:[640,215,320,420],rl:[676,500,250,200],rs:[748,400,170,170],ph:[1020,290,220,460],nb:[962,300,302,382],wd:[560,200,480,600]};
+  const keys=(K)=>[[0,K.in],[.10,K.in],[.19,K.ch],[.30,K.ch],[.37,K.rl],[.50,K.rl],[.55,K.rs],[.68,K.rs],[.75,K.ph],[.765,K.ph],[.80,K.nb],[.85,K.nb],[.93,K.wd],[1,K.wd]];
   const CAM=keys(F),CAMM=keys(M);
   function cam(p,C){let i=0;while(i<C.length-2&&p>C[i+1][0])i++;const [p0,a]=C[i],[p1,b]=C[i+1],k=ss(cl((p-p0)/(p1-p0),0,1));return a.map((v,j)=>v+(b[j]-v)*k)}
   const op=(el,v)=>{if(el)el.setAttribute('opacity',(+v).toFixed(3))};
@@ -571,16 +598,18 @@ document.querySelectorAll('.io').forEach(el=>io.observe(el));
     const hit=r(p,.615,.63);op(q('.sf-mini'),p<.3?0:hit);op(q('.sf-rec'),hit*(1-r(p,.70,.73)));
     // focus: dim what is not the point of the beat
     op(q('.sf-mods'),1-.5*r(p,.51,.55)+.5*r(p,.84,.88));
-    // beat 5: the phone card, then the reader's own system (secondary)
-    const ph=r(p,.70,.75)*(1-r(p,.84,.87));op(q('.sf-ph'),ph);q('.sf-ph').setAttribute('transform',`translate(${(50*(1-r(p,.70,.75))).toFixed(1)} 0)`);
-    op(q('.sf-sys'),r(p,.73,.77)*(1-r(p,.84,.87)));op(q('.sf-wifi'),r(p,.71,.75)*(1-r(p,.83,.86)));
+    // beat 5a: the phone card, then the reader's own system (secondary)
+    // beat 5b: the phone moves top right and dims (C-28), the own-system tile opens into Modbus TCP / MQTT -> EMS
+    const nb=r(p,.765,.80)*(1-r(p,.84,.87)),ph=r(p,.70,.75)*(1-r(p,.84,.87)),sc=1-.65*nb;op(q('.sf-ph'),ph*(1-.5*nb));
+    q('.sf-ph').setAttribute('transform',`translate(${(50*(1-r(p,.70,.75))).toFixed(1)} 0) translate(1250 300) scale(${sc.toFixed(3)}) translate(-1250 -300)`);
+    op(q('.sf-sys'),r(p,.73,.77)*(1-r(p,.84,.87))*(1-nb));op(q('.sf-wifi'),r(p,.71,.75)*(1-r(p,.83,.86))*(1-nb));op(q('.sf-net'),nb);op(q('.sf-net-bg'),nb);
     // the "dip recorded" pill grows with its translated text
     const t=q('.sf-rec text'),pill=q('.sf-rec rect');
     if(t&&t.textContent!==root._rec){root._rec=t.textContent;const w=t.getComputedTextLength()+26;pill.setAttribute('width',w.toFixed(1));pill.setAttribute('x',(833-w/2).toFixed(1))}
   }
   const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
   if(reduce){ // six stills, each with its line and tag; nothing pins, nothing moves
-    const at=[.06,.26,.47,.66,.82,.97],cams=[F.in,F.ch,F.rl,F.rs,F.ph,F.wd];
+    const at=[.06,.26,.47,.66,.82,.97],cams=[F.in,F.ch,F.rl,F.rs,F.nb,F.wd];
     const wrap=document.createElement('div');wrap.className='sf-stills';
     beats.forEach((b,i)=>{const row=document.createElement('div');row.className='sf-still';const s=svg.cloneNode(true);
       let [x,y,w,h]=cams[i];const A=1.6;if(w/h<A){const n=h*A;x-=(n-w)/2;w=n}else{const n=w/A;y-=(n-h)/2;h=n}
@@ -594,10 +623,12 @@ document.querySelectorAll('.io').forEach(el=>io.observe(el));
   let lay=null,last=-1,raf=0,hs=[];
   function measure(){const b=svg.getBoundingClientRect(),nar=b.width<=700;
     hs=beats.map(e=>b.height-e.offsetHeight-(nar?34:0)-16);lay={w:b.width,h:b.height,nar,bot:hs[0]}}
-  function frame(){raf=0;const h=sec.offsetHeight-innerHeight,p=cl(-sec.getBoundingClientRect().top/Math.max(1,h),0,1);
+  // the section is 690vh: beats 1-4 and 6 keep their 600vh pace, beat 5 gets the extra 90vh for 5b
+  const W1=.68*600/690,W2=W1+192/690,warp=u=>u<W1?u*690/600:u<W2?.68+.17*(u-W1)/(W2-W1):.85+.15*(u-W2)/(1-W2);
+  function frame(){raf=0;const h=sec.offsetHeight-innerHeight,p=warp(cl(-sec.getBoundingClientRect().top/Math.max(1,h),0,1));
     if(Math.abs(p-last)<1e-4)return;last=p;
     if(lay.nar){let v=hs[0];for(let i=1;i<hs.length;i++)v+=(hs[i]-hs[i-1])*r(p,B[i]-.04,B[i]+.01);lay.bot=Math.max(lay.h*.3,Math.min(lay.h*.62,v));sec.style.setProperty('--sfc',(lay.h-Math.min(lay.bot,v)+8).toFixed(0)+'px')}
-    render(svg,p,lay);
+    render(svg,p,lay);sec.classList.toggle('b5b',p>.775&&p<.85);
     let b=0;while(b<5&&p>=B[b+1])b++;beats.forEach((e,i)=>e.classList.toggle('on',i===b));dots.forEach((e,i)=>e.classList.toggle('on',i===b))}
   const ask=()=>{if(!raf)raf=requestAnimationFrame(frame)};
   addEventListener('scroll',ask,{passive:true});
