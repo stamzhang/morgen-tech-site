@@ -544,7 +544,7 @@ section[id]{scroll-margin-top:72px}
             <rect x="808" y="450" width="50" height="66" rx="3" fill="#122a20" stroke="#f0c040" stroke-width="2" filter="url(#sfg)"/>
             <rect x="808" y="450" width="50" height="12" rx="3" fill="#f0c040"/>
             <text x="833" y="459.5" text-anchor="middle" class="sf-t" style="fill:#0d2340;font-size:7.5px;font-weight:700">RS-24</text>
-            <circle cx="848" cy="474" r="3.5" fill="#2fbf71"/>
+            <circle class="sf-led" cx="848" cy="474" r="3.5" fill="#c9d3e0"/>
             <path class="sf-mini" d="M814 496h8c3 0 4 6 7 6h8c3 0 4-6 7-6h8" fill="none" stroke="#f0c040" stroke-width="1.6" opacity="0"/>
             <g class="sf-rec" opacity="0"><rect x="773" y="410" width="120" height="24" rx="12" fill="#f0c040"/><text x="833" y="426" text-anchor="middle" class="sf-t" style="fill:#0d2340;font-size:10.5px;font-weight:700" data-i="fm_rec">dip recorded</text></g>
           </g>
@@ -821,6 +821,8 @@ document.querySelectorAll('.io').forEach(el=>io.observe(el));
     // screen: Available in beat 1 and beat 6, Out of order in between
     const bad=r(p,.15,.17)*(1-r(p,.88,.91));op(q('.sf-scr-bad'),bad);op(q('.sf-scr-ok'),1-bad);
     q('.sf-bar').setAttribute('fill',bad>.5?'#e0533a':'#2fbf71');
+    // C-23: inside the cabinet (beats 3-5) the screen steps back, so it never competes with the focal point
+    const back=1-.8*r(p,.30,.36)*(1-r(p,.85,.89));op(q('.sf-scr'),back);op(q('.sf-bar'),back);
     // service door: open in beat 1, closed for beat 2, open for beats 3-5, closed in beat 6
     op(q('.sf-door'),r(p,.10,.14)*(1-r(p,.30,.34))+r(p,.85,.89));
     op(q('.sf-bg'),.4+.6*r(p,.11,.17)*(1-r(p,.30,.36))+.6*r(p,.86,.92));
