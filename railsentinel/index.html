@@ -126,7 +126,7 @@ section{padding:88px 0}
 .job-txt .btn{align-self:flex-start;margin-top:10px}
 .job-f{margin:0;position:relative;background:#081527;display:flex;flex-direction:column}
 .job-m{position:relative;aspect-ratio:16/9;width:100%;flex:1 0 auto;background:#081527}
-.job-v{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:70% 50%;display:block}
+.job-p,.job-v{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:70% 50%;display:block}
 .job-seq{list-style:none;display:flex;flex-wrap:wrap;gap:6px 18px;margin:0;padding:12px 16px;font-family:var(--mono);font-size:11.5px;letter-spacing:.3px;color:rgba(255,255,255,.78);background:#0b1d36;border-top:1px solid rgba(255,255,255,.08)}
 .job-seq li{display:flex;align-items:center;gap:7px}
 .job-seq li+li::before{content:'→';color:rgba(255,255,255,.4);margin-right:11px}
@@ -142,7 +142,7 @@ section{padding:88px 0}
 .job-pp .pl,.job-pp.paused .pa{display:none}.job-pp.paused .pl{display:inline}
 .job-pp[hidden]{display:none}
 @media(max-width:900px){.job{grid-template-columns:1fr}.job-txt{padding:30px 28px}}
-@media(max-width:760px){#job{padding:64px 0}.job{grid-template-columns:1fr}.job-txt{padding:28px 22px}.job-seq .job-ex{margin-left:0}}
+@media(max-width:760px){#job{padding:64px 0}.job{grid-template-columns:1fr}.job-m{aspect-ratio:4/5}.job-v{display:none}.job-p{object-position:50% 50%}.job-txt{padding:28px 22px}.job-seq .job-ex{margin-left:0}}
 #cta{position:relative;overflow:hidden}
 #cta::before{content:'';position:absolute;top:-120px;left:50%;transform:translateX(-50%);width:640px;height:640px;background:radial-gradient(ellipse,rgba(19,48,90,.55),transparent 70%);pointer-events:none}
 .cta-h{font-family:var(--serif);font-size:clamp(30px,4.2vw,54px);text-align:center;line-height:1.08;max-width:700px;margin:0 auto 12px;position:relative}
@@ -652,7 +652,8 @@ footer{background:var(--tone-foot)}
   </div>
   <figure class="job-f">
     <div class="job-m">
-      <video class="job-v" muted loop playsinline preload="none" disablepictureinpicture poster="media/job_loop.jpg" data-src="media/job_loop.mp4" aria-hidden="true" tabindex="-1"></video>
+      <picture><source media="(max-width: 760px)" srcset="media/job_loop_phone.jpg"><img class="job-p" src="media/job_loop.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async"></picture>
+      <video class="job-v" muted loop playsinline preload="none" disablepictureinpicture data-src="media/job_loop.mp4" aria-hidden="true" tabindex="-1"></video>
       <button type="button" class="job-pp paused" hidden><span class="pa" data-i="job_pause">Pause</span><span class="pl" data-i="job_play">Play</span></button>
     </div>
     <figcaption><ol class="job-seq">
