@@ -22,11 +22,16 @@ Files
 - `png/favicon-{16,32,48,180,512}.png`, `png/favicon.ico` (16/32/48) and `png/apple-touch-icon.png`
   (180 px, full-bleed tile, opaque). Copies of the .ico and the apple-touch icon sit at the site root.
 
-Rules of thumb
-- Clear space is half the tile height on all sides.
-- Use the lock-up at 24 px tall or more. Below that, use the mark alone.
-- Never recolour the bar, and never stretch or re-set the type.
-- All SVGs are pure paths, so no fonts are needed.
+Rules (brand guide v1.1, section 5; marketing/docs 584366e)
+- Clear space: 1 x on all sides, where x = a quarter of the tile side. No text, edge or other logo inside it.
+- Minimum size on screen: lock-up tile 24 px or more; mark alone 16 px or more. The site header uses a
+  32 px tile on desktop (1024 px and wider), 24-26 px on phones, and the mark alone below 360 px.
+- No gold on dark surfaces. The gold bar appears only in the colour version on light surfaces, and never
+  within 1 x of a gold CTA.
+- No blue, gradient, shadow, glow, outline, opacity change or animation. Do not change the tile's corner
+  radius, stretch, or re-space the wordmark. All SVGs are pure paths, so no fonts are needed.
+- The apple-touch icon is the colour mark on a full-bleed navy square, because iOS applies its own
+  rounded mask and would show transparent corners as black.
 
 Source: marketing/docs `product/brand/logo-options_2026-11-15/` (commit 7472ce3). The generator is
 `src/build_options.py` there. The rasters here are browser renders of the SVGs above.
