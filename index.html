@@ -27,11 +27,22 @@
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"Organization","name":"Morgen Tech","legalName":"Morgen Technologie UG (haftungsbeschränkt)","url":"https://morgen-tech.com/","logo":"https://morgen-tech.com/og.png","email":"hello@morgen-tech.com","address":{"@type":"PostalAddress","addressRegion":"Baden-Württemberg","addressCountry":"DE"},"description":"Sensing and analytics for DC fast-charging and grid infrastructure."}
 </script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="preload" href="/assets/fonts/SourceSerif4-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/DMSans-latin.woff2" as="font" type="font/woff2" crossorigin>
 <style>
+/* fonts:start: self-hosted (SIL OFL 1.1, files and licences in /assets/fonts/, from github.com/google/fonts ofl/),
+   latin + latin-ext subsets, no third-party requests (Chen 2026-11-15, brand set 2) */
+@font-face{font-family:'Source Serif 4';src:url(/assets/fonts/SourceSerif4-latin.woff2) format('woff2');font-style:normal;font-weight:600 700;font-display:swap;unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2190-2193,U+2212,U+2215,U+25CB,U+25CF,U+FEFF,U+FFFD}
+@font-face{font-family:'Source Serif 4';src:url(/assets/fonts/SourceSerif4-latin-ext.woff2) format('woff2');font-style:normal;font-weight:600 700;font-display:swap;unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'DM Sans';src:url(/assets/fonts/DMSans-latin.woff2) format('woff2');font-style:normal;font-weight:400 700;font-display:swap;unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2190-2193,U+2212,U+2215,U+25CB,U+25CF,U+FEFF,U+FFFD}
+@font-face{font-family:'DM Sans';src:url(/assets/fonts/DMSans-latin-ext.woff2) format('woff2');font-style:normal;font-weight:400 700;font-display:swap;unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'DM Mono';src:url(/assets/fonts/DMMono-Regular-latin.woff2) format('woff2');font-style:normal;font-weight:400;font-display:swap;unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2190-2193,U+2212,U+2215,U+25CB,U+25CF,U+FEFF,U+FFFD}
+@font-face{font-family:'DM Mono';src:url(/assets/fonts/DMMono-Regular-latin-ext.woff2) format('woff2');font-style:normal;font-weight:400;font-display:swap;unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'DM Mono';src:url(/assets/fonts/DMMono-Medium-latin.woff2) format('woff2');font-style:normal;font-weight:500;font-display:swap;unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2190-2193,U+2212,U+2215,U+25CB,U+25CF,U+FEFF,U+FFFD}
+@font-face{font-family:'DM Mono';src:url(/assets/fonts/DMMono-Medium-latin-ext.woff2) format('woff2');font-style:normal;font-weight:500;font-display:swap;unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+/* fonts:end */
 *{box-sizing:border-box;margin:0;padding:0}
-:root{--navy:#0D2340;--ink:#0d1520;--ink3:#4a5e72;--ink4:#6b7f94;--blue:#1A6FD4;--blue3:#5fa8f8;--teal:#13a0a0;--green:#22a860;--rust:#e06a3a;--gold:#f0c040;--bg:#f4f6f9;--white:#fff;--rule:#e2e8f0;--serif:'Playfair Display',Georgia,serif;--sans:'DM Sans',system-ui,sans-serif;--mono:'DM Mono',ui-monospace,monospace;--r:8px;--r2:14px;--ease:cubic-bezier(.2,.7,.2,1)}
+:root{--navy:#0D2340;--ink:#0d1520;--ink3:#4a5e72;--ink4:#6b7f94;--blue:#1A6FD4;--blue3:#5fa8f8;--teal:#13a0a0;--green:#22a860;--rust:#e06a3a;--gold:#f0c040;--bg:#f4f6f9;--white:#fff;--rule:#e2e8f0;--serif:'Source Serif 4',Georgia,serif;--sans:'DM Sans',system-ui,sans-serif;--mono:'DM Mono',ui-monospace,monospace;--r:8px;--r2:14px;--ease:cubic-bezier(.2,.7,.2,1)}
 html{scroll-behavior:smooth}
 body{font-family:var(--sans);background:var(--navy);color:#fff;-webkit-font-smoothing:antialiased;overflow-x:hidden;line-height:1.5}
 .wrap{max-width:1120px;margin:0 auto;padding:0 24px}
