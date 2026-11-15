@@ -460,10 +460,12 @@ nav{background:#081527;-webkit-backdrop-filter:none;backdrop-filter:none;border-
 .sf-bg>path[d^="M-400 762"]{display:none}
 /* B-7: phone hero: the status pill sits >= 24 px below the drawing (the film's framing script measures the beat, so the
    drawing moves up), and the drawing fades in under the header instead of a hard cut */
-@media(max-width:700px){
-.sf-beat[data-b="0"]{padding-top:26px}
-.sf-svg{-webkit-mask-image:linear-gradient(to bottom,transparent 0,transparent 56px,#000 120px);mask-image:linear-gradient(to bottom,transparent 0,transparent 56px,#000 120px)}
-}
+@media(max-width:700px){.sf-beat[data-b="0"]{padding-top:26px}}
+/* T-1 / T-2 (Marketing gate 28e5913): the film stage starts right under the header (no band of section colour above
+   it) and fades in under the header and out at its bottom, so neither the stage's top nor its bottom shows as an edge;
+   the clipped charger screen at the top of beat 1 fades away with it */
+#film{padding-top:0}
+.sf-svg{-webkit-mask-image:linear-gradient(to bottom,transparent 0,transparent 56px,#000 170px,#000 calc(100% - 160px),transparent 100%);mask-image:linear-gradient(to bottom,transparent 0,transparent 56px,#000 170px,#000 calc(100% - 160px),transparent 100%)}
 /* B-1: "What it does" and "Variants" now sit in the light middle block: light-surface colours */
 .light .pillar .ic{background:rgba(13,35,64,.07);color:var(--navy)}
 .light .pillar p,.light .var p,.light .lead,.light .safe1{color:var(--ink3)}

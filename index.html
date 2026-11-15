@@ -239,6 +239,13 @@ nav{background:#081527;-webkit-backdrop-filter:none;backdrop-filter:none;border-
 .layer.hi{box-shadow:none}
 .layer.hi small{color:#fff}
 .layer.hi .li{background:rgba(255,255,255,.1);color:#fff}
+/* G-1 (Marketing gate 28e5913): the hero drawing's L1 layer is highlighted by contrast, not gold: white pulse and
+   label, ink-inv-2 outline, no glow */
+#hero .glow{display:none}
+#hero stop[stop-color="#f0c040"]{stop-color:#B8C4D4}
+#hero polygon.pl[stroke="#f0c040"]{stroke:#B8C4D4;stroke-opacity:1}
+#hero text[fill="#f0c040"]{fill:#fff}
+.stack .wv{stroke:#fff}
 @media(max-width:900px){.layers{gap:28px}}
 /* B-1: "Who it's for" and "How we work" now sit in the light middle block: light-surface colours for their cards */
 .light .hcard p{color:var(--ink3)}
